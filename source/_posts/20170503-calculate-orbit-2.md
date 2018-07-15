@@ -204,4 +204,5 @@ computed.v *= RAD_TO_DEG;
 하지만 중요한 것은 이런 공식을 사용해서 내가 원하는 뭔가를 만들어 볼 수 있다는 것이 아닐까 생각한다.
 
 이상으로 행성 위치 게산하기 포스팅을 마치겠습니다.
+<sub>[프로젝트 깃허브 주소](https://github.com/evan-moon/solarsystemjs)</sub>
 
