@@ -1,7 +1,8 @@
 # Header
 menu:
   Home: /
-  Posts: /posts
+  Categories: /categories
+  Tags: /tags
   Github:
     url: https://github.com/evan-moon
     icon: github
