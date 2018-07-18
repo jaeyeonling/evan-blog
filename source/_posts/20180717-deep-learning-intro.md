@@ -1,5 +1,5 @@
 ---
-title: Deep Learning이란 무엇인가?
+title: Deep Learning이란 무엇인가? - Intro
 date: 2018-07-17 23:33:01
 tags:
     - Machine Learning
