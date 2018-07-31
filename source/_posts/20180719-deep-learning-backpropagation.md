@@ -90,19 +90,115 @@ F = f(g(2));
 여기까지 이해가 되었다면 이제 본격적으로 `Backpropagation`이 어떻게 진행되는 지 살펴보도록 하자.
 
 
-### BackPropagation의 과정
-먼저 모델에 대한 간단한 정의부터 해보자.
+### Backpropagation의 과정
+이제 직접 `Backpropagation`이 어떻게 이루어지는 지 한번 계산해보자.
+필자가 이번 계산에 사용할 모델은 아래와 같다.
 
-***
-1. 모델은 1개의 input Layer, 1개의 Hidden Layer, 1개의 Output Layer로 구성된 `2-Layer NN`모델이다.
-2. 초기 weight값은 랜덤으로 주어진다.
-2. `Activation Function`은 `Sigmoid`를 사용한다.
-***
+<center>{% asset_img 'model.png' %}</center>
 
-먼저 `Backpropagation`을 사용하려면 전파할 뭔가가 있어야한다. 그렇기 때문에 일단 에러 {% math %}E{% endmath %}를 `Mean Squared Error`함수를 사용해 구해보도록 한다. 결과값으로 얻기를 바라는 값을 {% math %}t{% endmath %}로, 실제 나온 값을 {% math %}y{% endmath %}라고 할 때 에러 {% math %}E{% endmath %}는 다음과 같다.
+이 모델은 2개의 input, 2개의 output을 가지고 2개의 Hidden Layer를 가진 `2-Layer NN` 모델이다.
+이제 각 변수에 값을 할당해보자.
 
-<center>{% math %}E = \sum\limits_{i=1}^m\frac{1}{2}(t_i - y_i)^2{% endmath %}</center>
+<center>{% asset_img 'add_var.png' %}</center>
 
-필자같은 수포자를 위해 쉽게 설명하자면, 그냥 마지막 Output Layer에서 뱉어낸 {% math %}y{% endmath %}과 하나하나 레이블링했던 {% math %}\hat{y}{% endmath%}가 얼마나 차이나는 지 구한 다음에 그 값들의 평균을 내는 것이다.
+먼저 필자가 output으로 원하는 {% math %}y_1{% endmath %}의 값은 `0.2`, {% math %}y_2{% endmath %}의 값은 `0.7`이다.
+그리고 input으로는 {% math %}x_1{% endmath %}에 `0.2`, {% math %}x_2{% endmath %}에 `0.5`를 넣어주었고, 각각의 {% math %}w{% endmath %}값은 그냥 느낌가는 대로 넣어놓았다.
+
+필자는 이 계산에서 `Activation Function`으로 `Sigmoid`함수를 사용하고, `Error Function`은 `Mean Squared Error`함수를 사용하려고 한다.
+
+먼저 Layer0에서 받을 값부터 계산해보자. 보통 행렬로 계산한다.
+
+{% math %}
+\begin{aligned}
+z_{10} = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \times  \begin{bmatrix} w^0_{10} & w^0_{20} \end{bmatrix} \\
+\\
+z_{11} = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \times  \begin{bmatrix} w^0_{11} & w^0_{21} \end{bmatrix} \\
+\end{aligned}
+{% endmath %}
+
+저 행렬 곱을 풀어보면 다음과 같이 되고 결국 {% math %}wx{% endmath %}들의 합의 형태로 나타난다.
+
+{% math %}
+\begin{aligned}
+z_{10} = x_1w^0_{10} + x_2w^0_{20} = (0.2\times0.1) + (0.5\times0.3) = 0.02 + 0.15 = 0.17 \\
+\\
+z_{11} = x_1w^0_{11} + x_2w^0_{21} = (0.2\times0.2) + (0.5\times0.1) = 0.04 + 0.05 = 0.09 \\
+\end{aligned}
+{% endmath %}
+
+{% math %}z_{10}{% endmath %}와 {% math %}z_{11}{% endmath %}의 값을 구했으면 이제 `Activation Function`을 사용하여 {% math %}a_{10}{% endmath %}와 {% math %}a_{11}{% endmath %}값을 구해보자.
+필자가 사용할 `Actionvation Function`인 `Sigmoid`의 수식은 다음과 같다.
+
+<center>{% math %}\sigma = \frac{1}{1 + e^{-x}}{% endmath %}</center>
+
+이걸 매번 손으로 계산하면 너무 번거롭기 때문에 JavaScript를 사용해 다음과 같이 함수를 하나 만들어 놓고 사용했다.
+
+```js
+function sigmoid (x) {
+	return 1 / (1 + Math.exp(-x));
+}
+```
+{% math %}
+\begin{aligned}
+a_{10} = 0.54 \\
+\\
+a_{11} = 0.52 \\
+\end{aligned}
+{% endmath %}
+
+다음 레이어도 같은 방식으로 값을 계속 구해보면 다음과 같은 값들을 구할 수 있다.
+
+{% math %}
+\begin{aligned}
+z_{10} = 0.17 \\
+a_{10} = 0.54 \\
+\\
+z_{11} = 0.09 \\
+a_{11} = 0.52 \\
+\\
+z_{20} = 0.27 \\
+a_{20} = 0.57 \\
+\\
+z_{21} = 0.43 \\
+a_{21} = 0.61 \\
+\end{aligned}
+{% endmath %}
+
+결국 {% math %}y_1{% endmath %}와 {% math %}y_2{% endmath %}는 각각 {% math %}a_{20}{% endmath %}과 {% math %}a_{21}{% endmath %}과 같으므로, 우리는 최종 output값을 구하게 되었다.
+근데 우리가 처음에 원했던 {% math %}y_1{% endmath %}과 {% math %}y_2{% endmath %}는 `0.2`와 `0.7`이었는데, 우리가 구한 output은 `0.57`과 `0.61`으로 거리가 있다.
+이제 `Mean Squared Error`함수를 사용하여 에러 {% math %}E{% endmath %}를 구할 차례이다.
+결과값으로 얻기를 바라는 값을 {% math %}t{% endmath %}로, 실제 나온 값을 {% math %}y{% endmath %}라고 할 때 에러 {% math %}E{% endmath %}는 다음과 같다.
+
+<center>{% math %}E = \frac{1}{2}\sum(t_i - y_i)^2{% endmath %}</center>
+
+필자같은 수포자를 위해 쉽게 설명하자면, 그냥 마지막 Output Layer에서 뱉어낸 {% math %}y{% endmath %}들과 하나하나 레이블링했던 {% math %}\hat{y}{% endmath%}가 얼마나 차이나는 지 구한 다음에 그 값들의 평균을 내는 것이다.
 결국 `ANN`을 학습시킨다는 것은 이렇게 구한 에러 {% math %}E{% endmath %}의 값을 0에 근사시킨다고 볼 수 있다.
 여기서 나온 {% math %}E{% endmath %}값을 이제 `역전파`하면 되는 것이다.
+
+이것도 매번 손으로 계산하기 귀찮으니까 그냥 함수를 하나 만들자.
+
+```js
+function MSE (targets, values) {
+	if (values instanceof Array === false) {
+		return false;
+	}
+
+	let result = 0;
+	targets.forEach((target, i) => {
+		result += (0.5 * ((target - values[i]) ** 2));
+	});
+
+	return result;
+}
+
+MSE([0.2, 0.7], [0.57, 0.61]); // 0.072
+```
+
+이제 여기서 구한 에러 {% math %}E{% endmath %}값을 `역전파`해보자. 여기에는 아까 위에서 설명한 `Chain Rule`이 사용된다.
+먼저 {% math %}w^0_{10}{% endmath %}값을 업데이트 해보자.
+
+
+
+
+
+
