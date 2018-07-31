@@ -90,8 +90,9 @@ F = f(g(2));
 여기까지 이해가 되었다면 이제 본격적으로 `Backpropagation`이 어떻게 진행되는 지 살펴보도록 하자.
 
 
-### Backpropagation의 과정
+### Forward-propagation
 이제 직접 `Backpropagation`이 어떻게 이루어지는 지 한번 계산해보자.
+그 전에 먼저 `Forward Propagation`을 진행해야한다. 초기화한 {% math %}w{% endmath %}값과 input인 {% math %}x{% endmath %}을 가지고 계산을 진행한 뒤 우리가 원하는 값이 나오는 지, 나오지 않았다면 얼마나 차이가 나는지를 먼저 구해야한다.
 필자가 이번 계산에 사용할 모델은 아래와 같다.
 
 <center>{% asset_img 'model.png' %}</center>
@@ -127,7 +128,7 @@ z_{11} = x_1w^0_{11} + x_2w^0_{21} = (0.2\times0.2) + (0.5\times0.1) = 0.04 + 0.
 {% endmath %}
 
 {% math %}z_{10}{% endmath %}와 {% math %}z_{11}{% endmath %}의 값을 구했으면 이제 `Activation Function`을 사용하여 {% math %}a_{10}{% endmath %}와 {% math %}a_{11}{% endmath %}값을 구해보자.
-필자가 사용할 `Actionvation Function`인 `Sigmoid`의 수식은 다음과 같다.
+필자가 사용할 `Activation Function`인 `Sigmoid`의 수식은 다음과 같다.
 
 <center>{% math %}\sigma = \frac{1}{1 + e^{-x}}{% endmath %}</center>
 
@@ -140,9 +141,9 @@ function sigmoid (x) {
 ```
 {% math %}
 \begin{aligned}
-a_{10} = 0.54 \\
+a_{10} = \sigma(z_{10}) = 0.54 \\
 \\
-a_{11} = 0.52 \\
+a_{11} = \sigma(z_{11}) = 0.52 \\
 \end{aligned}
 {% endmath %}
 
@@ -173,7 +174,7 @@ a_{21} = 0.61 \\
 
 필자같은 수포자를 위해 쉽게 설명하자면, 그냥 마지막 Output Layer에서 뱉어낸 {% math %}y{% endmath %}들과 하나하나 레이블링했던 {% math %}\hat{y}{% endmath%}가 얼마나 차이나는 지 구한 다음에 그 값들의 평균을 내는 것이다.
 결국 `ANN`을 학습시킨다는 것은 이렇게 구한 에러 {% math %}E{% endmath %}의 값을 0에 근사시킨다고 볼 수 있다.
-여기서 나온 {% math %}E{% endmath %}값을 이제 `역전파`하면 되는 것이다.
+여기서 나온 {% math %}E{% endmath %}값을 이제 `Backpropagation`하면 되는 것이다.
 
 이것도 매번 손으로 계산하기 귀찮으니까 그냥 함수를 하나 만들자.
 
@@ -194,11 +195,64 @@ function MSE (targets, values) {
 MSE([0.2, 0.7], [0.57, 0.61]); // 0.072
 ```
 
-이제 여기서 구한 에러 {% math %}E{% endmath %}값을 `역전파`해보자. 여기에는 아까 위에서 설명한 `Chain Rule`이 사용된다.
-먼저 {% math %}w^0_{10}{% endmath %}값을 업데이트 해보자.
+이제 여기서 구한 에러 {% math %}E{% endmath %}값을 사용하여 `Backpropagation`을 진행해보자.
 
 
 
+### Backpropagation
+`Frontend Propagation`을 통해서 구해진 값을 다시 그림으로 살펴보면 다음과 같다.
+<center>{% asset_img 'backprop1.png' %}</center>
+필자는 이 중 현재 `0.4`로 할당되어 있는 {% math %}w^1_{10}{% endmath %}값을 업데이트 하려고 한다.
+그러려면 {% math %}w^1_{10}{% endmath %}이 전체 에러인 {% math %}E{% endmath %}에 얼마나 영향을 미쳤는지, 즉 기여도를 구해야한다. 이때 위에서 설명한 `Chain Rule`이 사용된다.
 
+{% math %}E{% endmath %}에 대한 {% math %}w^1_{10}{% endmath %}의 기여도를 식으로 풀어보면 다음과 같다.
 
+{% math %}
+\begin{aligned}
+\frac{\partial E}{\partial w^1_{10}} = \frac{\partial E}{\partial a_{20}} \frac{\partial a_{20}}{\partial z_{20}} \frac{\partial z_{20}}{\partial w^1_{10}} \\
+\end{aligned}
+{% endmath %}
 
+먼저 {% math %}\frac{\partial E}{\partial a_{20}}{% endmath %}부터 차례대로 풀어보자. 원래 우리가 구한 {% math %}E{% endmath %}는 아래와 같은 식이였다.
+
+<center>{% math %}E = \frac{1}{2}((t_1 - a_{20})^2 + (t_2 -a_{21})^2){% endmath %}</center>
+
+여기서 {% math %}a_{20} = y_1, a_{21} = y_2{% endmath %}이기 때문에 치환해주었다. 하지만 {% math %}\frac{\partial E}{\partial a_{20}}{% endmath %}는 편미분식이기 때문에 지금 구하려는 값과 상관없는 {% math %}a_{21}{% endmath %}는 그냥 `0`으로 생각하고 풀면된다.
+
+{% math %}
+\begin{aligned}
+\frac{\partial E}{\partial a_{20}} = (t_1 - a_{20}) * -1 + 0 = (0.2 - 0.57) \times -1 = 0.37 \\
+\end{aligned}
+{% endmath %}
+
+이 계산 결과가 의미하는 것은 전체 에러 {% math %}E{% endmath %}에 대하여 {% math %}a_{20}{% endmath %}, 즉 {% math %}y_1{% endmath %}가 `0.37`만큼 기여했다는 것을 의미한다.
+이런 식으로 계속 계산해보자.
+
+{% math %}
+\begin{aligned}
+\frac{\partial a_{20}}{\partial z_{20}} = \sigma(z_{20}) \times (1 - \sigma(z_{20}) = 0.57 \times (1 - 0.57) = 0.14 \\
+\end{aligned}
+{% endmath %}
+{% math %}
+\begin{aligned}
+\frac{\partial z_{20}}{\partial w^1_{10}} = a_{10} + 0 = 0.54 \\
+\end{aligned}
+{% endmath %}
+
+{% math %}
+\begin{aligned}
+\frac{\partial E}{\partial w^1_{10}} = 0.37 \times 0.14 \times 0.54 = 0.028 \\
+\end{aligned}
+{% endmath %}
+
+최종적으로 {% math %}E{% endmath %}에 {% math %}w^1_{10}{% endmath %}가 기여한 값은 `0.028`이라는 값을 계산했다.
+이제 이 값을 학습식에 넣으면 {% math %}w^1_{10}{% endmath %}값을 업데이트 할 수 있다.
+이때 값을 얼마나 건너뛸 것이냐 또는 얼마나 빨리 학습시킬 것이냐 등을 정하는 `Learning Rate`라는 값이 필요한데, 이건 그냥 사람이 정하는 상수이고 보통 `0.1`보다 낮은 값으로 설정하나 필자는 `0.3`으로 잡았다.
+
+{% math %}
+\begin{aligned}
+w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3 * 0.028) = 0.3916
+\end{aligned}
+{% endmath %}
+
+이렇게 해서 필자는 새로운 {% math %}w^1_{10}{% endmath %}값인 `0.3916`을 얻었다. 이런 식으로 다른 {% math %}w{% endmath %}값을 계속 업데이트 해보자.
