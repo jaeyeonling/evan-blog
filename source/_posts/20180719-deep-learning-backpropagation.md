@@ -256,3 +256,61 @@ w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3
 {% endmath %}
 
 이렇게 해서 필자는 새로운 {% math %}w^1_{10}{% endmath %}값인 `0.3916`을 얻었다. 이런 식으로 다른 {% math %}w{% endmath %}값을 계속 업데이트 해보자.
+이번에는 Layer1보다 한 층 더 깊숙히 있는 Layer0의 {% math %}w^0{10}{% endmath %}값을 업데이트 할 것이다.
+
+<center>{% asset_img 'backprop2.png' %}</center>
+
+보다시피 {% math %}w^0_{10}{% endmath %}은 {% math %}w^1_{10}{% endmath %}보다 많은 값에 영향을 미치고 있다.
+전체 에러 {% math %}E_t{% endmath %}에 {% math %}w^0_{10}{% endmath %}가 기여한 정도는 다음과 같이 나타낼 수 있다.
+
+{% math %}
+\begin{aligned}
+\frac{\partial E_t}{\partial w^0_{10}} = (\frac{\partial E_1}{\partial a_{10}} + \frac{\partial E_2}{\partial a_{10}}) \frac{\partial a_{10}}{\partial z_{10}} \frac{\partial z_{10}}{\partial w^0_{10}}
+\end{aligned}
+{% endmath %}
+
+그럼 먼저 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}부터 구해보자.
+{% math %}
+\begin{aligned}
+\frac{\partial E_1}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{20}} \frac{\partial a_{20}}{\partial z_{20}} \frac{\partial z_{20}}{\partial a_{10}} \\
+\\
+= -(t_1 - a_{20}) \times \sigma(z_{20})) \times (1 - \sigma(z_{20})) \times w^1_{10} \\
+\\
+= -(0.2 - 0.57) \times 0.57 \times (1 - 0.57) \times 0.4 \\
+\\
+= 0.04902
+\end{aligned}
+{% endmath %}
+
+마찬가지로 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %}도 구해본다.
+{% math %}
+\begin{aligned}
+\frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
+\\
+= -(t_2 - a_{21}) \times \sigma(z_{21})) \times (1 - \sigma(z_{21})) \times w^1_{11} \\
+\\
+= -(0.7 - 0.61) \times 0.61 \times (1 - 0.61) \times 0.5 \\
+\\
+= -0.0107
+\end{aligned}
+{% endmath %}
+
+이제 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}와 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %}를 전부 구했으니 {% math %}\frac{\partial E_t}{\partial w^0_{10}}{% endmath %}를 구할 차례이다.
+{% math %}
+\begin{aligned}
+\frac{\partial E_t}{\partial w^0_{10}} = (\frac{\partial E_1}{\partial a_{10}} + \frac{\partial E_2}{\partial a_{10}}) \frac{\partial a_{10}}{\partial z_{10}} \frac{\partial z_{10}}{\partial w^0_{10}} \\
+\\
+= (0.04902 + (-0.0107)) \times 0.2484 \times 0.5 \\
+\\
+= 0.0048
+\end{aligned}
+{% endmath %}
+
+이로써 {% math %}w^0_{10}{% endmath %}이 전체 에러 {% math %}E_t{% endmath %}에 `0.0048`만큼 기여한다는 걸 알아냈다.
+이제 이 값을 사용하여 {% math %}w^0_{10}{% endmath %}값을 업데이트하자.
+`Learning Rate`는 아까와 동일한 `0.3`이다.
+{% math %}
+\begin{aligned}
+w^{0+}_{10} = w^0_{10} - (L * \frac{\partial E_t}{\partial w^0_{10}}) = 0.1 - (0.3 \times 0.0048) = 0.09856
+\end{aligned}
+{% endmath %}
