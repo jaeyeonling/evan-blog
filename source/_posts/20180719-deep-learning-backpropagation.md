@@ -230,7 +230,7 @@ MSE([0.2, 0.7], [0.57, 0.61]); // 0.072
 
 {% math %}
 \begin{aligned}
-\frac{\partial a_{20}}{\partial z_{20}} = \sigma(z_{20}) \times (1 - \sigma(z_{20}) = 0.57 \times (1 - 0.57) = 0.14 \\
+\frac{\partial a_{20}}{\partial z_{20}} = a_{20}) \times (1 - a_{20}) = 0.57 \times (1 - 0.57) = 0.25 \\
 \end{aligned}
 {% endmath %}
 {% math %}
@@ -241,21 +241,21 @@ MSE([0.2, 0.7], [0.57, 0.61]); // 0.072
 
 {% math %}
 \begin{aligned}
-\frac{\partial E}{\partial w^1_{10}} = 0.37 \times 0.14 \times 0.54 = 0.028 \\
+\frac{\partial E}{\partial w^1_{10}} = 0.37 \times 0.25 \times 0.54 = 0.049 \\
 \end{aligned}
 {% endmath %}
 
-최종적으로 {% math %}E{% endmath %}에 {% math %}w^1_{10}{% endmath %}가 기여한 값은 `0.028`이라는 값을 계산했다.
+최종적으로 {% math %}E{% endmath %}에 {% math %}w^1_{10}{% endmath %}가 기여한 값은 `0.049`이라는 값을 계산했다.
 이제 이 값을 학습식에 넣으면 {% math %}w^1_{10}{% endmath %}값을 업데이트 할 수 있다.
 이때 값을 얼마나 건너뛸 것이냐 또는 얼마나 빨리 학습시킬 것이냐 등을 정하는 `Learning Rate`라는 값이 필요한데, 이건 그냥 사람이 정하는 상수이고 보통 `0.1`보다 낮은 값으로 설정하나 필자는 `0.3`으로 잡았다.
 
 {% math %}
 \begin{aligned}
-w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3 * 0.028) = 0.3916
+w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3 \times 0.049) = 0.3853
 \end{aligned}
 {% endmath %}
 
-이렇게 해서 필자는 새로운 {% math %}w^1_{10}{% endmath %}값인 `0.3916`을 얻었다. 이런 식으로 다른 {% math %}w{% endmath %}값을 계속 업데이트 해보자.
+이렇게 해서 필자는 새로운 {% math %}w^1_{10}{% endmath %}값인 `0.3853`을 얻었다. 이런 식으로 다른 {% math %}w{% endmath %}값을 계속 업데이트 해보자.
 이번에는 Layer1보다 한 층 더 깊숙히 있는 Layer0의 {% math %}w^0{10}{% endmath %}값을 업데이트 할 것이다.
 
 <center>{% asset_img 'backprop2.png' %}</center>
@@ -274,11 +274,11 @@ w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3
 \begin{aligned}
 \frac{\partial E_1}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{20}} \frac{\partial a_{20}}{\partial z_{20}} \frac{\partial z_{20}}{\partial a_{10}} \\
 \\
-= -(t_1 - a_{20}) \times \sigma(z_{20})) \times (1 - \sigma(z_{20})) \times w^1_{10} \\
+= -(t_1 - a_{20}) \times a_{20} \times (1 - a_{20}) \times w^1_{10} \\
 \\
 = -(0.2 - 0.57) \times 0.57 \times (1 - 0.57) \times 0.4 \\
 \\
-= 0.04902
+= 0.03627
 \end{aligned}
 {% endmath %}
 
@@ -287,7 +287,7 @@ w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3
 \begin{aligned}
 \frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
 \\
-= -(t_2 - a_{21}) \times \sigma(z_{21})) \times (1 - \sigma(z_{21})) \times w^1_{11} \\
+= -(t_2 - a_{21}) \times a_{21} \times (1 - a_{21}) \times w^1_{11} \\
 \\
 = -(0.7 - 0.61) \times 0.61 \times (1 - 0.61) \times 0.5 \\
 \\
@@ -300,17 +300,127 @@ w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3
 \begin{aligned}
 \frac{\partial E_t}{\partial w^0_{10}} = (\frac{\partial E_1}{\partial a_{10}} + \frac{\partial E_2}{\partial a_{10}}) \frac{\partial a_{10}}{\partial z_{10}} \frac{\partial z_{10}}{\partial w^0_{10}} \\
 \\
-= (0.04902 + (-0.0107)) \times 0.2484 \times 0.5 \\
+= (0.03627 + (-0.0107)) \times 0.2484 \times 0.54 \\
 \\
-= 0.0048
+= 0.0034
 \end{aligned}
 {% endmath %}
 
-이로써 {% math %}w^0_{10}{% endmath %}이 전체 에러 {% math %}E_t{% endmath %}에 `0.0048`만큼 기여한다는 걸 알아냈다.
+이로써 {% math %}w^0_{10}{% endmath %}이 전체 에러 {% math %}E_t{% endmath %}에 `0.0034`만큼 기여한다는 걸 알아냈다.
 이제 이 값을 사용하여 {% math %}w^0_{10}{% endmath %}값을 업데이트하자.
 `Learning Rate`는 아까와 동일한 `0.3`이다.
 {% math %}
 \begin{aligned}
-w^{0+}_{10} = w^0_{10} - (L * \frac{\partial E_t}{\partial w^0_{10}}) = 0.1 - (0.3 \times 0.0048) = 0.09856
+w^{0+}_{10} = w^0_{10} - (L * \frac{\partial E_t}{\partial w^0_{10}}) = 0.1 - (0.3 \times 0.0034) = 0.09897
 \end{aligned}
 {% endmath %}
+
+
+
+### Coding
+필자는 도저히 이걸 8번이나 손으로 풀 수 있는 사람이 아니기 때문에 JavaScript를 사용하여 위에 설명했던 공식을 간단하게 코드로 작성해보았다.
+
+```js
+function sigmoid (x) {
+	return 1 / (1 + Math.exp(-x));
+}
+
+function MSE (targets, values) {
+	if (values instanceof Array === false) {
+		return false;
+	}
+
+	let result = 0;
+	targets.forEach((target, i) => {
+		result += (0.5 * ((target - values[i]) ** 2));
+	});
+
+	return result;
+}
+
+// 인풋 초기화
+const x1 = 0.2;
+const x2 = 0.5;
+
+// 타겟 값 초기화
+const t1 = 0.2;
+const t2 = 0.7;
+
+// Weights 초기화
+const w0 = [[0.1, 0.2], [0.3, 0.1]];
+const w1 = [[0.4, 0.5], [0.1, 0.3]];
+const learningRate = 0.3;
+const limit = 1000; // 학습 횟수
+
+// 두번째 Layer의 Weight들을 업데이트
+function updateSecondLayerWeight (targetY, y, prevY, updatedWeight) {
+	const v1 = (-(targetY - y)) + 0;
+	const v2 = y * (1-y);
+	const def = v1 * v2 * prevY;
+	return updatedWeight - (learningRate * def);
+}
+
+// 첫번째 Layer의 Weight들을 업데이트
+function updateFirstLayerWeight (t1, t2, y1, y2, w1, w2, a, updatedWeight) {
+    const e1 = (-(t1 - y1)) * y1 * (1-y1) * w1;
+    const e2 = (-(t2 - y2)) * y2 * (1-y2) * w2;
+    const v1 = a * (1-a);
+    const v2 = a;
+    const def = (e1 + e2) * v1 * v2;
+    
+    return updatedWeight - (learningRate * def);
+}
+
+// 학습 시작
+let i = 0;
+for (i; i < limit; i++) {
+    let z10 = (x1 * w0[0][0]) + (x2 * w0[1][0]);
+    let a10 = sigmoid(z10);
+    let z11 = (x1 * w0[0][1]) + (x2 * w0[1][1]);
+    let a11 = sigmoid(z11);
+
+    let z20 = (a10 * w1[0][0]) + (a11 * w1[1][0]);
+    let a20 = sigmoid(z20);
+    let z21 = (a10 * w1[0][1]) + (a11 * w1[1][1]);
+    let a21 = sigmoid(z21);
+
+    let e_t = MSE([t1, t2], [a20, a21]);
+
+    console.log(`[${i}] y1 = ${a20}, y2 = ${a21}, E = ${e_t}`);
+
+    // 계산된 기여도들을 사용하여 새로운 Weight로 업데이트
+    const newW0 = [
+        [updateFirstLayerWeight(t1, t2, a20, a21, w1[0][0], w1[0][1], a10, w0[0][0]), updateFirstLayerWeight(t1, t2, a20, a21, w1[1][0], w1[1][1], a11, w0[0][1])],
+        [updateFirstLayerWeight(t1, t2, a20, a21, w1[0][0], w1[0][1], a10, w0[1][0]), updateFirstLayerWeight(t1, t2, a20, a21, w1[1][0], w1[1][1], a11, w0[1][1])]
+    ];
+    const newW1 = [
+        [updateSecondLayerWeight(t1, a20, a10, w1[0][0]), updateSecondLayerWeight(t2, a21, a10, w1[0][1])],
+        [updateSecondLayerWeight(t1, a20, a11, w1[1][0]), updateSecondLayerWeight(t2, a21, a11, w1[1][1])]
+    ];
+
+    // 업데이트된 Weight들을 반영한다
+    newW0.forEach((v, i) => {
+        v.forEach((vv, ii) => {
+            w0[i][ii] = vv;
+        });
+    });
+    newW1.forEach((v, i) => {
+        v.forEach((vv, ii) => {
+            w1[i][ii] = vv;
+        });
+    });
+}
+
+console.log(`t1 = ${t1}, t2 = ${t2}`);
+```
+
+계산된 결과들을 보면 처음에 `Multi Layer Network`에 넣었던 `x1`과 `x2`가 점점 `t1`과 `t2`로 수렴하는 것을 볼 수 있다.
+1000번 돌린 결과를 전부 볼 수는 없으니까 처음과 중간, 마지막 진행 상황을 첨부한다.
+
+<center>{% asset_img 'result_first.png' %}</center>
+<br>
+<center>{% asset_img 'result_second.png' %}</center>
+<br>
+<center>{% asset_img 'result_third.png' %}</center>
+
+이상으로 BackPropagation 포스팅을 마치도록 하겠습니다.
