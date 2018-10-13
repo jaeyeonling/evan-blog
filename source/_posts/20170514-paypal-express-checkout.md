@@ -11,12 +11,14 @@ categories:
     - Paypal
 ---
 
-#### - 들어가며
+### 들어가며
+***
 이번 포스팅에서는 Paypal의 RESTful API인 Express Checkout을 사용하는 방법에 대해서 포스팅 하려고 한다.
 진행하기에 앞서 먼저, https://www.sandbox.paypal.com/에 접속해서 sandbox용 계정을 만들어야 한다.
 이 계정으로 테스트를 진행하고 실제 운영 계정은 https://www.paypal.com/kr/home에서 회원가입하면 된다.
 
 ### Express Checkout이란?
+***
 Paypal에서 제공해주는 결제 플로우 방식 중 하나이며, 유저가 `페이팔로 구매하기`버튼을 클릭했을 때 페이팔 로그인 Modal window가 렌더되고, 이를 통해 결제를 진행하는 플로우이다.
 모든 국가를 지원하며, 브라우저 지원은 다음과 같다.
 
@@ -35,6 +37,7 @@ Paypal의 JavaScript SDK인 checkout.js를 사용하여 버튼을 동적으로 �
 상품 데이터를 본인 서비스의 서버로 전달한 후 Server to Server방식으로 Paypal서버에서 인증을 받는 방식으로 진행된다. 필자는 이 방법을 선택하였다.
 
 ### Express Checkout의 흐름
+***
 먼저 이 글은 Paypal Developer페이지의 Express Checkout항목을 참고하여 작성되었다.
 
 <sub>이미지 출처 및 링크: https://developer.paypal.com/docs/classic/express-checkout/</sub>
@@ -58,6 +61,7 @@ Paypal Express Checkout의 플로우는 다음과 같다.
 ***
 
 ### Client만으로 진행하기
+***
 > Paypal 공식문서에서는 Express Checkout과의 버전 호환성을 최대한 보장하기 위해 CDN을 이용한 동적로딩을 추천하고 있다. 직접 `checkout.js`파일을 다운받아 클라이언트 소스에 넣는 것은 추천하지 않는다.
 > 이 문서에서의 `checkout.js`의 버전은 `4.0`으로 진행한다.
 
@@ -123,6 +127,7 @@ paypal.Button.render({
 <center>{% asset_img 'light-window.jpeg' 'light-window' %}</center>
 
 ### Client와 Server의 통신으로 진행하기
+***
 이 플로우는 Paypal에서 발급해주는 client_key와 secret을 이용하여 페이팔 인증부터 차례대로 진행하는 방법이다.
 이 방법의 장점으로는 본인의 서비스의 UX플로우를 최대한 지키며 결제를 진행시킬 수 있고, 첫번째 방법보다 플로우가 유연하며 버튼 디자인또한 css로 커스터마이징이 자유롭다.
 그런 이유로 Paypal에서도 이 방법을 권장하고 있다. 결제플로우는 크게 3가지 단계로 나눠진다.
@@ -154,14 +159,14 @@ paypal.Button.render({
 ```js
 (function() {
     'use strict';
- 
+
     angular
         .module('services')
         .factory('PaypalService', [
             '$rootScope', 'Restangular', 'SNS_KEYS', '$q',
             PaypalService
         ]);
-    
+
         function PaypalService($rootScope, Restangular, SNS_KEYS, $q) {
             var service = {
                 create: create,
@@ -171,9 +176,9 @@ paypal.Button.render({
             //페이팔에서 발급해준 키를 전역으로 사용하기 위해 app.constants에 미리 담아놓았다.
             var clientKey = SNS_KEYS.paypal;
             return service;
- 
+
             /**
-             * @public 
+             * @public
              * @name create
              * @description create paypal payment request
              * @param { Object } data
@@ -195,15 +200,15 @@ paypal.Button.render({
                 }, function(err) {
                     defer.reject(err);
                 });
-                 
+
                 return defer.promise;
             }
-            
+
             /**
              * @name execute
              * @description execute paypal payment
              * @param { Object } data
-             * @return { Promise} 
+             * @return { Promise}
              */
             function execute(data) {
                 var defer = $q.defer();
@@ -215,10 +220,10 @@ paypal.Button.render({
                 }, function(err) {
                     defer.reject(err);
                 });
-                 
+
                 return defer.promise;
             }
-            
+
             /**
              * @name getPaymentInfo
              * @description getting created paypal payment information
@@ -238,19 +243,19 @@ paypal.Button.render({
 })();
 ```
 
-이후 버튼을 렌더한 html파일에 물려있는 Controller에서 위에서 정의한 Paypal서비스를 호출한다. 
+이후 버튼을 렌더한 html파일에 물려있는 Controller에서 위에서 정의한 Paypal서비스를 호출한다.
 
 ```js
 (function() {
     'use strict';
- 
+
     angular
         .module('app')
         .controller('PaypalCreateController', [
             '$rootScope', '$scope', 'PaypalService',
             PaypalCreateController
         ]);
-        
+
         function PaypalCreateController() {
             var vm = this;
             //테스트를 위한 더미데이터를 정의한다. 실서비스에는 이 데이터들이 폼에 바인딩 될 것이다.
@@ -273,7 +278,7 @@ paypal.Button.render({
                     }
                 }]
             };
-            
+
             vm.postData = postData;
             function postData() {
                 var data = angular.copy(vm.paymentData);
@@ -297,18 +302,18 @@ paypal.Button.render({
 
 ```php
 namespace App\Http\Controllers;
- 
+
 use Log;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
- 
+
 class PaypalPaymentController extends Controller {
     public $client;
     public $paymentUrl;
     public $accessToken;
- 
+
     public function __construct() {
         $this--->client = new Client();
         $this->accessToken = env('PAYPAL_ACCESS_TOKEN_SANDBOX');
@@ -316,7 +321,7 @@ class PaypalPaymentController extends Controller {
         $this->paymentUrl = "https://api.sandbox.paypal.com/v1/payments/payment";
         // 지금은 테스트 중이라 sandbox url로 요청을 날리고있다. 본 서비스는 sandbox를 제거하고 api.paypal.com으로 날리면 된다.
     }
- 
+
     public function detail(Request $request){
         $query = $request->query();
         $response = $this->client->request('GET', $this->paymentUrl.'/'.$query['paymentId'] , [
@@ -326,10 +331,10 @@ class PaypalPaymentController extends Controller {
             ],
         ])->getBody()->getContents();
         $decodeResult = json_decode($response);
- 
+
         return response()->success($decodeResult);
     }
-    
+
     public function payment(Request $request) {
         $response = $this->client->request('POST', $this->paymentUrl, [
             'headers' => [
@@ -346,10 +351,10 @@ class PaypalPaymentController extends Controller {
             ]
         ])->getBody()->getContents();
         $decodeResult = json_decode($response);
-        
+
         return response()->success($decodeResult);
     }
-    
+
     public function execute(Request $request){
         $response = $this->client->request('POST', $this->paymentUrl.'/'.$request->paymentId.'/execute' , [
             'headers' => [
@@ -361,7 +366,7 @@ class PaypalPaymentController extends Controller {
             ]
         ])->getBody()->getContents();
         $decodeResult = json_decode($response);
- 
+
         return response()->success($decodeResult);
     }
 }
@@ -395,6 +400,7 @@ Paypal서버와 통신을 하기 위해서는 `client_key`와 `secret`이 필요
 그래서 상대적으로 안전한 서버에 `secret`을 저장하고 클라이언트에는 `client_key`만 저장하는 식으로 2개의 값을 한번에 볼 수 없도록 나눠 놓는다.
 
 ### 실행결과
+***
 먼저, API서버를 통해 create요청을 진행한 결과, 필자는 다음과 같은 response를 받을 수 있었다.
 
 <center>{% asset_img 'result-1.png' %}</center>
@@ -435,26 +441,26 @@ links라는 배열을 하나 받았는데, 각 인덱스의 의미는 이렇다.
 ```js
 (function() {
     'use strict';
- 
+
     angular
     .module('app.pages.product')
     .controller('PaypalRedirectController', [
         '$rootScope', 'Restangular', 'PaypalService', '$location',
         PaypalRedirectController
     ]);
- 
+
     /** @ngInject */
     function PaypalRedirectController(
         $rootScope, Restangular, PaypalService, $location
     ) {
         var vm = this;
         var queryString = $location.search(); // 페이팔에서 보내준 쿼리스트링을 가져온다
- 
+
         vm.init = (init)();
         function init() {
             getPaymentInfo();
         }
- 
+
         /**
          * @public
          * @method executePaypal
@@ -466,9 +472,9 @@ links라는 배열을 하나 받았는데, 각 인덱스의 의미는 이렇다.
                 console.log('EXECUTE RESULT -> ', res);
             });
         }
-        
+
         /**
-        * @private 
+        * @private
         * @method getPaymentInfo
         */
         function getPaymentInfo() {
@@ -497,7 +503,7 @@ https://www.sandbox.paypal.com/에 접속해서 구매자 계정으로 확인해
 <center>
     {% asset_img 'customer.png' %}
     <sub>샌드박스의 구매 테스트 계정. 12유로가 출금 되었다.</sub>
-    
+
     {% asset_img 'provider.png' %}
     <sub>샌드박스의 판매 테스트 계정. 최상단에 필자 이름과 함께 12유로가 들어와있다.</sub>
 </center>
@@ -506,6 +512,4 @@ https://www.sandbox.paypal.com/에 접속해서 구매자 계정으로 확인해
 아직은 저게 현금화 된게 아니라 그냥 Paypal서버에 들어가있는 데이터 쪼가리일 뿐이다.
 이제 Accept버튼을 눌러 판매자의 계좌로 입금을 진행하면 상태가 `Completed`로 전환되며 계좌에 `12EUR`가 `USD`로 환전되며 입금된다.
 
-이상으로 Express Checkout에 대한 포스팅을 마치겠습니다.
-
-
+이상으로 Express Checkout에 대한 포스팅을 마친다.

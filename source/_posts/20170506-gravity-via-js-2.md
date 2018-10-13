@@ -6,13 +6,16 @@ tags:
     - JavaScript
 categories:
     - 물리
+    - 그래픽스
 ---
 
-#### - 들어가며
+### 들어가며
+***
 이번 포스팅에서는 {% post_link gravity-via-js-1 저번 포스팅 %}에 이어 중력을 직접 JS로 구현해보려고 한다.
 개발환경은 JavaScript ES7, babel, Webpack, Three.js을 사용하였다.
 
 ### 코딩
+***
 먼저 프로그램에서 사용할 상수 값들 부터 선언하겠다.
 
 ```js
@@ -27,7 +30,7 @@ export const initOptions = {
     DENSITY: 0.15 // 물체들이 렌더되는 밀도
 };
 export const SPHERE_SIDES = 20;
-export const MASS_FACTOR = 0.01; 
+export const MASS_FACTOR = 0.01;
 ```
 
 원래라면 `6.6742e-11`의 값을 가지는 중력 상수는 `250`이나 준 이유는 이 물체들의 질량이 너무 작기 때문이다.
@@ -41,7 +44,7 @@ export const MASS_FACTOR = 0.01;
  자 그럼 이제 실제 움직일 놈들을 구현하자.
  이름을 Object로 하고 싶었지만 알다시피 JS에서 Object라는 이름은 Build-in Object가 이미 가지고 있다.
  그래서 다른 이름을 고심하다가 그냥 Mover라고 했다. 만들던 중에 다른 사람들이 구현한 것도 좀 찾아보고 그러다보니 알게된 건데 다들 Mover라고 하더라....
- 
+
  ```js
 import { SPHERE_SIDES, MASS_FACTOR } from 'src/constants';
 import {
@@ -173,7 +176,7 @@ export class Mover {
     constructor(mass, velocity, location, id, scene) {
         ...
     }
-    
+
     eat(otherMover) {
         const newMass = this.mass + otherMover.mass;
         const newLocation = new Vector3(
@@ -194,24 +197,24 @@ export class Mover {
 
         otherMover.kill();
     }
-    
+
     attract(otherMover, options) {
         const force = Gravity.calcGravity(this, otherMover, options.G);
         this.applyForce(force);
     }
-    
+
     applyForce(force) {
         if(!this.mass) this.mass = 1.0;
         const f = force.divideScalar(this.mass);
         this.acceleration.add(f);
         // mover의 가속도에 힘을 적용
     }
-    
+
     update() {
        this.velocity.add(this.acceleration); // 속도에 가속도 더함
        this.location.add(this.velocity); // 위치에 속도 더해서 이동시킴
        this.acceleration.multiplyScalar(0); // 가속도 초기화
-    
+
         this.mesh.position.copy(this.location); // mover의 mesh객체에 위치 적용
     }
 }
@@ -220,4 +223,4 @@ export class Mover {
 정리하자면 매 프레임마다 `movers`리스트를 순회하면서 각 `Mover`들간의 중력을 계산하고 가속도를 적용한 후 실제로 `Mover`를 이동시키는 것이다.
 [프로젝트 깃허브 링크](https://github.com/evan-moon/3d-gravity-test)
 
-이상으로 JavaScript로 중력구현하기 포스팅을 마치겠습니다.
+이상으로 JavaScript로 중력구현하기 포스팅을 마친다.

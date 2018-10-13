@@ -8,10 +8,12 @@ categories:
     - Machine Learning
 ---
 
-#### - 들어가며
+### 들어가며
+***
 이번 포스팅에서는 딥러닝이 무엇인지, 기존의 뉴럴네트워크와 다른 점이 무엇인지에 대해서 포스팅하려고 한다.
 
 ### Artificial Neural Network란?
+***
 인류는 과거부터 생각하는 기계를 만드려는 노력을 해왔다.
 그 과정에서 다양한 시도들이 있었고, 결국 고안해낸 방법은 **인간의 뇌를 프로그래밍**
 해보자는 것이였다. 이런 발상이 가능했던 것은 현대에 이르러 인간의 뇌의 구조를 어느 정도 알 수 있었기 때문이기도 하고 이 구조가 생각보다 단순하다는 점도 있었다.
@@ -51,6 +53,7 @@ categories:
 
 
 ### 암흑기의 도래
+***
 자 그럼 여기서 한가지 의문이 생긴다.
 
 ***
@@ -87,6 +90,7 @@ it ought to be possible to devise a training alhorithm to optimize the weights i
 
 
 ### 다시 재기의 시간
+***
 1974년 **Paul Werbos** 는 자신의 박사학위 논문에 `Backpropagation`이라는 알고리즘을 게재하게 된다.
 그러나 슬프게도 아무도 관심을 가지지 않았고 심지어 `Perceptrons`의 저자인 **Marvin Minsky** 마저도 관심을 안가져줬다고 한다. 심지어 1982년도에 다시 논문을 발표하게 됐는데 이때도 그냥 묻혔다고 한다...
 그러다가 1986년, **Geoffrey Hinton** 이 독자적으로 이 알고리즘을 다시 발견하고 발표하게 되면서 주목을 받게된다.
@@ -94,4 +98,4 @@ it ought to be possible to devise a training alhorithm to optimize the weights i
 이 `Backpropagation`이라는 알고리즘의 구조는 간단하다. 그냥 말 그대로 에러를 output에서 가까운 쪽부터 뒤로(Back) 전파(Propagation)하는 것이다. 그래서 `역전파알고리즘`이라고도 불린다.
 이 `Backpropagation`에 대해서는 별도 포스팅에서 다시 다루도록 하겠다.
 
-이상으로 Deep Learning 첫번째 포스팅을 마치겠습니다.
+이상으로 Deep Learning 첫번째 포스팅을 마친다.

@@ -8,11 +8,13 @@ categories:
     - Machine Learning
 ---
 
-#### - 들어가며
+### 들어가며
+***
 이번 포스팅에서는 {% post_link deep-learning-intro 저번 포스팅 %}에 이어 `Backpropagation`에 대해서 알아보려고 한다.
 전 포스팅에서도 설명했듯, 이 알고리즘으로 인해 `Multi Layer Network`에서의 학습이 가능하다는 것이 알려져, 암흑기에 있던 `Neural Network` 학계가 다시 관심을 받게 되었다.
 
 ### Backpropagation이란?
+***
 `Backpropagation`은 오늘 날 `Artificial Neural Network`를 학습시키기 위한 일반적인 알고리즘 중 하나이다.
 한국말로 직역하면 `역전파`라는 뜻인데, 내가 뽑고자 하는 `target`값과 실제 모델이 계산한 `output`이 얼마나 차이가 나는지 구한 후 그 오차값을 다시 뒤로 전파해가면서 각 노드가 가지고 있는 변수들을 갱신하는 알고리즘인 것이다.
 다행히 여기까지는 직관적으로 이해가 되지만 필자는 다음 2가지의 원리가 궁금했다.
@@ -26,6 +28,7 @@ categories:
 
 
 ### Chain Rule이란?
+***
 `Chain Rule`, 미분의 연쇄법칙이라고도 불리는 법칙이다. 이건 고딩때는 안배우고 대학수학에서 배우기 때문에, 대학 때 이산수학만 배웠던 필자는 이해가 잘되지않아서 고생했다. 먼저 정의부터 보자.
 
 ***
@@ -91,6 +94,7 @@ F = f(g(2));
 
 
 ### Forward-propagation
+***
 이제 직접 `Backpropagation`이 어떻게 이루어지는 지 한번 계산해보자.
 그 전에 먼저 `Forward Propagation`을 진행해야한다. 초기화한 {% math %}w{% endmath %}값과 input인 {% math %}x{% endmath %}을 가지고 계산을 진행한 뒤 우리가 원하는 값이 나오는 지, 나오지 않았다면 얼마나 차이가 나는지를 먼저 구해야한다.
 필자가 이번 계산에 사용할 모델은 아래와 같다.
@@ -200,6 +204,7 @@ MSE([0.2, 0.7], [0.57, 0.61]); // 0.072
 
 
 ### Backpropagation
+***
 `Frontend Propagation`을 통해서 구해진 값을 다시 그림으로 살펴보면 다음과 같다.
 <center>{% asset_img 'backprop1.png' %}</center>
 필자는 이 중 현재 `0.4`로 할당되어 있는 {% math %}w^1_{10}{% endmath %}값을 업데이트 하려고 한다.
@@ -318,6 +323,7 @@ w^{0+}_{10} = w^0_{10} - (L * \frac{\partial E_t}{\partial w^0_{10}}) = 0.1 - (0
 
 
 ### Coding
+***
 필자는 도저히 이걸 8번이나 손으로 풀 수 있는 사람이 아니기 때문에 JavaScript를 사용하여 위에 설명했던 공식을 간단하게 코드로 작성해보았다.
 
 ```js
@@ -367,7 +373,7 @@ function updateFirstLayerWeight (t1, t2, y1, y2, w1, w2, a, updatedWeight) {
     const v1 = a * (1-a);
     const v2 = a;
     const def = (e1 + e2) * v1 * v2;
-    
+
     return updatedWeight - (learningRate * def);
 }
 
@@ -423,4 +429,4 @@ console.log(`t1 = ${t1}, t2 = ${t2}`);
 <br>
 <center>{% asset_img 'result_third.png' %}</center>
 
-이상으로 BackPropagation 포스팅을 마치도록 하겠습니다.
+이상으로 BackPropagation 포스팅을 마친다.
