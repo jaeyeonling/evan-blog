@@ -112,3 +112,14 @@ function bubbleSort (input) {
 ### 2. 선택정렬(Selection sort)
 
 <center>{% asset_img 'selection_sort.gif' %}</center>
+
+`선택정렬`은 주어진 자료들 중에 현재 위치에 맞는 자료를 찾아 선택하여 위치를 교환하는 정렬 알고리즘이다. 
+
+***
+
+1. 0번째 원소와 1번째 원소를 비교 후 정렬
+2. 1번째 원소와 2번째 원소를 비교 후 정렬
+...
+3. n-1번째 원소와 n번째 원소를 비교 후 정렬
+
+***
