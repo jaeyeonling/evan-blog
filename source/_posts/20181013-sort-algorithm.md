@@ -277,5 +277,38 @@ function mergeSort (input) {
 2. `피벗`을 기준으로 리스트를 둘로 분할한다.
 3. `피벗`을 기준으로 `피벗`보다 작은 원소들은 모두 `피벗`의 왼쪽으로 옮긴다
 4. `피벗`을 기준으로 `피벗`보다 큰 원소들은 모두 `피벗`의 오른쪽으로 옮긴다
-5. 
+5.
 ***
+
+```js
+function quickSort(arr, left, right) {
+    if (left < right) {
+        //기준점을 찾고 기준점을 중심으로 더 작은수, 더 큰수 분류
+        const i =  position(arr, left, right);
+        //기준점 기준 좌측 정렬
+        quicksort(arr, left, i - 1);
+        //기준점 기준 우측 정렬
+        quicksort(arr, i + 1, right);
+    }
+    return arr;
+}
+function position (arr, left, right) {
+    let i = left;
+    let j = right;
+    const pivot = arr[left];
+
+    //제자리 더 큰수/더 작은 수 좌우 배치.
+    while (i < j) {
+        while (arr[j] > pivot) j--;
+        while (i < j && arr[i] <= pivot) i++;
+
+        tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+    arr[left] = arr[j];
+    arr[j] = pivot;
+
+    return j;
+}
+```
