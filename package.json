@@ -6,7 +6,7 @@
     "version": "3.7.1"
   },
   "scripts": {
-    "serve": "hexo server",
+    "start": "hexo server",
     "serve-strict": "hexo server -s",
     "deploy": "hexo generate -d",
     "clean": "hexo clean"
