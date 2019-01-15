@@ -290,7 +290,7 @@ w^{1+}_{10} = w^1_{10} - (L * \frac{\partial E}{\partial w^1_{10}}) = 0.4 - (0.3
 마찬가지로 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %}도 구해본다.
 {% math %}
 \begin{aligned}
-\frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
+\frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_2}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
 \\
 = -(t_2 - a_{21}) \times a_{21} \times (1 - a_{21}) \times w^1_{11} \\
 \\
