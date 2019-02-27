@@ -78,8 +78,9 @@ categories:
 {% endmath %}
 ***
 이다. 즉, 이 식이 의미하는 것은 업데이트하고자 하는 뉴런이 속한 레이어의 바로 뒤 레이어까지 전파된 에러를 의미한다.
-그리고 이 에러를 구성하는 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}와 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %}는 이렇게 구한다.
+그리고 이 에러를 구성하는 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}와 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %} 등은 이렇게 구한다.
 
+***
 {% math %}
 \begin{aligned}
 \frac{\partial E_1}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{20}} \frac{\partial a_{20}}{\partial z_{20}} \frac{\partial z_{20}}{\partial a_{10}} \\
@@ -87,7 +88,9 @@ categories:
 \frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_2}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
 \end{aligned}
 {% endmath %}
+***
 
+중요한 것은 {% math %}{% endmath %} Foward Propagation 때
 
 
 
