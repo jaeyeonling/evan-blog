@@ -18,19 +18,84 @@ categories:
 
 개발에 들어가기에 앞서서 그냥 추상적으로 생각했던 설계와 기능은 이러했다.
 
-1. 하드코딩은 그만! 구조적인 설계를 하자. OOP 가즈아!(OOP를 제대로 적용할만한 규모도 아님)
-2. TypeScript를 쓰자! (별 이유 없음. 그냥 좋아함)
-3. 레이어 개수, 한 레이어당 노드 개수는 자유자재로 변할 수 있어야 한다.
-4. Loss가 줄어드는 과정이나 weight들의 변화를 시각화해서 보면 좋을 것 같다!
-5. 어플리케이션 인풋이나 초기 weight 값을 어플리케이션 내에서 직접 변경할 수 있도록 하자!
+1. 하드코딩은 그만! 구조적인 설계를 하자.
+2. 레이어 개수, 한 레이어당 노드 개수는 자유자재로 변할 수 있어야 한다.
+3. Loss가 줄어드는 과정이나 weight들의 변화를 시각화해서 보면 좋을 것 같다!
+4. 어플리케이션 인풋이나 초기 weight 값을 어플리케이션 내에서 직접 변경할 수 있도록 하자!
 
-이중 5번은 세미나 PPT도 만들어야 하므로 결국 날라갔고 1~4번까지는 어떻게든 시간 내에 구현에 성공했다.
+이중 4번은 세미나 PPT도 만들어야 하므로 결국 시간 부족으로 하지 못했고, 1~3번까지는 어떻게든 시간 내에 구현에 성공했다.
 
 ### 설계...같은 삽질
 ***
+일단 처음에는 ANN의 핵심 기능인 Weight를 업데이트하는 기능을 어떻게 구현할 것인가를 고민해야했다.
+사실 Forward propagation을 진행할 때에 Back propagation 때 필요한 대부분의 값을 미리 계산해놓을 수 있다.
+
+{% post_link deep-learning-backpropagation 저번 포스팅 %}에서 사용했던 예시를 가져와서 설명을 진행하려고 한다. 
+먼저, Back propagation에서 Weight를 업데이트하는 공식은 다음과 같다.
+
+{% math %}
+\begin{aligned}
+\frac{\partial E}{\partial w} = \frac{\partial E}{\partial a} \frac{\partial a}{\partial z} \frac{\partial z}{\partial w} \\
+\end{aligned}
+{% endmath %}
+이 식의 각 부분을 살펴보면
+
+1. {% math %}\frac{\partial E}{\partial a}{% endmath %}: 뉴런의 아웃풋({% math %}a{% endmath %})이 에러({% math %}E{% endmath %})에 영향을 끼친 기여도
+2. {% math %}\frac{\partial a}{\partial z}{% endmath %}: 인풋 x Weight({% math %}z{% endmath %})가 뉴런의 아웃풋({% math %}a{% endmath %})에 영향을 끼친 기여도
+3. {% math %}\frac{\partial z}{\partial w}{% endmath %}: Weight({% math %}w{% endmath %})가 인풋 x Weight({% math %}z{% endmath %})에 영향을 끼친 기여도
+
+가 된다. 사실 어떤 뉴런의 Weight를 업데이트하던지 2번과 3번은 변하지 않는다.
+변하는 것은 1번 `뉴런의 아웃풋이 에러에 영향을 끼친 기여도` 뿐이다. 더 정확히 말하면 에러를 계산하는 방법만 바뀐다.
+
+한번 예시를 보자.
+
+<center>{% asset_img 'backprop2.png' '레이어' %}</center>
+
+이 예시에서 {% math %}w^0_{10}{% endmath %}를 업데이트할때 {% math %}w^0_{10}{% endmath %}가 전체 에러에 영향을 끼친 기여도를 구하는 식은 다음과 같다.
+
+***
+{% math %}
+\begin{aligned}
+\frac{\partial E_t}{\partial w^0_{10}} = (\frac{\partial E_1}{\partial a_{10}} + \frac{\partial E_2}{\partial a_{10}}) \frac{\partial a_{10}}{\partial z_{10}} \frac{\partial z_{10}}{\partial w^0_{10}}
+\end{aligned}
+{% endmath %}
+***
+
+이 식에서 변하지 않는 부분인
+***
+{% math %}
+\begin{aligned}
+\frac{\partial a_{10}}{\partial z_{10}} \frac{\partial z_{10}}{\partial w^0_{10}}
+\end{aligned}
+{% endmath %}
+***
+을 제거하면 나면 남는 식은
+***
+{% math %}
+\begin{aligned}
+(\frac{\partial E_1}{\partial a_{10}} + \frac{\partial E_2}{\partial a_{10}})
+\end{aligned}
+{% endmath %}
+***
+이다. 즉, 이 식이 의미하는 것은 업데이트하고자 하는 뉴런이 속한 레이어의 바로 뒤 레이어까지 전파된 에러를 의미한다.
+그리고 이 에러를 구성하는 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}와 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %}는 이렇게 구한다.
+
+{% math %}
+\begin{aligned}
+\frac{\partial E_1}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{20}} \frac{\partial a_{20}}{\partial z_{20}} \frac{\partial z_{20}}{\partial a_{10}} \\
+\\
+\frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_2}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
+\end{aligned}
+{% endmath %}
+
+
+
+
+
+
 전에 머신러닝을 연구하는 형이 얘기해준 바로는 TensorFlow가 Forward propagation을 진행할 때 Back propagation에 필요한 값들을 미리 어느 정도 구해놓는다고 했다. 예를 들어 sigmoid를 보면
 <center>시그모이드는 {% math %}\sigma = \frac{1}{1 + e^{-x}}{% endmath %}</center>
-<center>시그모이드의 미분 꼴은 {% math %}{\frac{dx}{d}}\sigma = \sigma(1 - \sigma){% endmath %}니까</center>
+<center>시그모이드의 미분 꼴은 {% math %}{\frac{dx}{d}}\sigma = \sigma(1 - \sigma){% endmath %}</center>
 
 ```typescript
 function sigmoid (x: number, deff = false): number {
@@ -42,6 +107,8 @@ function sigmoid (x: number, deff = false): number {
 }
 ```
 
+이런 방식으로 Forward propagation 때 
+
 그냥 이게 다인듯 싶었다. 그럼 어떻게든 비벼볼 수 있을 것 같다. 본격적으로 클래스 다이어그램을 그려볼까! 했지만 5초만에 귀찮아진 관계로 그냥 상상 설계를 하기로 했다. 필요한 놈들은 다음과 같다.
 
 - 전체 네트워크를 관리할 `Network` 클래스
@@ -52,7 +119,7 @@ function sigmoid (x: number, deff = false): number {
 일단 시각화는 나중에 붙히면 되니까 먼저 제대로 작동하는 네트워크부터 만들어야했다.
 대략적인 필자 뇌속의 흐름은 이랬다.
 
-1. 메인 함수에서 `Network`를 생성. constructor에는 인풋이랑 타겟을 넘긴다.
+1. 메인 함수에서 `Network`를 생성. `constructor`에는 인풋이랑 타겟을 넘긴다.
 2. 노드를 만든다.
 3. for문으로 `learningLimit` 만큼 forward, backward를 반복 수행
 4. forward 시 `Network`는 가지고 있는 `Layer`들을 순환하며 연산 수행 후 마지막 `Layer`에게서 로스를 뽑아낸다.
