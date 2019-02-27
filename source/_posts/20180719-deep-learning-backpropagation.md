@@ -235,7 +235,7 @@ MSE([0.2, 0.7], [0.57, 0.61]); // 0.072
 
 {% math %}
 \begin{aligned}
-\frac{\partial a_{20}}{\partial z_{20}} = a_{20}) \times (1 - a_{20}) = 0.57 \times (1 - 0.57) = 0.25 \\
+\frac{\partial a_{20}}{\partial z_{20}} = a_{20} \times (1 - a_{20}) = 0.57 \times (1 - 0.57) = 0.25 \\
 \end{aligned}
 {% endmath %}
 {% math %}

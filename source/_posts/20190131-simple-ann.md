@@ -25,33 +25,91 @@ categories:
 
 이중 4번은 세미나 PPT도 만들어야 하므로 결국 시간 부족으로 하지 못했고, 1~3번까지는 어떻게든 시간 내에 구현에 성공했다.
 
-### 설계...같은 삽질
+### 뉴런의 연결에 따라 달라지는 로스
 ***
-일단 처음에는 ANN의 핵심 기능인 Weight를 업데이트하는 기능을 어떻게 구현할 것인가를 고민해야했다.
-사실 Forward propagation을 진행할 때에 Back propagation 때 필요한 대부분의 값을 미리 계산해놓을 수 있다.
+일단 처음에는 ANN의 핵심 기능인 Weight를 업데이트하는 기능을 어떻게 구현할 것인가를 고민해야했다. 사실 Forward propagation을 진행할 때에 Back propagation 때 필요한 대부분의 값을 미리 계산해놓을 수 있다.
 
-{% post_link deep-learning-backpropagation 저번 포스팅 %}에서 사용했던 예시를 가져와서 설명을 진행하려고 한다. 
+{% post_link deep-learning-backpropagation 저번 포스팅 %}에서 사용했던 예시를 가져와서 설명을 진행하려고 한다.
 먼저, Back propagation에서 Weight를 업데이트하는 공식은 다음과 같다.
 
+***
 {% math %}
 \begin{aligned}
 \frac{\partial E}{\partial w} = \frac{\partial E}{\partial a} \frac{\partial a}{\partial z} \frac{\partial z}{\partial w} \\
 \end{aligned}
 {% endmath %}
-이 식의 각 부분을 살펴보면
 
 1. {% math %}\frac{\partial E}{\partial a}{% endmath %}: 뉴런의 아웃풋({% math %}a{% endmath %})이 에러({% math %}E{% endmath %})에 영향을 끼친 기여도
+
 2. {% math %}\frac{\partial a}{\partial z}{% endmath %}: 인풋 x Weight({% math %}z{% endmath %})가 뉴런의 아웃풋({% math %}a{% endmath %})에 영향을 끼친 기여도
+
 3. {% math %}\frac{\partial z}{\partial w}{% endmath %}: Weight({% math %}w{% endmath %})가 인풋 x Weight({% math %}z{% endmath %})에 영향을 끼친 기여도
+***
 
-가 된다. 사실 어떤 뉴런의 Weight를 업데이트하던지 2번과 3번은 변하지 않는다.
-변하는 것은 1번 `뉴런의 아웃풋이 에러에 영향을 끼친 기여도` 뿐이다. 더 정확히 말하면 에러를 계산하는 방법만 바뀐다.
+사실 어떤 뉴런의 Weight를 업데이트하든 2번과 3번은 변하지 않는다.
+변하는 것은 1번 `뉴런의 아웃풋이 에러에 영향을 끼친 기여도` 뿐이다. 더 정확히 말하면 상황에 따라 기여도를 계산하는 방법만 바뀐다. 다음 2가지 케이스를 살펴보자.
 
-한번 예시를 보자.
+#### 1. 뉴런의 아웃풋이 특정 에러에만 영향을 끼친 경우
 
 <center>{% asset_img 'backprop2.png' '레이어' %}</center>
 
-이 예시에서 {% math %}w^0_{10}{% endmath %}를 업데이트할때 {% math %}w^0_{10}{% endmath %}가 전체 에러에 영향을 끼친 기여도를 구하는 식은 다음과 같다.
+이 네트워크에서 최종 에러를 `MSE`로 구한다고 가정했을 때 에러는 다음과 같이 나타낼 수 있다.
+***
+{% math %}
+\begin{aligned}
+E_1 = (t_1 - a_{20})^2 \\
+\\
+E_2 = (t_2 -a_{21})^2 \\
+\\
+E = \frac{1}{2}(E_1 + E_2)
+\end{aligned}
+{% endmath %}
+***
+이 경우 {% math %}a_{20}{% endmath %}의 경우 {% math %}E_1{% endmath %}에는 영향을 끼칠 수 있지만 절대 {% math %}E_2{% endmath %}에는 영향을 끼칠 수 없다. 아예 식에 그 변수 자체가 없다. 이 경우 우리는 {% math %}\frac{\partial E}{\partial a_{20}}{% endmath %}을 계산할 때 아예 {% math %}E_1{% endmath %}을 제외한 나머지 에러를 모두 0으로 간주하고 계산할 수 있다.
+***
+{% math %}
+\begin{aligned}
+\frac{\partial E}{\partial a_{20}} = -(t_1 - a_{20})
+\end{aligned}
+{% endmath %}
+***
+
+#### 2. 뉴런의 아웃풋이 여러 에러에 영향을 끼친 경우
+
+<center>{% asset_img 'backprop2.png' '레이어' %}</center>
+
+다시 한번 레이어를 보자. 이번에는 좀 더 안쪽에 있는 {% math %}a_{10}{% endmath %}이 전체 에러 {% math %}E{% endmath %}에 얼마나 영향을 끼쳤는지 알아내야한다.
+그냥 이어져 있는 선만 봐도 이 놈은 여기저기 다리를 뻗고 있다는 것을 알 수 있다. {% math %}a_{10}{% endmath %}를 인풋으로 사용한 뉴런은 물론이고 이 뉴런이 내보낸 아웃풋을 사용한 뉴런 등 많은 것들이 영향을 받았을 것이다. 그래서 이번에는 아까처럼 다른 변수를 무시하거나 하는 짓은 못한다. 다 계산해줘야한다.
+
+***
+{% math %}
+\begin{aligned}
+\frac{\partial E}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{10}} + \frac{\partial E_2}{\partial a_{10}}
+\end{aligned}
+{% endmath %}
+***
+
+즉, 이 식이 의미하는 것은 업데이트하고자 하는 뉴런이 속한 레이어의 바로 뒤 레이어까지 전파된 에러를 의미한다.
+그리고 이 에러를 구성하는 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}와 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %} 등은 이렇게 구한다.
+
+***
+{% math %}
+\begin{aligned}
+\frac{\partial E_1}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{20}} \frac{\partial a_{20}}{\partial z_{20}} \frac{\partial z_{20}}{\partial a_{10}} \\
+\\
+\frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_2}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
+\end{aligned}
+{% endmath %}
+***
+
+이 식에서 나타난 {% math %}\frac{\partial E_1}{\partial a_{20}}{% endmath %}과 {% math %}\frac{\partial E_2}{\partial a_{21}}{% endmath %}의 경우는 위에서 본 1번과 같은 케이스이므로 1번처럼 계산하면 될 것이다.
+
+### asdsa
+
+
+<!-- 
+
+{% math %}w^0_{10}{% endmath %}는 업데이트할때 {% math %}w^0_{10}{% endmath %}가 전체 에러에 영향을 끼친 기여도를 구하는 식은 다음과 같다.
 
 ***
 {% math %}
@@ -77,20 +135,10 @@ categories:
 \end{aligned}
 {% endmath %}
 ***
-이다. 즉, 이 식이 의미하는 것은 업데이트하고자 하는 뉴런이 속한 레이어의 바로 뒤 레이어까지 전파된 에러를 의미한다.
-그리고 이 에러를 구성하는 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}와 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %} 등은 이렇게 구한다.
+이다. 
 
-***
-{% math %}
-\begin{aligned}
-\frac{\partial E_1}{\partial a_{10}} = \frac{\partial E_1}{\partial a_{20}} \frac{\partial a_{20}}{\partial z_{20}} \frac{\partial z_{20}}{\partial a_{10}} \\
-\\
-\frac{\partial E_2}{\partial a_{10}} = \frac{\partial E_2}{\partial a_{21}} \frac{\partial a_{21}}{\partial z_{21}} \frac{\partial z_{21}}{\partial a_{10}} \\
-\end{aligned}
-{% endmath %}
-***
 
-중요한 것은 {% math %}{% endmath %} Foward Propagation 때
+여기서 주목해야할 것은 {% math %}\frac{\partial E_1}{\partial a_{10}}{% endmath %}나 {% math %}\frac{\partial E_2}{\partial a_{10}}{% endmath %}를 구하는 공식에도 {% math %}\frac{\partial E_1}{\partial a_{20}}{% endmath %}나 {% math %}\frac{\partial E_2}{\partial a_{21}}{% endmath %}처럼 같은 꼴의 식이 등장한다는 것이다. 그럼 {% math %}\frac{\partial E_1}{\partial a_{20}}{% endmath %}나 {% math %}\frac{\partial E_2}{\partial a_{21}}{% endmath %}는 어떻게 만들까? 당연히 식에 들어가는 변수만 변할 뿐 위에서 본 식과 완벽히 똑같다.
 
 
 
@@ -129,124 +177,6 @@ function sigmoid (x: number, deff = false): number {
 5. backward 시 `Network`의 `Layer` 배열을 반전시키고 연산 수행
 6. profit!
 
-그리고 바로 개발에 들어갔다.
+그리고 바로 개발에 들어갔다. -->
 
 <center>{% asset_img 'thumb.jpg' '엉망진창' %}</center>
-
-### 개발
-***
-필자에게 주어진 시간은 대략 5일 정도였다. 이 시간 안에 코드 구현과 키노트까지 다 만들어야 했기 때문에 사실 설계라고 한 것도 없었다. 일단 후다닥 스캐폴딩을 마치고 Forward, Backward 시 사용할 수학 공식들부터 코드로 구현했다.
-
-```typescript lib/math.ts
-/**
- * @function sigmoid
- * @desc activation으로 사용할 sigmoid함수. deff값이 true면 미분 값을 반환.
- */
-export function sigmoid (x: number, deff = false): number {
-  if (deff) {
-    return sigmoid(x) * (1 - sigmoid(x));
-  } else {
-    return 1 / (1 + Math.exp(-x));
-  }
-}
-
-/**
- * @function MeanSquaredError
- * @desc targets 배열과 values 배열을 받아 로스 계산
- */
-export function MeanSquaredError (targets: number[], values: number[]): number {
-  if (targets.length !== values.length) {
-    throw new Error('target and value must be the same length!');
-  }
-
-  let result: number = 0;
-  targets.forEach((t: number, i: number) => {
-    result += ((t - values[i]) ** 2);
-  });
-  result *= (1 / targets.length);
-
-  return result;
-}
-
-/**
- * @function MeanSquaredErrorPrimes
- * @desc targets 배열과 values 배열을 받아 로스의 미분값 계산
- */
-export function MeanSquaredErrorPrimes (targets: number[], values: number[]): number[] {
-  return targets.map((t: number, i: number) => -(t - values[i]));
-}
-
-/**
- * @function multiplation
- * @desc m은 행벡터로 취급하고 n은 transpost하여 열벡터로 취급
- * [[x1, x2]] x [[w1], [w2]] = x1w1 + x2w2
- */
-export function multiplation (m: number[], n: number[]) {
-  if (m.length !== n.length) {
-    throw new Error(`m.length = ${m.length}, n.length = ${n.length}. Can't multiplation! They must have same length`);
-  }
-  let result: number = 0;
-  m.forEach((v, i) => {
-    result += (v * n[i]);
-  });
-  return result;
-}
-```
-
-왜 JavaScript 진영에는 `NumPy` 같은 굇수가 없는가를 원망하기도 했지만 왠지 있는데 필자가 모르는 것 같기도 하고 없다고 필자가 만들 것도 아니기 때문에 그냥 조용히 만들기로 했다.
-이제 기본적인 도구는 준비가 되었으니 `Network`, `Layer`, `Neuron` 중 가장 작은 단위인 `Neuron`부터 작성하기로 했다.
-
-```typescript lib/neruon.ts
-import { sigmoid, multiplation } from 'lib/math';
-
-export class Neuron {
-  public id: string;
-  private inputs: number[];
-  private weights: number[];
-  private variableLength: number; // 몇 개의 weight를 가지고 있는 지
-  private notActivatedResult: number; // input, weight의 계산 결과 값
-  private activatedResult: number; // notActivatedResult가 Activation Function을 통과한 값
-  private activatedResultPrime: number; // activatedResult / notActivatedResult에 대한 미분 값
-  private weightPrimes: number[]; // 
-
-  constructor (id: string = 'anonymous-neuron', weights: number[]) {
-    this.id = id;
-    this.weights = [...weights];
-    this.variableLength = weights.length;
-    this.notActivatedResult = 0;
-    this.activatedResult = 0;
-    this.activatedResultPrime = 0;
-    this.weightPrimes = [];
-  }
-
-  public setInputs (inputs: number[]) {
-    if (inputs.length !== this.variableLength) {
-      throw new Error(`Error in ${this.id} :: The length of input must be ${this.variableLength}. It's now ${inputs.length}`);
-    }
-    this.inputs = [...inputs];
-  }
-
-  public calc () {
-    this.notActivatedResult = multiplation(this.inputs, this.weights);
-    this.activatedResult = sigmoid(this.notActivatedResult);
-    this.activatedResultPrime = sigmoid(this.notActivatedResult, true);
-  }
-
-  public getCalcedResult () {
-    return this.activatedResult;
-  }
-
-  public getWeightPrimes () {
-    return this.weightPrimes;
-  }
-
-  public updateWeights (lossPrime: number, learningRate: number) {
-    this.weights = this.weights.map((weight, index) => {
-      const p = lossPrime * this.activatedResultPrime;
-      const loss = p * this.inputs[index];
-      this.weightPrimes[index] = p * weight;
-      return weight - (learningRate * loss);
-    });
-  }
-}
-```
