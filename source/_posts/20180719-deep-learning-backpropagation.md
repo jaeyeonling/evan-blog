@@ -424,9 +424,8 @@ console.log(`t1 = ${t1}, t2 = ${t2}`);
 1000번 돌린 결과를 전부 볼 수는 없으니까 처음과 중간, 마지막 진행 상황을 첨부한다.
 
 <center>{% asset_img 'result_first.png' %}</center>
-<br>
 <center>{% asset_img 'result_second.png' %}</center>
-<br>
 <center>{% asset_img 'result_third.png' %}</center>
 
-이상으로 BackPropagation 포스팅을 마친다.
+{% post_link simple-ann 다음 포스팅 %}에서는 좀 더 구조화한 네트워크를 만들어보려고 한다.
+이상으로 BackPropagation 포스팅을 마치겠습니다.

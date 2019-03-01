@@ -96,6 +96,6 @@ it ought to be possible to devise a training alhorithm to optimize the weights i
 그러다가 1986년, **Geoffrey Hinton** 이 독자적으로 이 알고리즘을 다시 발견하고 발표하게 되면서 주목을 받게된다.
 어쨋든 이 알고리즘으로 인해 `Multi Layer Network`의 학습이 가능하다는 사실이 알려지고 다시 `Neural Network` 학문은 활기를 띄게 된다.
 이 `Backpropagation`이라는 알고리즘의 구조는 간단하다. 그냥 말 그대로 에러를 output에서 가까운 쪽부터 뒤로(Back) 전파(Propagation)하는 것이다. 그래서 `역전파알고리즘`이라고도 불린다.
-이 `Backpropagation`에 대해서는 별도 포스팅에서 다시 다루도록 하겠다.
+이 `Backpropagation`에 대해서는 {% post_link deep-learning-backpropagation 다음 포스팅 %}에서 다시 다루도록 하겠다.
 
-이상으로 Deep Learning 첫번째 포스팅을 마친다.
+이상으로 Deep Learning 첫번째 포스팅을 마치겠습니다.
