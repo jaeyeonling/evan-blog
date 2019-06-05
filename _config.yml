@@ -148,5 +148,5 @@ math:
 deploy:
   type: git
   repo: https://github.com/evan-moon/evan-moon.github.io.git
-  branch: master
+  branch: deploy
   message: publish and deploy
