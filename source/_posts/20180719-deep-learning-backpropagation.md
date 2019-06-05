@@ -428,4 +428,4 @@ console.log(`t1 = ${t1}, t2 = ${t2}`);
 <center>{% asset_img 'result_third.png' %}</center>
 
 {% post_link simple-ann 다음 포스팅 %}에서는 좀 더 구조화한 네트워크를 만들어보려고 한다.
-이상으로 BackPropagation 포스팅을 마치겠습니다.
+이상으로 BackPropagation 포스팅을 마친다.

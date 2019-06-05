@@ -98,4 +98,4 @@ it ought to be possible to devise a training alhorithm to optimize the weights i
 이 `Backpropagation`이라는 알고리즘의 구조는 간단하다. 그냥 말 그대로 에러를 output에서 가까운 쪽부터 뒤로(Back) 전파(Propagation)하는 것이다. 그래서 `역전파알고리즘`이라고도 불린다.
 이 `Backpropagation`에 대해서는 {% post_link deep-learning-backpropagation 다음 포스팅 %}에서 다시 다루도록 하겠다.
 
-이상으로 Deep Learning 첫번째 포스팅을 마치겠습니다.
+이상으로 Deep Learning 첫번째 포스팅을 마친다.

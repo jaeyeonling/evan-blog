@@ -223,4 +223,4 @@ export class Mover {
 정리하자면 매 프레임마다 `movers`리스트를 순회하면서 각 `Mover`들간의 중력을 계산하고 가속도를 적용한 후 실제로 `Mover`를 이동시키는 것이다.
 [프로젝트 깃허브 링크](https://github.com/evan-moon/3d-gravity-test)
 
-이상으로 JavaScript로 중력구현하기 포스팅을 마치겠습니다.
+이상으로 JavaScript로 중력구현하기 포스팅을 마친다.

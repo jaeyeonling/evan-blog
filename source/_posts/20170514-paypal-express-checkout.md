@@ -512,4 +512,4 @@ https://www.sandbox.paypal.com/에 접속해서 구매자 계정으로 확인해
 아직은 저게 현금화 된게 아니라 그냥 Paypal서버에 들어가있는 데이터 쪼가리일 뿐이다.
 이제 Accept버튼을 눌러 판매자의 계좌로 입금을 진행하면 상태가 `Completed`로 전환되며 계좌에 `12EUR`가 `USD`로 환전되며 입금된다.
 
-이상으로 Express Checkout에 대한 포스팅을 마치겠습니다.
+이상으로 Express Checkout에 대한 포스팅을 마친다.
