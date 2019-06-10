@@ -180,9 +180,9 @@
     ga('create', _gaId, _gaDomain);
     ga('send', 'pageview');
 </script>
-
 <% } %>
 
+<script>console.log("<%= env.env %>");</script>
 
 <!-- Baidu Tongji -->
 <% if (config.ba_track_id) { %>
