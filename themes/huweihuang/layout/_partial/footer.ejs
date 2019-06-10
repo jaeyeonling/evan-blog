@@ -165,7 +165,7 @@
 
 <!-- Google Analytics -->
 
-<% if (config.ga_track_id && env.env === 'production') { %>
+<% if (config.ga_track_id) { %>
 <script>
     // dynamic User by Hux
     var _gaId = '<%= config.ga_track_id %>';
