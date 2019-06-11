@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-SEOTitle: 문동욱 | Blog
+SEOTitle: Evan's Tech Blog | Blog
 title: Evan's Tech Blog
 subtitle: 흔한 개발랭이의 감성터지는 아카이브
-description: 흔한 개발랭이의 감성터지는 아카이브
-keywords: 개발자 Developer Web
+description: 글쓰기를 즐기는 우주 덕후 개발자의 블로그입니다. 사소한 생각 정리부터 튜토리얼, 삽질기 정도를 주로 끄적이고 있습니다.
+keywords: 개발자,Developer,Web,Hexo,문동욱,Evan Moon
 email: bboydart91@gmail.com
 author: Evan Moon
 language: ko
@@ -16,6 +16,22 @@ timezone: Japan
 # headers
 header-img: /img/header_img/planet.jpg
 article-img: /img/header_img/planet.jpg
+
+# SEO
+nofollow:
+  enable: true
+sitemap:
+  path: sitemap.xml
+robotstxt:
+  useragent: "*"
+  allow:
+    - /
+  sitemap:
+feed:
+  type: rss2
+  path: feed.xml
+  limit: 20
+  hub:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -31,7 +47,6 @@ linkedin_username: evan-moon
 
 # Analytics settings
 ga_track_id: 'UA-132075145-1'
-ga_domain: evan-moon.github.io
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
