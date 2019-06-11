@@ -26,16 +26,15 @@ robotstxt:
   useragent: "*"
   allow:
     - /
-  sitemap:
+  sitemap: https://evan-moon.github.io/sitemap.xml
 feed:
   type: rss2
   path: feed.xml
   limit: 20
-  hub:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://github.com/evan-moon
+url: https://evan-moon.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
