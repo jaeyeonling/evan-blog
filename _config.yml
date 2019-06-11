@@ -17,7 +17,11 @@ timezone: Japan
 header-img: /img/header_img/planet.jpg
 article-img: /img/header_img/planet.jpg
 
+# Analytics settings
+ga_track_id: 'UA-132075145-1'
+
 # SEO
+naver_site_verification: 48beb5f578053c0c5f127b4198a57270bad360ca
 nofollow:
   enable: true
 sitemap:
@@ -44,12 +48,9 @@ permalink_defaults:
 github_username: evan-moon
 linkedin_username: evan-moon
 
-# Analytics settings
-ga_track_id: 'UA-132075145-1'
-
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "음악을 사랑하는 우주덕후 프론트엔드 개발자입니다"
+sidebar-about-description: 음악을 사랑하는 우주덕후 프론트엔드 개발자입니다
 sidebar-avatar: /img/avatar/avatar.jpg # use absolute URL, seeing it's used in both `/` and `/about/`
 widgets:
   - featured-tags

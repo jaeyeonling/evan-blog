@@ -1,22 +1,29 @@
 <head>
+  <% var title = config.SEOTitle; %>
+  <% if (page.title) { %>
+    <% title = page.title + ' - ' + config.SEOTitle; %>
+  <% } %>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="google-site-verification" content="oDn8TK5EJ-ZVoh3XGbemEEvoGi9dCYSffzj7VUfrG3Q" />
-  <meta name="naver-site-verification" content="48beb5f578053c0c5f127b4198a57270bad360ca"/>
+  <% if (config.google_site_verification) { %>
+    <meta name="google-site-verification" content="<%= config.google_site_verification %>" />
+  <% } %>
+  <% if (config.naver_site_verification) { %>
+    <meta name="naver-site-verification" content="<%= config.naver_site_verification %>" />
+  <% } %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="<%= config.description %>">
-  <meta name="keywords"  content="<%= config.keyword %>">
+  <meta name="keywords"  content="<%= config.keywords %>">
   <meta name="author"  content="<%= config.author %>">
   <link rel="shortcut icon" href="<%= config.root %>img/favicon.png">
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <title>
-    <% if (page.title) { %>
-      <%= page.title + ' - ' + config.SEOTitle %>
-    <% } else{%>
-      <%= config.SEOTitle %>
-    <% } %>
-  </title>
+
+  <title><%= title %></title>
+
+  <!-- Open graph -->
+  <%- open_graph() %>
 
   <link rel="canonical" href="<%= config.url + config.root + (page.path||'').replace('index.html', '') %>">
 
