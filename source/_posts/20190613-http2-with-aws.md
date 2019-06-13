@@ -79,7 +79,7 @@ Elastic Beanstalk은 Web 서버나 Worker와 같이 친숙한 웹 어플리케�
 
 #### Application Load Balancer란?
 AWS는 지난 2016년에 L7(Application) 계층에서 작동하는 [Application Load Balancer(ALB)](https://aws.amazon.com/ko/blogs/korea/new-aws-application-load-balancer/)를 공개하였다. 기존에 사용되던 로드밸런서인 Elastic Load Balancer(ELB)는 L4(Network) 계층에서 동작하기 떄문에 HTTP나 HTTPS와 같은 Application Layer에서 사용되는 프로토콜을 인지하지도 못하고 이에 따라서 유연하게 처리하지도 못했지만 ALB는 Application 계층에서 작동하기 때문에 직접 HTTP 헤더를 까보고 이에 따른 유연한 부하 분산이 가능한 것이 장점이다.
-예를 들면 호스트로 요청을 보내더라도 `/a` 경로로 요청을 보내면 a 서버로 보내고 `/b` 경로로 요청을 보내면 b 서버로 보내는 등의 유연한 라우팅이 가능하게 된다는 것이다.
+예를 들면 동일한 호스트로 요청을 보내더라도 `/a` 경로로 요청을 보내면 a 서버로 보내고 `/b` 경로로 요청을 보내면 b 서버로 보내는 등의 유연한 라우팅이 가능하게 된다는 것이다.
 
 하지만 무엇보다 좋은 점은 위에서 설명했듯이 `HTTP/2` 프로토콜과 `WebSocket`을 자체적으로 지원한다는 것이다. 만약 기존에 ELB, 즉 Classic Load Balancer를 사용하고 있던 환경에서 HTTP/2 프로토콜을 사용하고 싶다면 직접 세팅하거나 ALB로 마이그레이션 해야한다.
 하지만 로드 밸런서를 마이그레이션해도 기존 ELB에 연결되어있던 인스턴스들과 자동으로 연결해주지는 않기 때문에 Elastic Beanstalk을 사용하고 있다면 그냥 환경을 다시 만드는 게 정신건강에 이롭다.<small><strike>(처음에 쉽게 가보려다가 안되서 실망한 1인)</strike></small>
