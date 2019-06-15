@@ -27,7 +27,6 @@ categories:
 
 {% asset_img 'actual-array-js.png' 'Actual Array in JavaScript' %}
 
-An memory representation of an array has been provided in the picture above. So it is made to hold 4 elements of 4 bits each. Thus it is taking 16 bits memory blocks, all in the same order.
 위 그림은 배열의 메모리 상태의 예시를 표현한 것이다. 이 배열은 4 bit로 이루어진 4개의 블록을 가지고 있고 총 16 bit의 메모리 블록을 사용하고 있다.
 
 이제 필자가 `tinyInt arr[4];`를 선언했고 `1201`부터 시작해서 이 메모리 블록들을 포착했다고 가정해보자. 이제 필자가 어떤 포인트로부터 `a[2]`를 읽으려고 한다면 `a[2]`의 메모리 주소를 찾기 위한 간단한 수학 계산이 이루어진다. `1201 + (2 x 4)`와 같은 식으로 `1209`의 주소를 바로 참조할 수 있다.
