@@ -153,10 +153,27 @@ let name = 'Evan';
 
 이 두개의 에러는 전혀 다른 에러로, V8 엔진 내부에서 사용하는 `MESSAGE_TEMPLATE`에도 엄밀히 구분되어 있고 실제 호출되는 케이스도 다르다.
 
-```c++
+```cpp
 T(NotDefined, "% is not defined")
 T(AccessedUninitializedVariable, "Cannot access '%' before initialization")
 ```
+
+[V8 엔진의 깃허브 레파지토리](https://github.com/v8/v8)을 클론받아서 살펴본 결과 내부적으로 `var` 키워드로 선언된 JS 객체와 `let`과 `const`로 선언된 JS 객체를 분기로 갈라놓은 코드가 굉장히 많았다. 코드를 계속 분석해보면서 `var`, `let`, `const` 키워드를 사용하여 값을 선언하든 호이스팅은 이루어진다는 것을 알 수 있었다. 호이스팅 플래그인 `should_hoist` 값을 할당할 때 변수 선언 키워드에 대한 구분은 없이 무조건 `true`를 할당한다.
+
+```cpp
+static InitializationFlag DefaultInitializationFlag(VariableMode mode) {
+  DCHECK(IsDeclaredVariableMode(mode));
+  return mode == VariableMode::kVar ? kCreatedInitialized
+                                    : kNeedsInitialization;
+}
+```
+
+그러나 이후 진행 로직을 보면 `DefaultInitializationFlag`라는 함수를 통해 V8 엔진 내부에서 사용되는 `VariableKind`라는 타입을 반환하는데, 이때 `var` 키워드를 사용하여 선언한 변수는 `kCreatedInitialized` 값을, 그 외의 키워드인 `let`과 `const`로 선언한 변수는 `kNeedsInitialization` 키워드를 반환하고 있다.
+
+> 즉 let, const 키워드로 선언한 리터럴 값은 호이스팅은 되나 특별한 이유로 인해 "초기화가 필요한 상태"로 관리되고 있다.
+
+라고 말할 수 있다.
+
 
 <!-- let, const hoisting -->
 
