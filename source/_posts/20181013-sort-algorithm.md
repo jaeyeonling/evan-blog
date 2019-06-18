@@ -5,13 +5,12 @@ tags:
     - Computer Science
     - Theory
     - Algorithm
+    - 알고리즘
 categories:
-    - 컴퓨터이론
     - 알고리즘
 ---
 
-### 들어가며
-***
+## 들어가며
 이번 포스팅에서는 대표적인 정렬알고리즘 5가지와 대략적인 빅오표기법에 대해서 정리하려고 한다.
 먼저, 그 5가지 정렬알고리즘은 다음과 같다.
 
@@ -25,8 +24,7 @@ categories:
 
 그리고 이 알고리즘들의 성능은 `빅오표기법`으로 표현하므로, 빅오표기법에 대한 설명도 간단히 하고 넘어가려한다.
 
-### Big O 표기법과 시간복잡도
-***
+## Big O 표기법과 시간복잡도
 알고리즘들의 성능을 판단하는 지표로는 `시간 복잡도(Time Complexity)`와 `공간 복잡도(Time Complexity)`가 있다. `시간 복잡도`는 알고리즘의 수행시간을 의미하는 지표이며, `공간 복잡도`는 알고리즘의 메모리 사용량을 의미한다.
 
 보통 알고리즘에 대해서 공부하다보면 `이 알고리즘의 시간복잡도는 O n입니다` 혹은 `O의 n제곱입니다` 이런 식으로 이야기하거나 {% math %}O(n){% endmath %} 이런 식으로 작성되어있는 것을 볼 수 있었을 것이다.
@@ -56,8 +54,7 @@ categories:
 
 `빅오 표기법`의 계산방법과 같은 더 자세한 내용은 다른 포스팅에서 다시 설명하도록 하겠다.
 
-### 정렬알고리즘
-***
+## 정렬알고리즘
 
 <center>{% asset_img 'sorts.gif' %}</center>
 
@@ -72,7 +69,7 @@ categories:
 자 그럼 대표적인 정렬알고리즘인 `버블정렬`, `선택정렬`, `삽입정렬`, `병합정렬`, `퀵정렬`을 한번 살펴보도록 하자.
 
 
-#### 1. 버블정렬(Bubble sort)
+### 1. 버블정렬(Bubble sort)
 
 <center>{% asset_img 'bubble_sort.gif' %}</center>
 
@@ -113,7 +110,7 @@ function bubbleSort (input) {
 ```
 
 
-#### 2. 선택정렬(Selection sort)
+### 2. 선택정렬(Selection sort)
 
 <center>{% asset_img 'selection_sort.gif' %}</center>
 
@@ -154,7 +151,7 @@ function selectionSort (input) {
 ```
 
 
-#### 3. 삽입정렬(Insertion sort)
+### 3. 삽입정렬(Insertion sort)
 
 <center>{% asset_img 'insertion_sort.gif' %}</center>
 
@@ -202,7 +199,7 @@ function insertionSort (input) {
 ```
 
 
-#### 4. 병합정렬(Merge sort)
+### 4. 병합정렬(Merge sort)
 
 <center>{% asset_img 'merge_sort.gif' %}</center>
 
@@ -265,7 +262,7 @@ function mergeSort (input) {
 ```
 
 
-#### 5. 퀵정렬(Quick sort)
+### 5. 퀵정렬(Quick sort)
 
 <center>{% asset_img 'quick_sort.gif' %}</center>
 

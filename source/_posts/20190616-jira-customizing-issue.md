@@ -5,12 +5,10 @@ tags:
   - Jira
   - 애자일
   - Agile
-  - 협업하기
+  - 협업
   - Atlassian
 categories:
-  - Jira
   - Agile
-  - 애자일
   - Atlassian
 ---
 

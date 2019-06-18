@@ -2,6 +2,7 @@
 title: JavaScript로 중력 구현하기 - 2. 중력이란?
 date: 2017-05-06 14:22:01
 tags:
+    - 물리학
     - 일반물리
     - JavaScript
 categories:
@@ -9,13 +10,11 @@ categories:
     - 그래픽스
 ---
 
-### 들어가며
-***
+## 들어가며
 이번 포스팅에서는 {% post_link gravity-via-js-1 저번 포스팅 %}에 이어 중력을 직접 JS로 구현해보려고 한다.
 개발환경은 JavaScript ES7, babel, Webpack, Three.js을 사용하였다.
 
-### 코딩
-***
+## 코딩
 먼저 프로그램에서 사용할 상수 값들 부터 선언하겠다.
 
 ```js
@@ -221,6 +220,6 @@ export class Mover {
 ```
 
 정리하자면 매 프레임마다 `movers`리스트를 순회하면서 각 `Mover`들간의 중력을 계산하고 가속도를 적용한 후 실제로 `Mover`를 이동시키는 것이다.
-[프로젝트 깃허브 링크](https://github.com/evan-moon/3d-gravity-test)
+전체 소스는 [중력 테스트 프로젝트 깃허브 레파지토리](https://github.com/evan-moon/3d-gravity-test)에서 확인해볼 수 있다.
 
 이상으로 JavaScript로 중력구현하기 포스팅을 마친다.

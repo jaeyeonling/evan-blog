@@ -4,13 +4,13 @@ date: 2019-02-26 15:03:48
 tags:
     - Machine Learning
     - Deep Learning
-    - Computer Science
+    - 머신러닝
 categories:
     - TypeScript
+    - Machine Learning
 ---
 
-### 들어가며
-***
+## 들어가며
 이번 포스팅에서는 {% post_link deep-learning-backpropagation 저번 포스팅 %}에 이어 TypeScript를 사용하여 간단한 인공신경망을 만들어본 것을 간단하게 정리하려고 한다.
 이 어플리케이션은 현 직장에서 진행하는 Tech 세미나의 발표용으로 작성한 것이기 때문에 상당히 개발 시간이 촉박했다. 그래서 머릿속으로 생각해놓았던 기능을 전부 구현하지는 못했고 추후 기능을 더 추가해볼 예정이다.
 예전에 JavaScript를 사용하여 완전 하드코딩한 ANN을 작성해본 경험이 있었기 때문에 [그 코드](https://github.com/evan-moon/simple-ann/commit/82a1f3777de7b48a5cca1f777862620fc3159998)를 재활용해볼까 생각했었다.<small>(이젠 커밋 로그에서만 볼 수 있는 그 코드...)</small>
@@ -25,8 +25,7 @@ categories:
 
 이중 4번은 세미나 PPT도 만들어야 하므로 결국 시간 부족으로 하지 못했고, 1~3번까지는 어떻게든 시간 내에 구현에 성공했다.
 
-### 뉴런의 연결에 따라 달라지는 로스
-***
+## 뉴런의 연결에 따라 달라지는 로스
 일단 처음에는 ANN의 핵심 기능인 Weight를 업데이트하는 기능을 어떻게 구현할 것인가를 고민해야했다. 사실 Forward propagation을 진행할 때에 Back propagation 때 필요한 대부분의 값을 미리 계산해놓을 수 있다.
 
 우선, 저번 포스팅에서 사용했던 예시를 가져와서 설명을 진행하려고 한다.
@@ -51,7 +50,7 @@ Back propagation에서 Weight를 업데이트하는 공식은 다음과 같다.
 사실 뉴런의 Weight를 업데이트할 때 2번과 3번의 식은 변하지 않는다.
 변하는 것은 1번 `뉴런의 아웃풋이 에러에 영향을 끼친 기여도` 뿐이다. 더 정확히 말하면 상황에 따라 기여도를 계산하는 방법만 바뀐다. 다음 2가지 케이스를 살펴보자.
 
-#### 1. 뉴런의 아웃풋이 특정 에러에만 영향을 끼친 경우
+### 1. 뉴런의 아웃풋이 특정 에러에만 영향을 끼친 경우
 
 <center>{% asset_img 'backprop2.png' '레이어' %}</center>
 
@@ -76,7 +75,7 @@ E = \frac{1}{2}(E_1 + E_2)
 {% endmath %}
 ***
 
-#### 2. 뉴런의 아웃풋이 여러 에러에 영향을 끼친 경우
+### 2. 뉴런의 아웃풋이 여러 에러에 영향을 끼친 경우
 
 <center>{% asset_img 'backprop2.png' '레이어' %}</center>
 
@@ -123,14 +122,14 @@ E = \frac{1}{2}(E_1 + E_2)
 
 계속 변수에만 집중하다보니 놓치고있던 쩌는 사실이었다. 모자란 필자의 두뇌에 3초간 묵념한 후 다음 단계로 넘어갔다.
 
-### 의사코드 작성
+## 의사코드 작성
 
 여기까지 생각이 든 후 간략한 의사코드를 먼저 작성했다.
 원래는 연습장에 끄적끄적 작성했지만 여기서는 Syntax Highlighting을 위해 TypeScript 문법으로 작성하겠다.
 
 기본적인 클래스는 `Network`, `Layer`, `Neuron` 총 3개로 생각했었고 Forward propagation만 Back propagation만 어떻게 구현할 지 고민을 많이 했었기 때문에 의사코드도 Back propagation에 관련된 코드만 작성했다.
 
-#### Neuron
+### Neuron
 `Neuron` 클래스에서는 Back propagation이 진행되면 `Neuron` 객체가 가지고 있는 Weight를 업데이트하고 이때 Forward Propagation 때 미리 계산해놓았던 {% math %}\frac{\partial a}{\partial z}{% endmath %}를 사용하여 뉴런의 아웃풋이 전파된 에러에 영향을 끼친 기여도인 {% math %}\frac{\partial E}{\partial a}{% endmath %}도 함께 계산해야한다.
 ```typescript neuron.ts
 class Neuron {
@@ -158,7 +157,7 @@ class Neuron {
 }
 ```
 
-#### Layer
+### Layer
 Layer 클래스는 Back propagation 때 이터레이션을 돌리면서 가지고 있는 뉴런들의 메소드를 호출한다.
 이때 마지막 레이어라면 MSE의 미분값인 {% math %}-(target_i - output_i){% endmath %}를, 마지막 레이어가 아니라면 다음 레이어에 있는 뉴런들의 `weights` 배열을 업데이트할 때 미리 계산해놓은 `weights미분값들` 배열에서 필요한 원소들을 가져와 모두 더한 후 현재 레이어의 Neuron들에게 전달해준다.
 
@@ -199,7 +198,7 @@ class Layer {
 
 즉, 업데이트하고자 하는 뉴런의 인덱스가 `0`이면 다음 레이어에 있는 모든 `Neuron.weights[0]`에만 영향을 주었다고 할 수 있고 그렇기 때문에 참조해야하는 에러도 `Neuron.weightPrimes[0]`인 것이다.
 
-#### Network
+### Network
 Network 클래스는 `레이어와 뉴런의 생성`, `forward propagation이나 Back propagation 등 네트워크의 동작`을 제어, `통합된 결과나 에러를 관리` 정도의 책임을 가진다.
 
 ```typescript network.ts
@@ -231,8 +230,7 @@ class Network {
 ```
 
 <br>
-### 마무으리
-***
+## 마무으리
 
 대충 이렇게 작성이 되었다면 이제 메인함수에서 이터레이션을 돌리면 된다.
 
@@ -252,7 +250,7 @@ for (let i = 0; i < 학습횟수; i++) {
 그래도 어떻게든 세미나 시간에 맞춰서 네트워크 구현을 했고, d3를 사용해서 소박한 시각화도 하고나니 뿌듯하긴 했다. 다음에 시간나면 레이어마다 Activation Function을 변경할 수 있거나 Loss Function도 변경할 수 있게 개선해보고 싶다.
 
 이상으로 TypeScript를 사용하여 간단한 인공 신경망 개발 삽질기 포스팅을 마친다.
-
+전체 소스는 [깃허브 레파지토리](https://github.com/evan-moon/simple-ann)에서 확인할 수 있고 라이브 데모는 [여기](https://simple-ann.herokuapp.com/)에서 확인 가능하다.
 
 
 

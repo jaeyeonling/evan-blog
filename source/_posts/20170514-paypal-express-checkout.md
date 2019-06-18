@@ -2,23 +2,20 @@
 title: Paypal - Express Checkout Restful API 사용하기
 date: 2017-05-14 12:36:23
 tags:
-    - Coding
     - JavaScript
     - Paypal
-    - DevLog
+    - 페이팔
 categories:
     - JavaScript
     - Paypal
 ---
 
-### 들어가며
-***
-이번 포스팅에서는 Paypal의 RESTful API인 Express Checkout을 사용하는 방법에 대해서 포스팅 하려고 한다.
+## 들어가며
+이번 포스팅에서는 Paypal의 RESTful API인 `Express Checkout`을 사용하는 방법에 대해서 포스팅 하려고 한다.
 진행하기에 앞서 먼저, https://www.sandbox.paypal.com/에 접속해서 sandbox용 계정을 만들어야 한다.
 이 계정으로 테스트를 진행하고 실제 운영 계정은 https://www.paypal.com/kr/home에서 회원가입하면 된다.
 
-### Express Checkout이란?
-***
+## Express Checkout이란?
 Paypal에서 제공해주는 결제 플로우 방식 중 하나이며, 유저가 `페이팔로 구매하기`버튼을 클릭했을 때 페이팔 로그인 Modal window가 렌더되고, 이를 통해 결제를 진행하는 플로우이다.
 모든 국가를 지원하며, 브라우저 지원은 다음과 같다.
 
@@ -28,16 +25,15 @@ Paypal에서 제공해주는 결제 플로우 방식 중 하나이며, 유저가
 
 Paypal에서는 총 3가지의 결제플로우를 제공하고 있으며, 한국에서는 이 중 All countries로 제공되는 다음 2가지 방식 중 선택이 가능하다.
 
-#### 1. Paypal Standard
+### 1. Paypal Standard
 Paypal에서 제공해주는 HTML코드를 기반으로 생성된 버튼을 웹 클라이언트 소스에 직접 삽입하는 방식이다.
 Paypal사이트에서 직접 상품 이름, 상품 ID, 가격 등을 입력하면 그에 맞는 버튼의 코드를 자동으로 생성해준다. 이후 그 코드를 클라이언트 소스에 삽입하면 된다.
 
-#### 2. Express Checkout
+### 2. Express Checkout
 Paypal의 JavaScript SDK인 checkout.js를 사용하여 버튼을 동적으로 렌더하는 방식이다.
 상품 데이터를 본인 서비스의 서버로 전달한 후 Server to Server방식으로 Paypal서버에서 인증을 받는 방식으로 진행된다. 필자는 이 방법을 선택하였다.
 
-### Express Checkout의 흐름
-***
+## Express Checkout의 흐름
 먼저 이 글은 Paypal Developer페이지의 Express Checkout항목을 참고하여 작성되었다.
 
 <sub>이미지 출처 및 링크: https://developer.paypal.com/docs/classic/express-checkout/</sub>
@@ -60,8 +56,7 @@ Paypal Express Checkout의 플로우는 다음과 같다.
 5. 최종적으로 `execute` API가 호출되고 결제가 마무리된다. 그리고 사용자는 서비스 상의 결제완료페이지로 리다이렉트된다.
 ***
 
-### Client만으로 진행하기
-***
+## Client만으로 진행하기
 > Paypal 공식문서에서는 Express Checkout과의 버전 호환성을 최대한 보장하기 위해 CDN을 이용한 동적로딩을 추천하고 있다. 직접 `checkout.js`파일을 다운받아 클라이언트 소스에 넣는 것은 추천하지 않는다.
 > 이 문서에서의 `checkout.js`의 버전은 `4.0`으로 진행한다.
 
@@ -126,8 +121,7 @@ paypal.Button.render({
 
 <center>{% asset_img 'light-window.jpeg' 'light-window' %}</center>
 
-### Client와 Server의 통신으로 진행하기
-***
+## Client와 Server의 통신으로 진행하기
 이 플로우는 Paypal에서 발급해주는 client_key와 secret을 이용하여 페이팔 인증부터 차례대로 진행하는 방법이다.
 이 방법의 장점으로는 본인의 서비스의 UX플로우를 최대한 지키며 결제를 진행시킬 수 있고, 첫번째 방법보다 플로우가 유연하며 버튼 디자인또한 css로 커스터마이징이 자유롭다.
 그런 이유로 Paypal에서도 이 방법을 권장하고 있다. 결제플로우는 크게 3가지 단계로 나눠진다.
@@ -399,8 +393,7 @@ Paypal서버와 통신을 하기 위해서는 `client_key`와 `secret`이 필요
 하지만 알다시피 웹 상에서 클라이언트 소스는 공개되기가 쉽고 난독화를 한다고 해도 Object의 `key`같은 `String`변수는 난독화되지 않기 때문에 악의를 가진 사용자가 손쉽게 `client_key`와 `secret`을 탈취할 수 있다.
 그래서 상대적으로 안전한 서버에 `secret`을 저장하고 클라이언트에는 `client_key`만 저장하는 식으로 2개의 값을 한번에 볼 수 없도록 나눠 놓는다.
 
-### 실행결과
-***
+## 실행결과
 먼저, API서버를 통해 create요청을 진행한 결과, 필자는 다음과 같은 response를 받을 수 있었다.
 
 <center>{% asset_img 'result-1.png' %}</center>
