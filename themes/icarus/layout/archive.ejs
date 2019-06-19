@@ -43,7 +43,9 @@
 <% }
 if (!page.year) {
     let years = {};
-    page.posts.each(p => years[p.date.year()] = null);
+    if (page.posts)  {
+        page.posts.each(p => years[p.date.year()] = null);
+    }
     for (let year of Object.keys(years).sort((a, b) => b - a)) {
         let posts = page.posts.filter(p => p.date.year() == year); %>
         <%- buildArchive(posts, year, null) %>
