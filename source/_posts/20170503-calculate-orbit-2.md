@@ -14,9 +14,9 @@ toc: true
 
 ## 들어가며
 이번 포스팅에서는 {% post_link calculate-orbit-1 저번 포스팅 %}에 이어 실제 궤도의 모양과 크기, 위치, 방향을 정의하고 JavaScript코드로 작성을 해보려고 한다.
+<!-- more -->
 실제 어플리케이션을 작성할 때는 TypeScript를 사용하였으나, 편의상 JavsScript ES6으로 포스팅을 진행한다.
 궤도를 구하는 방법은 {% post_link calculate-orbit-1 저번 포스팅 %}의 용어 정리에서 언급했던 케플러 6요소를 이용하면 된다.
-<!-- more -->
 
 ## 데이터 정의
 지구의 궤도 데이터는 다음과 같다.
