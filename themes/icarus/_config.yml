@@ -114,11 +114,10 @@ widgets:
         # location: Seoul, South Korea
         avatar: /img/me.jpg
         avatar_rounded: true
-        follow_link: 'https://github.com/evan-moon'
         social_links:
             Github:
                 icon: fab fa-github
-                url: 'https://github.com/ppoffice'
+                url: 'https://github.com/evan-moon'
             LinkdIn:
                 icon: fab fa-linkedin
                 url: 'https://www.linkedin.com/in/evan-moon/'
