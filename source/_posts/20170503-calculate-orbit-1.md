@@ -8,7 +8,7 @@ tags:
   - 이론
 categories:
   - Physics
-thumbnail: /2017/05/03/calculate-orbit-1/thubmnail.jpg
+thumbnail: /2017/05/03/calculate-orbit-1/thumbnail.jpg
 toc: true
 ---
 
