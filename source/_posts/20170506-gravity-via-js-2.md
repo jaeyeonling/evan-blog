@@ -2,17 +2,18 @@
 title: JavaScript로 중력 구현하기 - 2. 중력이란?
 date: 2017-05-06 14:22:01
 tags:
-    - 물리학
-    - 일반물리
-    - JavaScript
+  - 물리학
+  - 일반물리
+  - JavaScript
 categories:
-    - 물리
-    - 그래픽스
+  - Graphics
+thumbnail: /2017/05/06/gravity-via-js-2/thumbnail.jpg
 ---
 
 ## 들어가며
-이번 포스팅에서는 {% post_link gravity-via-js-1 저번 포스팅 %}에 이어 중력을 직접 JS로 구현해보려고 한다.
-개발환경은 JavaScript ES7, babel, Webpack, Three.js을 사용하였다.
+이번 포스팅에서는 {% post_link gravity-via-js-1 저번 포스팅 %}에 이어 중력을 직접 JS로 구현해보려고 한다. 개발환경은 JavaScript ES7, babel, Webpack, Three.js을 사용하였다.
+
+<!-- more -->
 
 ## 코딩
 먼저 프로그램에서 사용할 상수 값들 부터 선언하겠다.

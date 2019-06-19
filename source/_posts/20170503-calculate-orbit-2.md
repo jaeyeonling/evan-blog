@@ -2,13 +2,14 @@
 title: 케플러 6요소를 사용한 궤도 계산
 date: 2017.05.03 21:49:04
 tags:
-    - 물리학
-    - 천체물리
-    - 궤도
-    - JavaScript
+  - 물리학
+  - 천체물리
+  - 궤도
+  - JavaScript
 categories:
-    - 물리
-    - 그래픽스
+  - Graphics
+thumbnail: /2017/05/03/calculate-orbit-2/thumbnail.jpg
+toc: true
 ---
 
 ## 들어가며
