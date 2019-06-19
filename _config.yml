@@ -37,8 +37,7 @@ url: https://evan-moon.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
-  lang: en
-
+  
 # Directory
 source_dir: source
 public_dir: public
@@ -63,7 +62,7 @@ highlight:
   enable: true
   line_number: true
   auto_detect: false
-  tab_replace:
+  tab_replace: false
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -75,12 +74,9 @@ index_generator:
   order_by: -date
 
 # Category & Tag
-default_category: article
+default_category: uncategorized
 category_map:
-  JavaScript: javascript
-  Web: web
 tag_map: true
-home_posts_tag: true
 
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
