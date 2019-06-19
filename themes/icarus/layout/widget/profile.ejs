@@ -73,8 +73,14 @@
             </div>
         </nav>
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="<%= url_for(widget.follow_link) %>" target="_blank">
-                <%= __('widget.follow') %></a>
+            <a class="level-item button is-dark" href="mailto:<%= config.email %>">
+                <span class="icon">
+                    <i class="far fa-envelope"></i>
+                </span>
+                <span>
+                    <%= __('widget.email') %>
+                </span>
+            </a>
         </div>
         <% const socialLinks = get_config_from_obj(widget, 'social_links'); %>
         <% if (socialLinks !== null) { %>
