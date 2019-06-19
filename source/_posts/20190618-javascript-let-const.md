@@ -10,12 +10,14 @@ tags:
   - V8
 categories:
   - JavaScript
+thumbnail: /2019/06/18/javascript-let-const/js.001.png
+toc: true
 ---
-
-{% asset_img 'js.001.png' %}
 
 ## 들어가며
 이번 포스팅에서는 JavaScript ES6에서 추가되었던 `let`과 `const` 키워드에 대해서 자세히 포스팅하려고 한다. 부끄럽지만 지금까지 필자는 `let`과 `const`는 호이스팅이 되지 않는다고 생각하고 있었다. 하지만 얼마 전 친구와 대화하던 중에 `let`과 `const`도 호이스팅 대상체이지만 `TDZ`라는 특수한 영역을 사용하여 참조를 **방어**하는 것임을 알게 되었다.
+
+<!-- more -->
 
 ***
 **다른 분**: 근데 `var`와 다르게 `let`이랑 `const`는 왜 참조 에러가 발생하는 건가요?

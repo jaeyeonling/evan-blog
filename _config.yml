@@ -3,8 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-SEOTitle: Evan's Tech Blog | Blog
-title: Evan's Tech Blog
+title: Evan's Tech Blog | Blog
 subtitle: 흔한 개발랭이의 감성터지는 아카이브
 description: 글쓰기를 즐기는 우주 덕후 개발자의 블로그입니다. 사소한 생각 정리부터 튜토리얼, 삽질기 정도를 주로 끄적이고 있습니다.
 keywords: 개발자,Developer,Web,Hexo,문동욱,Evan Moon
@@ -13,12 +12,8 @@ author: Evan Moon
 language: ko
 timezone: Japan
 
-# headers
-header-img: /img/header_img/planet.jpg
-article-img: /img/header_img/planet.jpg
-
 # Analytics settings
-ga_track_id: 'UA-132075145-1'
+ga_track_id: UA-132075145-1
 
 # SEO
 naver_site_verification: 48beb5f578053c0c5f127b4198a57270bad360ca
@@ -43,52 +38,6 @@ root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
   lang: en
-
-# User settings
-github_username: evan-moon
-linkedin_username: evan-moon
-
-# Sidebar settings
-sidebar: true # whether or not using Sidebar.
-sidebar-about-description: 음악을 사랑하는 우주덕후 프론트엔드 개발자입니다
-sidebar-avatar: /img/avatar/avatar.jpg # use absolute URL, seeing it's used in both `/` and `/about/`
-widgets:
-  - featured-tags
-  - short-about
-  - recent-posts
-  - friends-blog
-  - archive
-
-# widget behavior
-## Archive
-archives-img: /img/header_img/archives-widget.jpg
-archive_type: 'monthly'
-show_count: true
-
-## Featured Tags
-featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
-
-## Friends
-friends: [
-  {
-    title: "Martin's Blog",
-    href: "https://blog.martinwork.co.kr/"
-  },
-  {
-    title: "Ssaru",
-    href: "http://dhhwang89.tistory.com/"
-  }
-]
-
-markdown:
-  render:
-    html: true
-    xhtmlOut: false
-    breaks: true
-    linkify: true
-    typographer: true
-    quotes: '“”‘’'
 
 # Directory
 source_dir: source
@@ -145,16 +94,10 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
-archive_generator:
-  per_page: 10
-  yearly: true
-  monthly: true
-  daily: false
-
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: huweihuang
+theme: icarus
 math:
   engine: 'katex'
 
