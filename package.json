@@ -9,6 +9,7 @@
     "start": "hexo server",
     "serve-strict": "hexo server -s",
     "deploy": "hexo generate -d",
+    "build": "hexo generate",
     "clean": "hexo clean"
   },
   "dependencies": {

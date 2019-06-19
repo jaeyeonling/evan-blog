@@ -2,16 +2,20 @@
 title: Paypal - Express Checkout Restful API 사용하기
 date: 2017-05-14 12:36:23
 tags:
-    - JavaScript
-    - Paypal
-    - 페이팔
+  - JavaScript
+  - Paypal
+  - 페이팔
 categories:
-    - JavaScript
-    - Paypal
+  - JavaScript
+  - Paypal API
+thumbnail: /2017/05/14/paypal-express-checkout/thumbnail.jpg
+toc: true
 ---
 
 ## 들어가며
 이번 포스팅에서는 Paypal의 RESTful API인 `Express Checkout`을 사용하는 방법에 대해서 포스팅 하려고 한다.
+
+<!-- more -->
 진행하기에 앞서 먼저, https://www.sandbox.paypal.com/에 접속해서 sandbox용 계정을 만들어야 한다.
 이 계정으로 테스트를 진행하고 실제 운영 계정은 https://www.paypal.com/kr/home에서 회원가입하면 된다.
 

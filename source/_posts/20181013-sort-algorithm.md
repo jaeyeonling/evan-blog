@@ -2,17 +2,21 @@
 title: 정렬알고리즘 정리
 date: 2018-10-13 21:25:54
 tags:
-    - Computer Science
-    - Theory
-    - Algorithm
-    - 알고리즘
+  - Computer Science
+  - Theory
+  - Algorithm
+  - 알고리즘
 categories:
-    - 알고리즘
+  - Algorithm
+thumbnail: /2018/10/13/sort-algorithm/thumbnail.jpg
+toc: true
 ---
 
 ## 들어가며
 이번 포스팅에서는 대표적인 정렬알고리즘 5가지와 대략적인 빅오표기법에 대해서 정리하려고 한다.
 먼저, 그 5가지 정렬알고리즘은 다음과 같다.
+
+<!-- more -->
 
 ***
 1. 버블정렬(Bubble sort)
@@ -69,7 +73,7 @@ categories:
 자 그럼 대표적인 정렬알고리즘인 `버블정렬`, `선택정렬`, `삽입정렬`, `병합정렬`, `퀵정렬`을 한번 살펴보도록 하자.
 
 
-### 1. 버블정렬(Bubble sort)
+### 버블정렬(Bubble sort)
 
 <center>{% asset_img 'bubble_sort.gif' %}</center>
 
@@ -110,7 +114,7 @@ function bubbleSort (input) {
 ```
 
 
-### 2. 선택정렬(Selection sort)
+### 선택정렬(Selection sort)
 
 <center>{% asset_img 'selection_sort.gif' %}</center>
 
@@ -151,7 +155,7 @@ function selectionSort (input) {
 ```
 
 
-### 3. 삽입정렬(Insertion sort)
+### 삽입정렬(Insertion sort)
 
 <center>{% asset_img 'insertion_sort.gif' %}</center>
 
@@ -199,7 +203,7 @@ function insertionSort (input) {
 ```
 
 
-### 4. 병합정렬(Merge sort)
+### 병합정렬(Merge sort)
 
 <center>{% asset_img 'merge_sort.gif' %}</center>
 
@@ -262,7 +266,7 @@ function mergeSort (input) {
 ```
 
 
-### 5. 퀵정렬(Quick sort)
+### 퀵정렬(Quick sort)
 
 <center>{% asset_img 'quick_sort.gif' %}</center>
 

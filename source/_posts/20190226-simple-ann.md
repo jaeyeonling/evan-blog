@@ -2,16 +2,20 @@
 title: TypeScript를 사용하여 간단한 인공 신경망 개발 삽질기
 date: 2019-02-26 15:03:48
 tags:
-    - Machine Learning
-    - Deep Learning
-    - 머신러닝
+  - Machine Learning
+  - Deep Learning
+  - 머신러닝
 categories:
-    - TypeScript
-    - Machine Learning
+  - Machine Learning
+thumbnail: /2019/02/26/simple-ann/thumbnail.png
+toc: true
 ---
 
 ## 들어가며
 이번 포스팅에서는 {% post_link deep-learning-backpropagation 저번 포스팅 %}에 이어 TypeScript를 사용하여 간단한 인공신경망을 만들어본 것을 간단하게 정리하려고 한다.
+
+<!-- more -->
+
 이 어플리케이션은 현 직장에서 진행하는 Tech 세미나의 발표용으로 작성한 것이기 때문에 상당히 개발 시간이 촉박했다. 그래서 머릿속으로 생각해놓았던 기능을 전부 구현하지는 못했고 추후 기능을 더 추가해볼 예정이다.
 예전에 JavaScript를 사용하여 완전 하드코딩한 ANN을 작성해본 경험이 있었기 때문에 [그 코드](https://github.com/evan-moon/simple-ann/commit/82a1f3777de7b48a5cca1f777862620fc3159998)를 재활용해볼까 생각했었다.<small>(이젠 커밋 로그에서만 볼 수 있는 그 코드...)</small>
 근데 막상 뜯어보니까 재활용할 수 있는 부분이 딱히 없어서<small>(완전 하드코딩이었음)</small> 그냥 처음부터 다시 짜기로 했다.
@@ -50,7 +54,7 @@ Back propagation에서 Weight를 업데이트하는 공식은 다음과 같다.
 사실 뉴런의 Weight를 업데이트할 때 2번과 3번의 식은 변하지 않는다.
 변하는 것은 1번 `뉴런의 아웃풋이 에러에 영향을 끼친 기여도` 뿐이다. 더 정확히 말하면 상황에 따라 기여도를 계산하는 방법만 바뀐다. 다음 2가지 케이스를 살펴보자.
 
-### 1. 뉴런의 아웃풋이 특정 에러에만 영향을 끼친 경우
+### 뉴런의 아웃풋이 특정 에러에만 영향을 끼친 경우
 
 <center>{% asset_img 'backprop2.png' '레이어' %}</center>
 
@@ -75,7 +79,7 @@ E = \frac{1}{2}(E_1 + E_2)
 {% endmath %}
 ***
 
-### 2. 뉴런의 아웃풋이 여러 에러에 영향을 끼친 경우
+### 뉴런의 아웃풋이 여러 에러에 영향을 끼친 경우
 
 <center>{% asset_img 'backprop2.png' '레이어' %}</center>
 

@@ -1,14 +1,11 @@
 ---
-layout: "about"
+layout: about
 title: "About"
-date: 2019-01-10 00:39:33
-description: "Hello World"
-header-img: "/img/header_img/planet.jpg"
-fixed: false
+date: 2019-06-20 01:34:33
+share:
+  -
 ---
 
-### Section 1
-
-> test
-
-### Section 2
+안녕하세요. 물리와 우주 덕후 프로그래머입니다.
+현재 대한민국의 IT 회사를 돌아다니며 프론트엔드 개발자로 일하고 있습니다.
+저는 리누스 토발즈나 데니스 리치처럼 프로그래밍을 잘하진 않지만 적어도 그 사람들 만큼 컴퓨터를 사랑하는 사람입니다!

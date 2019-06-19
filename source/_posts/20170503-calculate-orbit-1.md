@@ -2,12 +2,14 @@
 title: 천문용어 정리 및 케플러 6요소
 date: 2017-05-03 15:29:22
 tags:
-    - 물리학
-    - 천체물리
-    - 궤도
-    - 이론
+  - 물리학
+  - 천체물리
+  - 궤도
+  - 이론
 categories:
-    - 물리
+  - Physics
+thumbnail: /2017/05/03/calculate-orbit-1/thumbnail.jpg
+toc: true
 ---
 
 ## 들어가며

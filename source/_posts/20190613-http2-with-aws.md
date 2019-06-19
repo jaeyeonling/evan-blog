@@ -9,11 +9,14 @@ tags:
   - Network
 categories:
   - AWS
-  - Web
+thumbnail: /2019/06/13/http2-with-aws/aws.png
+toc: true
 ---
 
 ## 들어가며
 이번 포스팅에서는 AWS(Amazon Web Service) 환경에서 HTTP/2 프로토콜을 적용하는 방법에 대해서 설명하려고 한다. AWS의 `Cloud Front`와 `Application Load Balancer`는 자체적으로 HTTP/2 프로토콜을 사용할 수 있는 기능들을 제공해주고 있기 때문에 별도의 작업 없이 간단하게 HTTP/2 프로토콜을 적용할 수 있다.
+
+<!-- more -->
 
 ## HTTP/2란?
 `HTTP/1`은 이미 세상에 나온지 30년이 다 되어가는 프로토콜로, 웹 어플리케이션을 위한 프로토콜이라기 보다는 문서를 위한 프로토콜로 설계되었기 때문에 모던 웹 어플리케이션과 같이 무거운 페이로드, 빈번한 통신 등의 환경에서는 여러 가지 비효율적인 점이 많다.
