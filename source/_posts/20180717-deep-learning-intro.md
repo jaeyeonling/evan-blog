@@ -2,15 +2,18 @@
 title: Deep Learning이란 무엇인가? - Intro
 date: 2018-07-17 23:33:01
 tags:
-    - 머신러닝
-    - Machine Learning
-    - Deep Learning
+  - 머신러닝
+  - Machine Learning
+  - Deep Learning
 categories:
-    - Machine Learning
+  - Machine Learning
+thumbnail: /2018/07/17/deep-learning-intro/thumbnail.jpeg
+toc: true
 ---
 
 ## 들어가며
 이번 포스팅에서는 딥러닝이 무엇인지, 기존의 뉴럴네트워크와 다른 점이 무엇인지에 대해서 포스팅하려고 한다.
+<!-- more -->
 
 ## Artificial Neural Network란?
 인류는 과거부터 생각하는 기계를 만드려는 노력을 해왔다.

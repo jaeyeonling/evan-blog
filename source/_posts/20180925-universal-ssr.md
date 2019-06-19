@@ -2,20 +2,22 @@
 title: Universal Server Side Rendering이란?
 date: 2018-09-25 15:35:48
 tags:
-    - Web
-    - SPA
-    - Single Page Application
-    - SSR
-    - Server Side Rendering
-    - 서버사이드 렌더링
+  - Web
+  - SPA
+  - Single Page Application
+  - SSR
+  - Server Side Rendering
+  - 서버사이드 렌더링
 categories:
-    - Web
-    - JavaScript
+  - Web
+thumbnail: /2018/09/25/universal-ssr/thumbnail.png
 ---
 
 ## 들어가며
 이번 포스팅에서는 최근 모던 웹 어플리케이션에서 많이 사용하고 있는 `Universal SSR`에 대해서 설명하고자 한다.
 `Server Side Rendering`과 `Single Page Application`의 방식을 간단하게 알아보고 이 두 렌더 방식을 조합한 `Universal SSR`의 방식을 설명한다.
+
+<!-- more -->
 
 ## Server Side Rendering을 수행하는 Multi Page Application
 `SSR` 방식은 원래 전통적인 웹 어플리케이션에서 사용하던 방식이다. 최근에는 `SPA(Single Page Application)`과 대조하여 `MPA(Multi Page Application)`이라고도 불린다.
