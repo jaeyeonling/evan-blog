@@ -15,6 +15,7 @@ common:
     next: '下一頁'
 widget:
     follow: '追蹤'
+    email: '電子郵件'
     recents: '最新文章'
     links: '連結'
     tag_cloud: '標籤雲'

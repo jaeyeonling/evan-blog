@@ -15,6 +15,7 @@ common:
     next: 'Sonraki'
 widget:
     follow: 'TAKİP ET'
+    email: 'Email'
     recents: 'Son'
     links: 'Linkler'
     tag_cloud: 'Etiket bulutu'

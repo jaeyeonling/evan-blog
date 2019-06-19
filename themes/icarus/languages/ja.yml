@@ -15,6 +15,7 @@ common:
     next: '次'
 widget:
     follow: 'フォローする'
+    email: 'Email'
     recents: '最近の記事'
     links: 'リンク'
     tag_cloud: 'タグクラウド'

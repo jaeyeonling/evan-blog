@@ -15,6 +15,7 @@ common:
     next: 'Berikutnya'
 widget:
     follow: 'IKUTI'
+    email: 'Email'
     recents: 'Terbaru'
     links: 'Tautan'
     tag_cloud: 'Awan tag'

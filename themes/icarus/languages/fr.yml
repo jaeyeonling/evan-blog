@@ -15,6 +15,7 @@ common:
     next: 'Suiv'
 widget:
     follow: 'SUIVRE'
+    email: 'Email'
     recents: 'Récents'
     links: 'Liens'
     tag_cloud: 'Nuage de tags'

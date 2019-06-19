@@ -15,6 +15,7 @@ common:
     next: 'Далее'
 widget:
     follow: 'Подписаться'
+    email: 'Email'
     recents: 'недавние'
     links: 'ссылки'
     tag_cloud: 'облако тегов'

@@ -15,6 +15,7 @@ common:
     next: '다음'
 widget:
     follow: '팔로우'
+    email: '이메일'
     recents: '최근 글'
     links: '링크'
     tag_cloud: '태그 클라우드'

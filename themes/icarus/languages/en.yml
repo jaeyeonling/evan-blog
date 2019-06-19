@@ -15,6 +15,7 @@ common:
     next: 'Next'
 widget:
     follow: 'Follow'
+    email: 'Email'
     recents: 'Recent'
     links: 'Links'
     tag_cloud: 'Tag Cloud'

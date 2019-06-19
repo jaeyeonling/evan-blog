@@ -15,6 +15,7 @@ common:
     next: 'Sau'
 widget:
     follow: 'Theo dõi'
+    email: 'Email'
     recents: 'Gần đây'
     links: 'Link'
     tag_cloud: 'Tag Cloud'
