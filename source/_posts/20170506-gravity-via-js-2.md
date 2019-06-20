@@ -6,7 +6,7 @@ tags:
   - 일반물리
   - JavaScript
 categories:
-  - Graphics
+  - Physics
 thumbnail: /2017/05/06/gravity-via-js-2/thumbnail.jpg
 ---
 

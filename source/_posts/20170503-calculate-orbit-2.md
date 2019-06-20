@@ -5,9 +5,10 @@ tags:
   - 물리학
   - 천체물리
   - 궤도
+  - 케플러
   - JavaScript
 categories:
-  - Graphics
+  - Physics
 thumbnail: /2017/05/03/calculate-orbit-2/thumbnail.jpg
 toc: true
 ---
