@@ -3,7 +3,7 @@ title: 정렬알고리즘 정리
 date: 2018-10-13 21:25:54
 tags:
   - Computer Science
-  - Theory
+  - 이론
   - Algorithm
   - 알고리즘
 categories:
