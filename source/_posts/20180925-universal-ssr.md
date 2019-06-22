@@ -11,12 +11,21 @@ tags:
 categories:
   - Web
 thumbnail: /2018/09/25/universal-ssr/thumbnail.png
+toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-## 들어가며
 이번 포스팅에서는 최근 모던 웹 어플리케이션에서 많이 사용하고 있는 `Universal SSR`에 대해서 설명하고자 한다.
 `Server Side Rendering`과 `Single Page Application`의 방식을 간단하게 알아보고 이 두 렌더 방식을 조합한 `Universal SSR`의 방식을 설명한다.
-
 <!-- more -->
 
 ## Server Side Rendering을 수행하는 Multi Page Application
@@ -24,15 +33,17 @@ thumbnail: /2018/09/25/universal-ssr/thumbnail.png
 `SSR` 어플리케이션은 라우팅이 수행된 후 새로운 페이지가 서버에 요청되면 싶으면 그때마다 HTML를 렌더한 후 클라이언트에서 전체 페이지를 다시 내려받는다.
 대략적인 실행 순서는 다음과 같다.
 
-<center>{% asset_img 'ssr.png' %}</center>
+<center>{% asset_img 'ssr.png' 600 %}</center>
 
 ***
+
 1. 클라이언트가 서버에 `example.com/products/12` URL로 요청을 보낸다.
 2. 서버에서는 해당 URL과 연결되어있는 메소드가 실행되고 알맞는 `HTML Template`파일을 찾는다.
 3. Database에서 12번 상품의 데이터를 가져온다.
 4. 가져온 데이터와 `HTML Template`을 사용해 최종 `HTML`을 렌더한다.
 5. 클라이언트로 `HTML`을 내려준다.
 6. 최종적으로 사용자가 뷰를 본다.
+
 ***
 
 사용자가 렌더된 페이지를 본 이후에도 `Ajax`를 사용하여 데이터를 추가로 더 받아올 수도 있겠지만 일단 사용자가 완성된 페이지를 보는 시점은 6번 과정이 끝난 이후기 때문에 `Ajax`와 같은 예외는 생략했다.
@@ -52,9 +63,10 @@ thumbnail: /2018/09/25/universal-ssr/thumbnail.png
 최근 들어 많은 수의 Frontend 개발자가 `Client Side Rendering`을 수행하는 A.K.A `SPA(Single Page Application)`를 개발한다. 즉, 서버에서 실제로 다운로드 받는 페이지는 단 1개이고 그 이후 JavaScript를 통해 동적인 렌더링을 실시하는 어플리케이션을 의미한다.
 대략적인 실행 순서는 다음과 같다.
 
-<center>{% asset_img 'csr.png' %}</center>
+<center>{% asset_img 'csr.png' 600 %}</center>
 
 ***
+
 1. 클라이언트가 서버에 `example.com/products/12` URL로 요청을 보낸다.
 2. 서버에서는 뭐가 됐던 요청 URL이 `exmplate.com`으로 시작하면 `index.html`을 찾아서 내려준다.
 3. 그리고 추가로 `JavaScript Bundle`을 같이 내려준다. 예를 들면 `Webpack`같은 모듈러로 빌드하면 나오는 `bundle.js`같은 파일이 되겠다.
@@ -62,6 +74,7 @@ thumbnail: /2018/09/25/universal-ssr/thumbnail.png
 5. 서버는 Database에서 12번 상품의 데이터를 가져온 후 클라이언트에 데이터를 내려준다.
 6. 클라이언트는 받아온 데이터를 사용하여 뷰가 렌더한다.
 7. 최종적으로 사용자가 뷰를 본다.
+
 ***
 
 아까에 비해서 뭔가 복잡해졌다. 이 방식이 `SPA`인 이유는 2번 과정에 있다. 보통 `Nginx`나 `Apache`같은 서버 엔진의 설정에 해당 url을 선언하고 조건에 일치하는 url로 요청이 들어왔을 경우 `index.html`파일을 찾아서 보내준다. 어떤 url이든 조건에 일치하게 되면 `index.html` 하나만 보내주기 때문에 `Single Page`인 것이다.
@@ -91,20 +104,26 @@ thumbnail: /2018/09/25/universal-ssr/thumbnail.png
 
 ## 새로운 개념의 Server Side Rendering의 등장
 `SSR`을 택하자니 `SPA`의 장점이 아깝고, `SPA`를 택하자니 `SSR`의 장점이 아깝다. 그럼 어떻게 해야할까? 그래서 나온 방식이 최근에 많이 사용하고 있는 `두 방식을 적당히 짬뽕한 방식`이다.
- 사용자의 첫 요청시에만 `SSR`을 수행하고, 그 이후는 `SPA`처럼 동적인 렌더링을 수행하는 것이다. 이 방식은 아래와 같은 장점을 가진다.
+사용자의 첫 요청시에만 `SSR`을 수행하고, 그 이후는 `SPA`처럼 동적인 렌더링을 수행하는 것이다. 이 방식은 아래와 같은 장점을 가진다.
 
- ***
- 1. 첫 요청을 `SSR`로 완성된 HTML을 내려줌으로써 `SEO`와 초기 렌더링 속도문제를 해결
- 2. 이후 클라이언트에서 렌더링을 수행함으로써 `SPA`의 장점인 페이지 이동 시 빠른 렌더 속도도 그대로 가져감
- 3. Frontend 프레임워크 3대장인 `Angular`, `React`, `Vue` 모두 이러한 `SSR` 방식을 공식으로 지원하기 때문에 Client와 Server를 같은 Context로 묶을 수 있음. 즉, 내가 만든 컴포넌트는 클라이언트에서 렌더를 수행하든 서버에서 렌더를 수행하든 동일하게 실행된다.
- ***
+### 장점
+***
+
+1. 첫 요청을 `SSR`로 완성된 HTML을 내려줌으로써 `SEO`와 초기 렌더링 속도문제를 해결
+2. 이후 클라이언트에서 렌더링을 수행함으로써 `SPA`의 장점인 페이지 이동 시 빠른 렌더 속도도 그대로 가져감
+3. Frontend 프레임워크 3대장인 `Angular`, `React`, `Vue` 모두 이러한 `SSR` 방식을 공식으로 지원하기 때문에 Client와 Server를 같은 Context로 묶을 수 있음. 즉, 내가 만든 컴포넌트는 클라이언트에서 렌더를 수행하든 서버에서 렌더를 수행하든 동일하게 실행된다.
+
+***
 
 하지만 모든 기술에는 Trade-off가 있는 법...단점은 뭐가 있을까?
 
+### 단점
 ***
+
 1. 코드가 복잡하다. 어플리케이션 구동 순서를 확실하게 파악하고 있지 않다면 진짜 헷갈린다.
 2. 서버에서 렌더링을 수행하므로 단순 리소스 서빙보다는 아무래도 CPU를 많이 사용하게 되고, 부하가 걸릴 수 있다.
 3. 서버에 익숙하지 않은 Frontend 개발자의 경우 클라이언트처럼 개발을 진행하게 되면 의도하지 않은 버그가 생길 수 있다.
+
 ***
 
 특히 2번과 3번 같은 경우 필자가 간과했던 부분인데, 클라이언트에서는 아무 문제 없었을 부분이 서버에서는 치명적인 실수가 되어 버그로 돌아오는 경험을 했다.

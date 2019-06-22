@@ -8,12 +8,21 @@ tags:
 categories:
   - Physics
 thumbnail: /2017/05/06/gravity-via-js-1/thumbnail.jpg
+toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-## 들어가며
 이번 포스팅에서는 만유인력의 법칙을 이용하여 중력을 구현해보려고 한다.
 지표면 상에서 한 방향으로 작용하는 중력이 아니라 랜덤한 질량을 가진 여러 개의 물체를 랜덤한 좌표에 뿌려놓고 서로의 운동에 어떻게 간섭하는 지를 살펴볼 수 있는 시뮬레이션을 만들어 볼 예정이다.
-
 <!-- more -->
 
 ## 중력이란?
@@ -92,21 +101,22 @@ F_{12} = -G{\frac{m_1 m_2}{\vert{r_{12}\vert}^2}}\hat{r_{12}}
 import { Vector3 } from 'three';
 
 function calcGravity(o1, o2, G) {
-    let force = new Vector3().subVectors(o1.location, o2.location);
-    // o1의 위치벡터와 o2의 위치벡터의 차를 구해 o1 -> o2를 바라보는 벡터를 구한다.
-
-    let distance = Math.sqrt(force.length() ** 2);
-    // 위에서 구한 방향벡터의 길이를 구한 후 절대값으로 변환해준다.
-
-    force = force.normalize();
-    // 위에서 구한 방향벡터를 단위벡터로 바꿔준다.
-
-    const strength = -(G * o1.mass * o2.mass) / (distance ** 2);
-    // 중력 스칼라 구하기
-
-    force = force.multiplyScalar(strength);
-    // 방향벡터에 위에서 구한 중력 스칼라를 곱해준다
-    return force;
+  // o1의 위치벡터와 o2의 위치벡터의 차를 구해 o1 -> o2를 바라보는 벡터를 구한다.
+  let force = new Vector3().subVectors(o1.location, o2.location);
+  
+  // 위에서 구한 방향벡터의 길이를 구한 후 절대값으로 변환해준다.
+  const distance = Math.sqrt(force.length() ** 2);
+  
+  // 위에서 구한 방향벡터를 단위벡터로 바꿔준다.
+  force = force.normalize();
+  
+  // 중력 스칼라 구하기
+  const strength = -(G * o1.mass * o2.mass) / (distance ** 2);
+  
+  // 방향벡터에 위에서 구한 중력 스칼라를 곱해준다
+  force = force.multiplyScalar(strength);
+  
+  return force;
 }
 ```
 
@@ -120,4 +130,4 @@ function calcGravity(o1, o2, G) {
 다음 포스팅에서는 직접 JavaScript코드로 시뮬레이션을 구현해보도록 하겠다.
 
 {% post_link gravity-via-js-2 다음 포스팅 %}에서는 간단한 중력 모델 샘플을 코드로 구현해볼 예정이다.
-이상으로 중력 첫번째 포스팅을 마친다.
+이상으로 JavaScript로 중력 구현하기 첫번째 포스팅을 마친다.

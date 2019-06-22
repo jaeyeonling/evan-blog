@@ -11,12 +11,20 @@ categories:
   - Physics
 thumbnail: /2017/05/03/calculate-orbit-2/thumbnail.jpg
 toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-## 들어가며
-이번 포스팅에서는 {% post_link calculate-orbit-1 저번 포스팅 %}에 이어 실제 궤도의 모양과 크기, 위치, 방향을 정의하고 JavaScript코드로 작성을 해보려고 한다.
+이번 포스팅에서는 {% post_link calculate-orbit-1 저번 포스팅 %}에 이어 실제 궤도의 모양과 크기, 위치, 방향을 정의하고 JavaScript코드로 작성을 해보려고 한다. 실제 어플리케이션을 작성할 때는 TypeScript를 사용하였으나, 편의상 JavsScript ES6로 포스팅을 진행한다.
 <!-- more -->
-실제 어플리케이션을 작성할 때는 TypeScript를 사용하였으나, 편의상 JavsScript ES6으로 포스팅을 진행한다.
 궤도를 구하는 방법은 {% post_link calculate-orbit-1 저번 포스팅 %}의 용어 정리에서 언급했던 케플러 6요소를 이용하면 된다.
 
 ## 데이터 정의
@@ -25,24 +33,25 @@ toc: true
 ```js
 const AU = 149597870;
 const EARTH_ORBIT = {
-    base: {
-            a: 1.00000261 * AU,
-            e: 0.01671123,
-            i: -0.00001531,
-            o: 0.0,
-            l: 100.46457166,
-            lp: 102.93768193
-        },
-        cy: {
-            a: 0.00000562 * AU,
-            e: -0.00004392,
-            i: -0.01294668,
-            o: 0.0,
-            l: 35999.37244981,
-            lp: 0.32327364
-        }
+  base: {
+    a: 1.00000261 * AU,
+    e: 0.01671123,
+    i: -0.00001531,
+    o: 0.0,
+    l: 100.46457166,
+    lp: 102.93768193
+  },
+  cy: {
+    a: 0.00000562 * AU,
+    e: -0.00004392,
+    i: -0.01294668,
+    o: 0.0,
+    l: 35999.37244981,
+    lp: 0.32327364
+  }
 };
 ```
+
 `base`프로퍼티에 들어있는 값은 궤도의 기본 요소들을 의미하며 이 값들은 천문학에서의 역기점인 `J2000`때 측정된 값을 의미한다.
 `J2000`은 2000년 1월 1일 정오를 의미한다.
 그리고 `cy`프로퍼티에 있는 값들은 1세기당 궤도 요소들의 변화량을 의미한다.
@@ -81,17 +90,17 @@ let T = tDAys / CENTURY; // 몇 세기나 지났는지 환산
 const keys = Object.keys(EARTH.base);
 let computed = { time: epochTime };
 computed = keys.reduce((carry, el) => {
-    const variation = EARTH.cy || 0;
-    carry[el] = EARTH.base[el] + (variation * T);
-    return carry;
+  const variation = EARTH.cy || 0;
+  carry[el] = EARTH.base[el] + (variation * T);
+  return carry;
 }, computed);
 /*
-    a: 149598406.2031184
-    e: 0.016703615925039474
-    i: -0.0022597770311920135
-    l: 6341.400827688619
-    lp: 102.9937254119609
-    o: 0.0
+  a: 149598406.2031184
+  e: 0.016703615925039474
+  i: -0.0022597770311920135
+  l: 6341.400827688619
+  lp: 102.9937254119609
+  o: 0.0
 */
 ```
 
@@ -161,18 +170,18 @@ E = \frac{M+e{sinM}}{1-e{cosM}}
 
 ```js
 function getEccentricity(callback, x0, maxCount) {
-    let x = 0,
-        x2 = x0;
-    for(let i = 0; i < maxCount; i++) {
-        x = x2;
-        x2 = callback(x);
-    }
+  let x = 0;
+  let x2 = x0;
+  for(let i = 0; i < maxCount; i++) {
+    x = x2;
+    x2 = callback(x);
+  }
 }
 
 function kepler(e, M) {
-    return x => {
-        return x + (M + e * Math.sin(x) - x) / (1 - e * Math.cos(x));
-    };
+  return x => {
+    return x + (M + e * Math.sin(x) - x) / (1 - e * Math.cos(x));
+  };
 }
 
 computed.E = getEccentricity(kepler(computed.e, computed.M), computed.M, 6);

@@ -12,11 +12,19 @@ categories:
   - JavaScript
 thumbnail: /2019/06/18/javascript-let-const/js.001.png
 toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-## 들어가며
 이번 포스팅에서는 JavaScript ES6에서 추가되었던 `let`과 `const` 키워드에 대해서 자세히 포스팅하려고 한다. 부끄럽지만 지금까지 필자는 `let`과 `const`는 호이스팅이 되지 않는다고 생각하고 있었다. 하지만 얼마 전 친구와 대화하던 중에 `let`과 `const`도 호이스팅 대상체이지만 `TDZ`라는 특수한 영역을 사용하여 참조를 **방어**하는 것임을 알게 되었다.
-
 <!-- more -->
 
 ***
@@ -26,8 +34,11 @@ toc: true
 **필자**: 된다고??? TDZ는 또 뭐여?
 ***
 
-{% asset_img 'no-yes.jpg' %}
-<center><sub>호...호이스팅이 된다고...?</sub></center>
+<center>
+  {% asset_img 'no-yes.jpg' 350 %}
+  <sub>호...호이스팅이 된다고...?</sub>
+  <br>
+</center>
 
 이런 부끄러운 일을 겪고 이번 기회에 변수 선언 키워드들에 대해 제대로 공부도 할겸 이번 포스팅을 작성하게 되었다.
 
@@ -73,9 +84,7 @@ name = 'Evan';
 })();
 console.log(local); // Uncaught ReferenceError: local is not defined
 
-for (var i = 0; i < 10; i++) {
-	
-}
+for (var i = 0; i < 10; i++) {}
 console.log(i); // 10
 ```
 
@@ -95,12 +104,15 @@ console.log(globalVariable) // global!
 console.log(globlVariable) // global?
 ```
 
-실수로 `globalVariable` 변수를 `globlVariable` 변수로 오타를 냈다.
-순진한 개발자는 `globalVariable` 변수의 값이 `global?`로 변경되었으리라 기대를 하겠지만 아쉽게도 그 값은 오타낸 변수명인 `globlVariable`이 가져갔다.
+실수로 `globalVariable` 변수를 `globlVariable` 변수로 오타를 냈다. 순진한 개발자는 `globalVariable` 변수의 값이 `global?`로 변경되었으리라 기대를 하겠지만 아쉽게도 그 값은 오타낸 변수명인 `globlVariable`이 가져갔다.
+
 이런 경우도 간단한 코드에서는 디버깅이 쉽지만 조금만 코드가 복잡해져도 눈물이 흐르는 케이스이다.
 
-{% asset_img 'off-work.jpg' %}
-<center><sub>이런 것들에게 한번 걸리면 얄짤없이 11시까지 일하고 택시타고 집에 가야한다</sub></center>
+<center>
+  {% asset_img 'off-work.jpg' 500 %}
+  <sub>이런 것들에게 한번 걸리면 얄짤없이 11시까지 일하고 택시타고 집에 가야한다</sub>
+  <br>
+</center>
 
 ## let과 const 키워드의 등장
 `var` 키워드의 경우 전역 변수를 남발하기가 쉽고 또 로컬 변수라고 해도 변수의 스코프가 너무 넓기 때문에 변수의 선언부와 호출부가 너무 멀리 떨어져 있거나 값이 의도하지 않게 바뀌는 경우를 추적하기 힘들다.
@@ -329,6 +341,10 @@ const hi; // Uncaught SyntaxError: Missing initializer in const declaration
 
 그리고 `const` 키워드의 경우 값을 재할당하려고 하면 바로 에러를 뿜뿜 해주기 때문에 개발자가 의도하지 않게 변수의 값이 재할당되는 슬픈 상황을 방지할 수 있다. 그렇기에 `const` 키워드를 잘 활용하여 안전한 코딩 라이프를 즐기고 다들 야근하지말고 칼퇴하시길 바란다.
 
-{% asset_img 'off-work2.jpg' %}
+<center>
+  {% asset_img 'off-work2.jpg' %}
+  <sub>빨리 집에 가서 밥먹고 넷플릭스봐야지!</sub>
+  <br>
+</center>
 
 이상으로 JavaScript의 let과 const, 그리고 TDZ 포스팅을 마친다.

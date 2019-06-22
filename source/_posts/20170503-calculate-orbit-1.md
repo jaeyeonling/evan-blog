@@ -10,9 +10,18 @@ categories:
   - Physics
 thumbnail: /2017/05/03/calculate-orbit-1/thumbnail.jpg
 toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+    right:
+      sticky: true
 ---
 
-## 들어가며
 이번 포스팅에서는 태양계 시뮬레이션을 개발하면서 제일 애먹었던 천체의 궤도와 위치 계산에 대해서 알아보려고 한다. 필자는 고등학교 시절 수포자였기 대문에 필자와 같이 수포자였던 분들을 위해 최대한 간단하게 설명하는 것을 목표로 하고 있다.
 <!-- more -->
 

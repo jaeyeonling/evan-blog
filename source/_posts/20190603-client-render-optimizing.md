@@ -10,11 +10,19 @@ categories:
     - Web
 thumbnail: /2019/06/03/client-render-optimizing/result_before.png
 toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-## 들어가며
-이번 포스팅에서는 필자의 현직장에서 진행했던 클라이언트 사이드 렌더링 최적화에 대해서 적어보려고 한다. 크롬 브라우저의 Audits 탭에서 현재 페이지의 퍼포먼스나 SEO 점수와 같은 지표를 확인해볼 수 있다. 
-
+이번 포스팅에서는 필자의 현직장에서 진행했던 클라이언트 사이드 렌더링 최적화에 대해서 적어보려고 한다. 크롬 브라우저의 Audits 탭에서 현재 페이지의 퍼포먼스나 SEO 점수와 같은 지표를 확인해볼 수 있다.
 <!-- more -->
 
 이 지표는 Google Chrome 팀에서 제공하는  Lighthouse라는 툴을 사용하여 측정된다. 또한 측정된 지표를 JSON 포맷으로 Export하여 저장하고 Lighthouse의 Report Viewer 페이지에서 다시 확인해볼수도 있다. 아래 링크들을 살펴보면 Lighthouse에 대해서 더 잘 알 수 있을 것이다.
@@ -65,14 +73,14 @@ toc: true
 <div class="test" v-lazy-background-image></div>
 <!-- 디렉티브 바인딩 후 -->
 <div
-    class="test"
-    v-lazy-background-image
-    data-lazy-background-image="스타일에서는 이미지 URL을 지우고 여기다가 이미지 URL을 담아놓자"
+  class="test"
+  v-lazy-background-image
+  data-lazy-background-image="스타일에서는 이미지 URL을 지우고 여기다가 이미지 URL을 담아놓자"
 ```
 
 ```css
 .test {
-    background-image: url(https://assets.soomgo.com/user/example.jpeg);
+  background-image: url(https://assets.soomgo.com/user/example.jpeg);
 }
 /* 디렉티브 바인딩 후 */
 .test {}
@@ -110,31 +118,34 @@ import { Vue } from 'vue-property-decorator';
 import { VNode, VNodeDirective } from 'vue';
 
 Vue.directive('lazy-background-image', {
-    bind (el: any, binding: VNodeDirective, vnode: VNode) {
-        if (isSupportIntersectionObserver) {
-            if (!el.style.backgroundImage) {
-                return;
-            }
-            el.setAttribute('data-lazy-background-image', el.style.backgroundImage);
-            el.style.backgroundImage = '';
-            intersectionObserver.observe(el);
-        }
-    },
-    unbind (el: any) {
-        if (isSupportIntersectionObserver) {
-            intersectionObserver.unobserve(el);
-        }
-    },
+  bind (el: any, binding: VNodeDirective, vnode: VNode) {
+    if (isSupportIntersectionObserver) {
+      if (!el.style.backgroundImage) {
+        return;
+      }
+      el.setAttribute('data-lazy-background-image', el.style.backgroundImage);
+      el.style.backgroundImage = '';
+      intersectionObserver.observe(el);
+    }
+  },
+  unbind (el: any) {
+    if (isSupportIntersectionObserver) {
+      intersectionObserver.unobserve(el);
+    }
+  },
 });
 ```
 
 이렇게 디렉티브를 사용하여 이미지 지연 로딩을 한 결과 최초 요청하는 이미지 개수를 60개에서 39개로 대폭 줄일 수 있었다.
 
-{% asset_img 'lazy_load_before.png' 'lazy_load_before' %}
-{% asset_img 'lazy_load_after.png' 'lazy_load_after' %}
+<center>
+  {% asset_img 'lazy_load_before.png' 'lazy_load_before' %}
+  {% asset_img 'lazy_load_after.png' 'lazy_load_after' %}
+  <br>
+</center>
 
 #### 컴포넌트 지연 로딩
-숨고 프론트엔드는 SEO를 위해 첫 요청은 SSR(서버사이드렌더링)을 하지만 그 외에는 일반적인 SPA와 동일한 방식으로 작동한다. 그렇기 때문에 처음 애플리케이션이 초기화될 때 애플리케이션 내에서 사용될 모든 JavaScript와 CSS를 받아온다. 이 방식은 애플리케이션이 작을 때는 딱히 문제가 되지 않지만 애플리케이션이 커질수록 번들의 용량도 비례하여 늘어나므로 점점 부담이 되기 마련이다. 그래서 Webpack에서 제공하는 기능인 Dynamic Import를 사용하여 해당 페이지에서 사용하는 코드만을 비동기적으로 로드하여 사용하도록 변경하였다.
+숨고 프론트엔드는 SEO를 위해 첫 요청은 `SSR(서버사이드렌더링)`을 하지만 그 외에는 일반적인 SPA와 동일한 방식으로 작동한다. 그렇기 때문에 처음 애플리케이션이 초기화될 때 애플리케이션 내에서 사용될 모든 JavaScript와 CSS를 받아온다. 이 방식은 애플리케이션이 작을 때는 딱히 문제가 되지 않지만 애플리케이션이 커질수록 번들의 용량도 비례하여 늘어나므로 점점 부담이 되기 마련이다. 그래서 Webpack에서 제공하는 기능인 Dynamic Import를 사용하여 해당 페이지에서 사용하는 코드만을 비동기적으로 로드하여 사용하도록 변경하였다.
 
 ```ts router/search.ts
 // Sync
@@ -147,8 +158,7 @@ const SearchPro = () => import(/* webpackChunkName: "search" */ 'src/pages/Searc
 `webpackChunkName` 주석을 사용하면 일정 단위의 모듈들을 하나의 청크로 묶어줄 수 있다. 숨고는 현재 HTTP/1.1 프로토콜을 사용하고 있으므로 한번에 요청할 수 있는 리소스의 개수가 6개 정도로 한정되어있다.<small>(이 개수는 브라우저의 정책에 따라 조금씩 다르다)</small> 
 청크의 개수가 너무 많아지면 오히려 로딩 속도가 느려질 수 있으므로 관련있는 모듈을 묶어주어 청크의 개수가 너무 많아지지 않도록 조절하였다.
 
-여기까지는 솔직히 별로 어려울 것도 없고 순조로웠는데 CSS를 별도의 번들로 분리하기 위해 사용하는 `mini-css-extract-plugin`에서 문제가 발생했다.
-이 플러그인이 Dynamic import로 불러온 CSS 모듈을 처리하는 방식 때문에 SSR 사이클에서 `ReferenceError: document is not defined`라는 참조 에러가 발생했던 것이다.
+여기까지는 솔직히 별로 어려울 것도 없고 순조로웠는데 CSS를 별도의 번들로 분리하기 위해 사용하는 `mini-css-extract-plugin`에서 문제가 발생했다. 이 플러그인이 Dynamic import로 불러온 CSS 모듈을 처리하는 방식 때문에 SSR 사이클에서 `ReferenceError: document is not defined`라는 참조 에러가 발생했던 것이다.
 
 ```js node_modules/mini-css-extract-plugin/dist/index.js
 var linkTag = document.createElement("link");
@@ -159,10 +169,10 @@ linkTag.href = fullhref;
 head.appendChild(linkTag);
 ```
 
-원래 코드는 엄청 거대하지만 간단하게 한번 추려보자면 여기가 문제가 발생한 부분이다. SSR 사이클은 NodeJS 프로세스에서 실행되므로 당연히 document고 나발이고 없기 때문에 참조 에러가 발생한 것이다. 다행히 빌드 설정은 `client.config`와 `server.config`로 나눠서 관리되고 있기 때문에 적절한 조치를 취해줄 수 있었다.
-클라이언트 사이드 렌더링 사이클은 문제 없으므로 최초 요청 시 Express가 Vue를 컴파일할때만 손봐주면 된다.
+원래 코드는 엄청 거대하지만 간단하게 한번 추려보자면 여기가 문제가 발생한 부분이다.
+SSR 사이클은 NodeJS 프로세스에서 실행되므로 당연히 document고 나발이고 없기 때문에 참조 에러가 발생한 것이다. 다행히 빌드 설정은 `client.config`와 `server.config`로 나눠서 관리되고 있기 때문에 적절한 조치를 취해줄 수 있었다. 클라이언트 사이드 렌더링 사이클은 문제 없으므로 최초 요청 시 Express가 Vue를 컴파일할때만 손봐주면 된다.
 
-역시 StackOverflow에 나와 같은 삽질을 했었던 전 세계의 개발랭이들이 이미 열띤 토론을 통해 [mini-css-extract-plugin의 SSR 관련 이슈](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90)에 대해 어느 정도 결론을 내놓은 것을 발견했다. 위아 더 월드.
+역시 StackOverflow에 필자와 같은 삽질을 했었던 전 세계의 개발랭이들이 이미 열띤 토론을 통해 [mini-css-extract-plugin의 SSR 관련 이슈](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/90)에 대해 어느 정도 결론을 내놓은 것을 발견했다. 위아 더 월드.
 
 다양한 방법들이 논의되었지만 필자는 `css-loader`의 `exportOnlyLocals` 옵션을 사용하는 방법을 선택했다. 해당 이슈에는 `css-loader/locals`로 사용하라고 되어있지만 이 이슈가 논의된 이후에 css-loader가 업데이트 되었기 때문에 이제는 옵션 객체를 사용해야 한다.
 
@@ -236,7 +246,9 @@ JS before의 제일 상단에 있는 변태같은 1.2MB 크기의 번들이 node
 2. SEO가 되고 있는 페이지는 애초에 비로그인 유저도 접근 가능한 페이지다.
 3. 인증 API를 기다릴 필요가 없다...?
 
-냥``js client-entry.js
+그렇다면 그냥
+
+```js client-entry.js
 // ...
 router.onReady(async () => {
   if (isAllowGuestPage(router.currentRoute)) {
@@ -259,9 +271,16 @@ router.onReady(async () => {
 이렇게 이것 저것 열심히 했더니 그래도 조금 빨라지긴 했다.
 
 Before
-{% asset_img 'result_before.png' 'result_before' %}
+<center>
+  {% asset_img 'result_before.png' 500 %}
+  <br>
+</center>
+
 After
-{% asset_img 'result_after.png' 'result_after' %}
+<center>
+  {% asset_img 'result_after.png' 500 %}
+  <br>
+</center>
 
 원래 목표였던 `First Meaningful Paint`를 1초 아래로 떨어트리는 목표는 달성했지만 다른 수치가 이 정도로 영향을 안받을 줄은 몰랐다. 퍼포먼스 점수도 꼴랑 2점 올라갔다. 다른 팀원들은 "그래도 2점이 어디야~"라고 해주셨지만 뭔가 마음 한켠이 찜찜하다...
 다음에는 다른 점수를 좀 더 올려보는 걸 목표로 삼아봐야겠다. PWA 세팅해놓으면 Accessibility 점수는 좀 더 올라갈 것 같기도 한데 생각해놓은 다른 이슈들은 백엔드 개발자 분들의 도움이 필요한 것들이 꽤 있어서 혼자서는 힘들 듯하다.
