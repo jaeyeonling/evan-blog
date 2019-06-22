@@ -23,6 +23,7 @@ sidebar:
 ---
 
 이번 포스팅에서는 Paypal의 RESTful API인 `Express Checkout`을 사용하는 방법에 대해서 포스팅 하려고 한다. 진행하기에 앞서 먼저, [페이팔 샌드박스 홈페이지](https://www.sandbox.paypal.com/)에 접속해서 sandbox용 계정을 만들어야 한다.
+<!-- more -->
 
 이 계정으로 테스트를 진행하고 실제 운영 계정은 [페이팔 홈페이지](https://www.paypal.com/kr/home)에서 회원가입하면 된다.
 
