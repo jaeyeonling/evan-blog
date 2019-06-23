@@ -1,7 +1,7 @@
 <div class="card">
     <% if (has_thumbnail(post)) { %>
     <div class="card-image">
-        <%- index ? '<a href="' + url_for(post.link ? post.link : post.path) + '"' : '<span ' %> class="image is-7by1">
+        <%- index ? '<a data-link-name="main" href="' + url_for(post.link ? post.link : post.path) + '"' : '<span ' %> class="image is-7by1">
             <img class="thumbnail" src="<%= get_thumbnail(post) %>" alt="<%= post.title %>">
         <%- index ? '</a>' : '</span>' %>
     </div>
@@ -39,7 +39,7 @@
         <% } %>
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-<%- index ? 'normal' : 'bold' %>">
             <% if (index) { %>
-                <a class="has-link-black-ter" href="<%- url_for(post.link ? post.link : post.path) %>"><%= post.title %></a>
+                <a class="has-link-black-ter" href="<%- url_for(post.link ? post.link : post.path) %>" data-link-name="main"><%= post.title %></a>
             <% } else { %>
                 <%= post.title %>
             <% } %>
@@ -65,10 +65,10 @@
         </div>
         <% } %>
         <% if (index && post.excerpt) { %>
-        <div class="level is-mobile">
+        <div class="level is-mobile readmore-link">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="<%- url_for(post.path) %>#more"><%= __('article.more') %></a>
+                <a class="button is-size-7 is-light" href="<%- url_for(post.path) %>#more" data-link-name="main"><%= __('article.more') %></a>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
     <div class="level post-navigation is-flex-wrap is-mobile">
         <% if (post.prev){ %>
         <div class="level-start">
-            <a class="level level-item has-link-grey <%= !post.prev ? 'is-hidden-mobile' : '' %> article-nav-prev" href="<%- url_for(post.prev.path) %>">
+            <a data-link-name="pagenator" class="level level-item has-link-grey <%= !post.prev ? 'is-hidden-mobile' : '' %> article-nav-prev" href="<%- url_for(post.prev.path) %>">
                 <i class="level-item fas fa-chevron-left"></i>
                 <span class="level-item"><%= post.prev.title %></span>
             </a>
@@ -109,7 +109,7 @@
         <% } %>
         <% if (post.next){ %>
         <div class="level-end">
-            <a class="level level-item has-link-grey <%= !post.next ? 'is-hidden-mobile' : '' %> article-nav-next" href="<%- url_for(post.next.path) %>">
+            <a data-link-name="pagenator" class="level level-item has-link-grey <%= !post.next ? 'is-hidden-mobile' : '' %> article-nav-next" href="<%- url_for(post.next.path) %>">
                 <span class="level-item"><%= post.next.title %></span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
