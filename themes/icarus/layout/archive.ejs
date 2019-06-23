@@ -9,7 +9,7 @@
         <% posts.each(post => { %>
             <article class="media">
                 <% if (has_thumbnail(post)) { %>
-                <a href="<%- url_for((post.link?post.link:post.path)) %>" class="media-left">
+                <a href="<%- url_for((post.link?post.link:post.path)) %>" class="media-left" data-link-name="main">
                     <p class="image is-64x64">
                         <img class="thumbnail" src="<%= get_thumbnail(post) %>" alt="<%= post.title %>">
                     </p>
@@ -18,7 +18,7 @@
                 <div class="media-content">
                     <div class="content">
                         <time class="has-text-grey is-size-7 is-block is-uppercase" datetime="<%= date_xml(post.date) %>"><%= date(post.date) %></time>
-                        <a href="<%- url_for((post.link?post.link:post.path)) %>" class="has-link-black-ter is-size-6"><%= post.title %></a>
+                        <a href="<%- url_for((post.link?post.link:post.path)) %>" class="has-link-black-ter is-size-6" data-link-name="main"><%= post.title %></a>
                         <div class="level article-meta is-mobile">
                             <div class="level-left">
                                 <% if (post.categories && post.categories.length) { %>

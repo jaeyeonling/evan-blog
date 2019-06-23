@@ -7,7 +7,7 @@
         <ul class="menu-list">
         <% _list_archives().forEach(archive => { %>
         <li>
-            <a class="level is-marginless" href="<%= archive.url %>">
+            <a class="level is-marginless" href="<%= archive.url %>" data-link-name="archive">
                 <span class="level-start">
                     <span class="level-item"><%= archive.name %></span>
                 </span>
