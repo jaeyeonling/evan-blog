@@ -99,8 +99,8 @@ sidebar:
 필자는 `Unix` 기반의 MacOS를 사용하고 있기 때문에 MacOS 기준으로 설명하겠다. `traceroute` 유틸리티를 사용하면 내가 보낸 패킷이 어떤 경로를 통해 구글 서버까지 도달하는 지 알아볼 수 있다.
 
 ```bash
-$ traceroute -q 1 goolge.com
-traceroute to goolge.com (172.217.25.196), 64 hops max, 52 byte packets
+$ traceroute -q 1 google.com
+traceroute to google.com (172.217.25.196), 64 hops max, 52 byte packets
  1  192.168.25.1 (192.168.25.1)  3.077 ms
  2  211.0.0.0 (211.0.0.0)  5.928 ms
  3  100.71.51.17 (100.71.51.17)  4.693 ms
