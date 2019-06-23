@@ -1,6 +1,6 @@
 $(document).ready(function () {
     function sendEvent (eventName = 'unknown', param = null) {
-        console.log('sendEvent -> ', eventName, param);
+        // console.log('sendEvent -> ', eventName, param);
         gtag('event', eventName, param);
     }
 
