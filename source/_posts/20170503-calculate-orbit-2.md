@@ -2,44 +2,56 @@
 title: 케플러 6요소를 사용한 궤도 계산
 date: 2017.05.03 21:49:04
 tags:
-    - 천체물리
-    - 궤도
-    - JavaScript
+  - 물리학
+  - 천체물리
+  - 궤도
+  - 케플러
+  - JavaScript
 categories:
-    - 물리
-    - 그래픽스
+  - Physics
+thumbnail: /2017/05/03/calculate-orbit-2/thumbnail.jpg
+toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-### 들어가며
-***
-이번 포스팅에서는 {% post_link calculate-orbit-1 저번 포스팅 %}에 이어 실제 궤도의 모양과 크기, 위치, 방향을 정의하고 JavaScript코드로 작성을 해보려고 한다.
-실제 어플리케이션을 작성할 때는 TypeScript를 사용하였으나, 편의상 JavsScript ES6으로 포스팅을 진행한다.
+이번 포스팅에서는 {% post_link calculate-orbit-1 저번 포스팅 %}에 이어 실제 궤도의 모양과 크기, 위치, 방향을 정의하고 JavaScript코드로 작성을 해보려고 한다. 실제 어플리케이션을 작성할 때는 TypeScript를 사용하였으나, 편의상 JavsScript ES6로 포스팅을 진행한다.
+<!-- more -->
 궤도를 구하는 방법은 {% post_link calculate-orbit-1 저번 포스팅 %}의 용어 정리에서 언급했던 케플러 6요소를 이용하면 된다.
 
-### 데이터 정의
-***
+## 데이터 정의
 지구의 궤도 데이터는 다음과 같다.
+
 ```js
 const AU = 149597870;
 const EARTH_ORBIT = {
-    base: {
-            a: 1.00000261 * AU,
-            e: 0.01671123,
-            i: -0.00001531,
-            o: 0.0,
-            l: 100.46457166,
-            lp: 102.93768193
-        },
-        cy: {
-            a: 0.00000562 * AU,
-            e: -0.00004392,
-            i: -0.01294668,
-            o: 0.0,
-            l: 35999.37244981,
-            lp: 0.32327364
-        }
+  base: {
+    a: 1.00000261 * AU,
+    e: 0.01671123,
+    i: -0.00001531,
+    o: 0.0,
+    l: 100.46457166,
+    lp: 102.93768193
+  },
+  cy: {
+    a: 0.00000562 * AU,
+    e: -0.00004392,
+    i: -0.01294668,
+    o: 0.0,
+    l: 35999.37244981,
+    lp: 0.32327364
+  }
 };
 ```
+
 `base`프로퍼티에 들어있는 값은 궤도의 기본 요소들을 의미하며 이 값들은 천문학에서의 역기점인 `J2000`때 측정된 값을 의미한다.
 `J2000`은 2000년 1월 1일 정오를 의미한다.
 그리고 `cy`프로퍼티에 있는 값들은 1세기당 궤도 요소들의 변화량을 의미한다.
@@ -52,8 +64,7 @@ const EARTH_ORBIT = {
 그리고 근일점 통과 시각의 경우 `평균근점이각`을 구할 때 필요한데, 근일점 통과 시각을 사용하여 구하는 것보다 근일점 경도와 평균 경도를 사용하는 방법이 훨씬 공식이 간단하기 때문에
 오히려 편해진 상황이다.
 
-### 시간 설정과 궤도 요소 계산
-***
+## 시간 설정과 궤도 요소 계산
 위에서 잠깐 말했듯이 천문학에서는 우리가 평소 사용하는 그레고리력이 아닌 율리우스력을 사용한다.
 
 율리우스력이란 원래 `BC 4713년 1월 1일 월요일 정오`를 기점으로 계산한 날짜 수 이다. 하지만 기원전 4713년부터 서기 2017년까지의 날짜를 세면 자릿수가 너무 커지기 때문에
@@ -79,17 +90,17 @@ let T = tDAys / CENTURY; // 몇 세기나 지났는지 환산
 const keys = Object.keys(EARTH.base);
 let computed = { time: epochTime };
 computed = keys.reduce((carry, el) => {
-    const variation = EARTH.cy || 0;
-    carry[el] = EARTH.base[el] + (variation * T);
-    return carry;
+  const variation = EARTH.cy || 0;
+  carry[el] = EARTH.base[el] + (variation * T);
+  return carry;
 }, computed);
 /*
-    a: 149598406.2031184
-    e: 0.016703615925039474
-    i: -0.0022597770311920135
-    l: 6341.400827688619
-    lp: 102.9937254119609
-    o: 0.0
+  a: 149598406.2031184
+  e: 0.016703615925039474
+  i: -0.0022597770311920135
+  l: 6341.400827688619
+  lp: 102.9937254119609
+  o: 0.0
 */
 ```
 
@@ -159,26 +170,25 @@ E = \frac{M+e{sinM}}{1-e{cosM}}
 
 ```js
 function getEccentricity(callback, x0, maxCount) {
-    let x = 0,
-        x2 = x0;
-    for(let i = 0; i < maxCount; i++) {
-        x = x2;
-        x2 = callback(x);
-    }
+  let x = 0;
+  let x2 = x0;
+  for(let i = 0; i < maxCount; i++) {
+    x = x2;
+    x2 = callback(x);
+  }
 }
 
 function kepler(e, M) {
-    return x => {
-        return x + (M + e * Math.sin(x) - x) / (1 - e * Math.cos(x));
-    };
+  return x => {
+    return x + (M + e * Math.sin(x) - x) / (1 - e * Math.cos(x));
+  };
 }
 
 computed.E = getEccentricity(kepler(computed.e, computed.M), computed.M, 6);
 /* E =108.8962365500302 */
 ```
 
-### 행성의 위치 도출하기
-***
+## 행성의 위치 도출하기
 자, 지금까지는 이 파트를 위한 지루한 과정이었다. 필요한 값들을 모두 구했으니 이제 행성의 위치를 도출할 수 있게 되었다.
 이 값들이 있다면 근일점 쪽을 X축으로 하는 황도좌표평면에 대한 직각 좌표 값을 계산할 수 있다.
 그리고 이 좌표값의 유클리드거리 `r`과 진근점이각 `v`를 구할 수 있다. `진근점이각`은 항성과 궤도의 근일점 기준으로 어느 각도에 행성이 위치하고 있는지를 나타내는 각이다.
@@ -209,4 +219,4 @@ computed.v *= RAD_TO_DEG;
 하지만 중요한 것은 이런 공식을 사용해서 내가 원하는 뭔가를 만들어 볼 수 있다는 것이 아닐까 생각한다.
 
 이상으로 행성 위치 게산하기 포스팅을 마친다.
-<sub>[프로젝트 깃허브 주소](https://github.com/evan-moon/solarsystemjs)</sub>
+전체 소스는 [Solarsystem 프로젝트 깃허브 레파지토리](https://github.com/evan-moon/solarsystemjs)에서 확인해볼 수 있다.

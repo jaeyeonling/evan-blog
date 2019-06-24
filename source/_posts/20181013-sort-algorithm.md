@@ -2,18 +2,29 @@
 title: 정렬알고리즘 정리
 date: 2018-10-13 21:25:54
 tags:
-    - Computer Science
-    - Theory
-    - Algorithm
+  - Computer Science
+  - 이론
+  - Algorithm
+  - 알고리즘
 categories:
-    - 컴퓨터이론
-    - 알고리즘
+  - Algorithm
+thumbnail: /2018/10/13/sort-algorithm/thumbnail.jpg
+toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-### 들어가며
-***
-이번 포스팅에서는 대표적인 정렬알고리즘 5가지와 대략적인 빅오표기법에 대해서 정리하려고 한다.
+이번 포스팅에서는 대표적인 정렬알고리즘 5가지와 대략적인 `빅오표기법`에 대해서 정리하려고 한다.
 먼저, 그 5가지 정렬알고리즘은 다음과 같다.
+<!-- more -->
 
 ***
 1. 버블정렬(Bubble sort)
@@ -25,43 +36,44 @@ categories:
 
 그리고 이 알고리즘들의 성능은 `빅오표기법`으로 표현하므로, 빅오표기법에 대한 설명도 간단히 하고 넘어가려한다.
 
-### Big O 표기법과 시간복잡도
-***
+## Big O 표기법과 시간복잡도
 알고리즘들의 성능을 판단하는 지표로는 `시간 복잡도(Time Complexity)`와 `공간 복잡도(Time Complexity)`가 있다. `시간 복잡도`는 알고리즘의 수행시간을 의미하는 지표이며, `공간 복잡도`는 알고리즘의 메모리 사용량을 의미한다.
 
-보통 알고리즘에 대해서 공부하다보면 `이 알고리즘의 시간복잡도는 O n입니다` 혹은 `O의 n제곱입니다` 이런 식으로 이야기하거나 {% math %}O(n){% endmath %} 이런 식으로 작성되어있는 것을 볼 수 있었을 것이다.
+보통 알고리즘에 대해서 공부하다보면 `이 알고리즘의 시간복잡도는 O n입니다` 혹은 `O의 n제곱입니다` 이런 식으로 이야기하거나 $O(n)$ 이런 식으로 작성되어있는 것을 볼 수 있었을 것이다.
 
-이게 바로 `빅오(Big O) 표기법`이다. 말로 풀어보자면 {% math %}O(n){% endmath %}의 의미는 다음과 같다.
+이게 바로 `빅오(Big O) 표기법`이다. 말로 풀어보자면 $O(n)$의 의미는 다음과 같다.
 
-{% blockquote %}
-이 함수는 n만큼의 데이터가 주어졌을 때, "최악"의 경우 n만큼의 리소스를 소모한다
-{% endblockquote %}
+> 이 함수는 n만큼의 데이터가 주어졌을 때, "최악"의 경우 n만큼의 리소스를 소모한다
 
 이때 위에서 말한 `리소스`는 시간복잡도라면 `시간`이고 공간복잡도라면 `메모리공간`이 될 것이다.
 하지만 보통 정렬알고리즘을 평가할때는 주로 `시간복잡도`에 집중하므로 여기서는 시간복잡도만 살펴보도록 하겠다.
 
-먼저 시간복잡도에 대한 이해를 더 하기위해 `이진탐색`알고리즘의 시간복잡도를 살펴보자. 혹시 `이진탐색`을 잘모르는 사람은 술게임인 `업다운`을 생각해보자.
-다들 잘 알겠지만 `업다운`은 다른 사람이 생각한 임의의 숫자를 맞춰야하는 게임이다. 이때, 가장 질문을 최소화할 수 있는 방법은 무엇일까? 바로 첫 질문에 중간 값인 `50`을 부르는 것이다. `50`을 부르고 상대방이 `업` 또는 `다운`을 하게되면 우리는 반대쪽에 있는 50개의 수는 버리고 나머지 50개만 다시 생각하면 되는 것이다.
-근데 만약 상대방이 생각한 수가 `50`이라면?
-바로 게임이 끝나고 누군가는 술을 먹게 되겠지...아 술땡기네...
+먼저 시간복잡도에 대한 이해를 더 하기위해 `이진탐색` 알고리즘의 시간복잡도를 살펴보자. 혹시 `이진탐색`을 잘모르는 사람은 술게임인 `업다운`을 생각해보자. 다들 잘 알겠지만 `업다운`은 다른 사람이 생각한 임의의 숫자를 맞춰야하는 게임이다.
 
-어쨌든 이 게임에서 최악의 경우는 계속 `업&다운`을 반복하다가 {% math %}O({\log}N){% endmath %}번만에 끝나는 것이고 최선의 경우는 찾고자 하는 값을 첫 번째 추측으로 맞춰버린 상황. 즉, 시간복잡도는 {% math %}O(1){% endmath %}이 된다.
+이때, 가장 질문을 최소화할 수 있는 방법은 무엇일까? 바로 첫 질문에 중간 값인 `50`을 부르는 것이다. `50`을 부르고 상대방이 `업` 또는 `다운`을 하게되면 우리는 반대쪽에 있는 50개의 수는 버리고 나머지 50개만 다시 생각하면 되는 것이다.
+
+<center>
+  {% asset_img 'drink.jpg' %}
+  <sub>만약 운좋게 상대방이 생각한 수가 50이라면 바로 게임이 끝나고 상대방은 벌주를 먹게 된다.</sub>
+  <br>
+</center>
+
+어쨌든 이 게임에서 최악의 경우는 계속 `업&다운`을 반복하다가 $O({\log}N)$번만에 끝나는 것이고 최선의 경우는 찾고자 하는 값을 첫 번째 추측으로 맞춰버린 상황. 즉, 시간복잡도는 $O(1)$이 된다.
 
 보는 바와 같이 최선의 결과와 최악의 결과 간 차이는 늘 있을 수 밖에 없기 때문에 보통 알고리즘을 평가할 때는 주로 **최악** 의 경우를 생각한다.
 그리고 이런 **최악** 의 경우를 표현할 때 바로 `빅오 표기법`을 사용하는 것이다.
 
-자주 나오는 것들은 보통 {% math %}O(1){% endmath %}, {% math %}O(n){% endmath %}, {% math %}O(n^2){% endmath %}, {% math %}O({\log}N){% endmath %} 정도가 있는데 알기 쉽게 2차원 그래프로 그려보면 다음과 같이 나타난다.
+자주 나오는 것들은 보통 $O(1)$, $O(n)$, $O(n^2)$, $O({\log}N)$ 정도가 있는데 알기 쉽게 2차원 그래프로 그려보면 다음과 같이 나타난다.
 
-<center>{% asset_img 'big_o.png' %}</center>
+<center>{% asset_img 'big_o.png' 500 %}</center>
 
 `빅오 표기법`의 계산방법과 같은 더 자세한 내용은 다른 포스팅에서 다시 설명하도록 하겠다.
 
-### 정렬알고리즘
-***
+## 정렬알고리즘
 
 <center>{% asset_img 'sorts.gif' %}</center>
 
-`정렬알고리즘`은 컴퓨터공학에서 중요시되는 문제 중 하나로, 어떤 데이터셋이 주어졌을 때 이를 정해진 순서대로 나열하여 재배치하는 문제이다.
+`정렬알고리즘`은 컴퓨터 공학에서 중요시되는 문제 중 하나로, 어떤 데이터셋이 주어졌을 때 이를 정해진 순서대로 나열하여 재배치하는 문제이다.
 실제 개발을 하다보면 불규칙한 데이터들을 정렬 후 탐색해야하는 경우가 꽤나 많이 발생하게 되는데 이때 상황에 맞는 알고리즘을 사용하여 효과적으로 문제를 해결할 수 있느냐가 핵심이라고 볼 수 있다.
 
 예를 들어 1부터 10까지 적혀있는 공이 불규칙하게 들어있는 주머니에서 공을 하나씩 꺼내어 작은 수부터 큰 수의 순서로 공을 나열한다고 생각해보자.
@@ -72,7 +84,7 @@ categories:
 자 그럼 대표적인 정렬알고리즘인 `버블정렬`, `선택정렬`, `삽입정렬`, `병합정렬`, `퀵정렬`을 한번 살펴보도록 하자.
 
 
-#### 1. 버블정렬(Bubble sort)
+### 버블정렬(Bubble sort)
 
 <center>{% asset_img 'bubble_sort.gif' %}</center>
 
@@ -95,25 +107,25 @@ categories:
 
 ```js
 function bubbleSort (input) {
-    const len = input.length;
-    let tmp = null;
-    for (let i = 0; i < len; i++) {
-        for (let j = 0; j < len; j++) {
-            if (input[j] > input[j + 1]) {
-                // Swap
-                tmp = input[j];
-                input[j] = input[j + 1];
-                input[j + 1] = tmp;
-                tmp = null;
-            }
-        }
+  const len = input.length;
+  let tmp = null;
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < len; j++) {
+      if (input[j] > input[j + 1]) {
+        // Swap
+        tmp = input[j];
+        input[j] = input[j + 1];
+        input[j + 1] = tmp;
+        tmp = null;
+      }
     }
-    return input;
+  }
+  return input;
 }
 ```
 
 
-#### 2. 선택정렬(Selection sort)
+### 선택정렬(Selection sort)
 
 <center>{% asset_img 'selection_sort.gif' %}</center>
 
@@ -131,30 +143,30 @@ function bubbleSort (input) {
 
 ***
 
-`선택정렬`은 현재 자료가 정렬이 되어있던말던 무조건 전체 리스트를 순회해가며 검사하기 때문에 최선의 경우든 최악의 경우든 한결같이 {% math %}O(n^2){% endmath %}의 시간복잡도를 가지고 있다.
+`선택정렬`은 현재 자료가 정렬이 되어있던말던 무조건 전체 리스트를 순회해가며 검사하기 때문에 최선의 경우든 최악의 경우든 한결같이 $O(n^2)$의 시간복잡도를 가지고 있다.
 `선택정렬`의 구현코드는 다음과 같다.
 
 ```js
 function selectionSort (input) {
-    const len = input.length;
-    let tmp = null;
-    for (let i = 0; i < len; i++) {
-        for (let j = 0; j < len; j++) {
-            if (input[i] < input[j]) {
-                // Swap
-                tmp = input[j];
-                input[j] = input[i];
-                input[i] = tmp;
-                tmp = null;
-            }
-        }
+  const len = input.length;
+  let tmp = null;
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < len; j++) {
+      if (input[i] < input[j]) {
+        // Swap
+        tmp = input[j];
+        input[j] = input[i];
+        input[i] = tmp;
+        tmp = null;
+      }
     }
-    return input;
+  }
+  return input;
 }
 ```
 
 
-#### 3. 삽입정렬(Insertion sort)
+### 삽입정렬(Insertion sort)
 
 <center>{% asset_img 'insertion_sort.gif' %}</center>
 
@@ -176,37 +188,37 @@ function selectionSort (input) {
 4. 0~n번 인덱스 중 n번 인덱스 값이 들어가야할 위치를 찾아서 넣는다
 ***
 
-삽입정렬은 최선의 경우 전체 자료를 한번만 순회하면 되기때문에 {% math %}O(n){% endmath %}의 시간복잡도를 가지지만 최악의 경우 {% math %}O(n^2){% endmath %}의 시간복잡도를 가진다.
+삽입정렬은 최선의 경우 전체 자료를 한번만 순회하면 되기때문에 $O(n)$의 시간복잡도를 가지지만 최악의 경우 $O(n^2)$의 시간복잡도를 가진다.
 
 `선택정렬`의 구현코드는 다음과 같다.
 
 ```js
 function insertionSort (input) {
-    const len = input.length;
-    for (let i = 1; i < len; i++) { // 두번째 카드부터 시작
-        const value = input[i]; // 카드를 잡는다
-        let j = i-1;
-        for (;j > -1 && input[j] > value; j--) {
-            // 이미 정렬된 카드들을 뒤에서부터 살펴보다가
-            // 살펴본 카드가 현재 카드보다 크다면
-            // 살펴본 카드를 뒤로 한칸 보낸다
-            input[j+1] = input[j];
-        }
-        // 뒤로 보내는 행위가 끝나면
-        // 현재 카드보다 작은 카드의 한칸 뒤에
-        // 현재 카드를 위치시킨다
-        input[j+1] = value;
+  const len = input.length;
+  for (let i = 1; i < len; i++) { // 두번째 카드부터 시작
+    const value = input[i]; // 카드를 잡는다
+    let j = i-1;
+    for (;j > -1 && input[j] > value; j--) {
+      // 이미 정렬된 카드들을 뒤에서부터 살펴보다가
+      // 살펴본 카드가 현재 카드보다 크다면
+      // 살펴본 카드를 뒤로 한칸 보낸다
+      input[j+1] = input[j];
     }
-    return input;
+    // 뒤로 보내는 행위가 끝나면
+    // 현재 카드보다 작은 카드의 한칸 뒤에
+    // 현재 카드를 위치시킨다
+    input[j+1] = value;
+  }
+  return input;
 }
 ```
 
 
-#### 4. 병합정렬(Merge sort)
+### 병합정렬(Merge sort)
 
 <center>{% asset_img 'merge_sort.gif' %}</center>
 
-`병합정렬`은 일종의 분할 정복법 중 하나로 큰 문제를 작은 여러 개의 문제로 쪼개서 각각을 해결한 후 결과를 모아서 원래의 문제를 해결하는 방법이다.
+`병합정렬`은 일종의 `분할 정복법` 중 하나로 큰 문제를 작은 여러 개의 문제로 쪼개서 각각을 해결한 후 결과를 모아서 원래의 문제를 해결하는 방법이다.
 `병합정렬`이라는 이름 그대로 주어진 자료를 잘게 쪼갠 뒤 합치는 과정에서 정렬을 하는 알고리즘이다. 순서를 살펴보면 다음과 같다.
 
 ***
@@ -231,41 +243,43 @@ function insertionSort (input) {
 ***
 
 **볼드** 처리된 **왼쪽의 0번 인덱스와 오른쪽의 0번 인덱스를 비교하여 적은 값을 먼저 병합** 을 보자.
-같은 방식으로 계속 반복하여 병합하고 있기 때문에 보통 `병합정렬`은 재귀함수로 구현한다. 또한 `병합정렬`은 항상 {% math %}O({n\log}n){% endmath %}의 시간복잡도를 가지기 때문에 효율적이다. 그러나 원소의 개수만큼 리스트를 쪼개고 따로 저장하고 있어야하기 때문에 {% math %}O(n){% endmath %}의 공간복잡도를 가진다. 한마디로 메모리를 팔아 수행속도를 얻는 경우라고 할 수 있다.
+같은 방식으로 계속 반복하여 병합하고 있기 때문에 보통 `병합정렬`은 재귀함수로 구현한다. 또한 `병합정렬`은 항상 $O({n\log}n)$의 시간복잡도를 가지기 때문에 효율적이다. 그러나 원소의 개수만큼 리스트를 쪼개고 따로 저장하고 있어야하기 때문에 $O(n)$의 공간복잡도를 가진다. 한마디로 메모리를 팔아 수행속도를 얻는 경우라고 할 수 있다.
 
 `병합정렬`의 구현코드는 다음과 같다
+
 ```js
 function merge (left, right) {
-    const result = [];
-    while (left.length && right.length) {
-        if (left[0] <= right[0]) {
-            result.push(left.shift());
-        }
-        else {
-            result.push(right.shift());
-        }
+  const result = [];
+  while (left.length && right.length) {
+    if (left[0] <= right[0]) {
+      result.push(left.shift());
     }
-    while (left.length) {
-        result.push(left.shift());
+    else {
+      result.push(right.shift());
     }
-    while(right.length) {
-        result.push(right.shift());
-    }
-    return result;
+  }
+  while (left.length) {
+    result.push(left.shift());
+  }
+  while(right.length) {
+    result.push(right.shift());
+  }
+  return result;
 }
+
 function mergeSort (input) {
-    if (input.length < 2) {
-        return input;
-    }
-    const middle = parseInt(input.length / 2);
-    const left = input.slice(0, middle);
-    const right = input.slice(middle, input.length);
-    return merge(mergeSort(left), mergeSort(right));
+  if (input.length < 2) {
+    return input;
+  }
+  const middle = parseInt(input.length / 2);
+  const left = input.slice(0, middle);
+  const right = input.slice(middle, input.length);
+  return merge(mergeSort(left), mergeSort(right));
 }
 ```
 
 
-#### 5. 퀵정렬(Quick sort)
+### 퀵정렬(Quick sort)
 
 <center>{% asset_img 'quick_sort.gif' %}</center>
 
@@ -277,39 +291,38 @@ function mergeSort (input) {
 2. `피벗`을 기준으로 리스트를 둘로 분할한다.
 3. `피벗`을 기준으로 `피벗`보다 작은 원소들은 모두 `피벗`의 왼쪽으로 옮긴다
 4. `피벗`을 기준으로 `피벗`보다 큰 원소들은 모두 `피벗`의 오른쪽으로 옮긴다
-5.
 ***
 
 ```js
 function quickSort(arr, left, right) {
-    if (left < right) {
-        //기준점을 찾고 기준점을 중심으로 더 작은수, 더 큰수 분류
-        const i =  position(arr, left, right);
-        //기준점 기준 좌측 정렬
-        quicksort(arr, left, i - 1);
-        //기준점 기준 우측 정렬
-        quicksort(arr, i + 1, right);
-    }
-    return arr;
+  if (left < right) {
+    //기준점을 찾고 기준점을 중심으로 더 작은수, 더 큰수 분류
+    const i =  position(arr, left, right);
+    //기준점 기준 좌측 정렬
+    quicksort(arr, left, i - 1);
+    //기준점 기준 우측 정렬
+    quicksort(arr, i + 1, right);
+  }
+  return arr;
 }
 function position (arr, left, right) {
-    let i = left;
-    let j = right;
-    const pivot = arr[left];
+  let i = left;
+  let j = right;
+  const pivot = arr[left];
 
-    //제자리 더 큰수/더 작은 수 좌우 배치.
-    while (i < j) {
-        while (arr[j] > pivot) j--;
-        while (i < j && arr[i] <= pivot) i++;
+  //제자리 더 큰수/더 작은 수 좌우 배치.
+  while (i < j) {
+    while (arr[j] > pivot) j--;
+    while (i < j && arr[i] <= pivot) i++;
 
-        tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
-    arr[left] = arr[j];
-    arr[j] = pivot;
+    tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  arr[left] = arr[j];
+  arr[j] = pivot;
 
-    return j;
+  return j;
 }
 ```
 

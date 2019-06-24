@@ -5,19 +5,26 @@ tags:
   - Jira
   - 애자일
   - Agile
-  - 협업하기
+  - 협업
   - Atlassian
 categories:
-  - Jira
-  - Agile
-  - 애자일
   - Atlassian
+thumbnail: /2019/06/16/jira-customizing-issue/jira-logo.png
+toc: true
+widgets:
+  - 
+    type: toc
+    position: right
+  - 
+    type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 ---
 
-{% asset_img 'jira-logo.png' 'Jira 로고' %}
-
-## 들어가며
-이번 포스팅에서는 Atlassian의 대표 제품 중 하나인 `Jira`에 대해서 포스팅 하려고 한다. 요즘 많은 IT회사들에서 `애자일 개발 방법론`을 사용하여 소프트웨어 개발을 진행하고 있다. Jira는 애자일 방법론에서 사용하는 다양한 방법들을 좀 더 쉽고 편하게 사용할 수 있게 도와준다. 
+이번 포스팅에서는 Atlassian의 대표 제품 중 하나인 `Jira`에 대해서 포스팅 하려고 한다. 요즘 많은 IT회사들에서 `애자일 개발 방법론`을 사용하여 소프트웨어 개발을 진행하고 있다. Jira는 애자일 방법론에서 사용하는 다양한 방법들을 좀 더 쉽고 편하게 사용할 수 있게 도와준다.
+<!-- more -->
 
 사실 애자일 프로세스는 일종의 방법론일 뿐 어떤 원칙이 아니기 때문에 팀마다 그 구성이나 개발 과정이 조금씩 달라지게 될 수 밖에 없고, 또 회고를 통해 이런 저런 방법들을 계속 시도해보기 때문에 어떠한 규칙으로 똑부러지게 정해지는 게 아니다. Jira는 이렇게 매번 달라지는 규칙들에 대응하기 위해서 다양하게 프로젝트를 커스터마이징 할 수 있는 기능을 제공한다.
 
@@ -32,8 +39,11 @@ Jira는 호주의 Atlassian이라는 기업에서 제공하는 `애자일 소프
 
 또한 Atlassian에서 제공하는 다른 서비스들인 `Bitbucket`, `Confluence`, `Source Tree` 등과 서로 연동이 잘되어있는 부분도 좋은 것 같다. 예를 들면 어떤 브랜치에서 기능을 개발하다가 해당 브랜치로 `Pull Request`를 생성하면 Jira에 연결된 이슈가 자동으로 `Code Review` 상태로 변경되게도 할 수 있고 커밋 메세지에 `LU-0000 first commit` 처럼 Jira 이슈 번호를 넣어준다면 Jira 이슈 내에 해당 커밋과 브랜치가 자동으로 추적되기도 한다.
 
-{% asset_img 'jira-branch.png' 'Jira 브랜치 추적' %}
-<center><sub>이슈에서 추적되고 있는 브랜치와 커밋의 모습</sub></center>
+<center>
+  {% asset_img 'jira-branch.png' 'Jira 브랜치 추적' %}
+  <sub>이슈에서 추적되고 있는 브랜치와 커밋의 모습</sub>
+  <br>
+</center>
 
 저런 공유 기능으로 인해서 제일 좋은 점은 사실 `PO(Product Owner)`들의 업무가 많이 편해진다는 것이다. Jira의 스프린트 대시보드는 일종의 상황판이다. 누가 어떤 업무를 어느 정도 진행했는지 브랜치와 커밋을 통해 상세히 알아볼 수도 있고 또 전체 스프린트의 이슈의 몇 퍼센트가 Done 상태인지, 팀이 얼마나 더 빡쎄게 달려야 이 스프린트를 마칠 수 있는지와 같은 정보를 실시간으로 보여준다.
 
@@ -45,19 +55,31 @@ Jira는 호주의 Atlassian이라는 기업에서 제공하는 `애자일 소프
 ### Jira 세팅 메뉴 찾기
 Jira 메인 화면에 접속하였을 때 Jira 프로젝트 설정에 대해 수정 권한이 있는 사용자라면 왼쪽 메뉴 리스트의 제일 하단에 `Jira settings`라는 메뉴가 보일 것이다. 이 메뉴에 접속하면 `시스템`, `프로젝트`, `이슈` 등 Jira에 대한 모든 설정을 수정할 수 있다. 
 
-{% asset_img 'jira1.png' 'Jira 세팅 메뉴' %}
+<center>
+  {% asset_img 'jira1.png' 'Jira 세팅 메뉴' %}
+  <br>
+</center>
+
 
 `Jira settings` 메뉴를 클릭하여 세팅 메뉴가 노출되면 `System`, `Products`, `Projects`, `Issues`, `Apps` 총 5개의 메뉴가 보인다. 이 포스팅에서는 이 설정들 중에서 `Issues`에 대한 설정만을 다룰 것이다.
 
 ### Issues 메뉴
-{% asset_img 'menu.png' 'Jira 이슈 메뉴들' %}
+
+<center>
+  {% asset_img 'menu.png' 500 'Jira 이슈 메뉴들' %}
+  <br>
+</center>
 
 Jira settings 내의 Issues 메뉴를 클릭해보면 이슈에 관련된 수많은 메뉴들이 노출된다. 하나하나 알아보자.
 
 #### Issue Types
 ***
 ##### Issue Types
-{% asset_img 'issue-types.png' Jira 이슈 타입' %}
+
+<center>
+  {% asset_img 'issue-types.png' 'Jira 이슈 타입' %}
+  <br>
+</center>
 
 이슈 타입은 `Story`, `Bug`, `Task`와 같이 Jira 내에서 사용할 수 있는 이슈의 타입을 의미한다.
 이런 이슈 타입들은 크게 `Standard` 타입과 `Sub-Task` 타입으로 나누어진다.
@@ -69,7 +91,10 @@ Jira settings 내의 Issues 메뉴를 클릭해보면 이슈에 관련된 수많
 
 현재 직장의 애자일 팀에서는 `Bug`, `Epic`, `Research`, `Story`, `Sustain`, `Task`, `Sub-task`로 총 7개의 이슈 타입을 사용 중이다. 각 이슈 타입의 의미에 대해서는 이슈 타입 밑에 적혀져 있는 설명을 읽어보자. 
 
-{% asset_img 'jira2.png' 'Jira 이슈 타입 리스트' %}
+<center>
+  {% asset_img 'jira2.png' 'Jira 이슈 타입 리스트' %}
+  <br>
+</center>
 
 슬프게도 영어로 되어있지만 그냥저냥 읽을 수 있는 수준이다. 다른 사람들도 이렇게 영어로 설명을 읽어야하는 고통을 경험하게 만들고 싶지 않다면 우리가 희생해서 전부 한글로 번역해두면 된다.
 이슈 타입들은 맨 마지막 컬럼인 `Actions` 컬럼의 메뉴를 통해 수정 및 삭제할 수 있다.
@@ -81,7 +106,10 @@ Jira settings 내의 Issues 메뉴를 클릭해보면 이슈에 관련된 수많
 ##### Issue Type Schemes
 이슈 타입 스키마는 `이슈 타입들을 묶어놓은 일종의 그룹`이다. 각 프로젝트에 이슈 타입을 적용할 때 이슈 타입을 각각 할당하는 것이 아닌 이슈 타입 스키마를 할당하게 된다. 또한 이슈 타입 스키마 설정 페이지의 Projects 컬럼에는 해당 스키마가 어떤 프로젝트에서 사용되고 있는지 명시되어 있으므로 수정 및 삭제 시 반드시 이 부분을 확인하고 진행하도록하자.
 
-{% asset_img 'jira3.png' 'Jira 이슈 타입 스키마 리스트' %}
+<center>
+  {% asset_img 'jira3.png' 'Jira 이슈 타입 스키마 리스트' %}
+  <br>
+</center>
 
 이슈 타입 스키마도 이슈 타입과 마찬가지로 맨 마지막 컬럼인 `Actions` 컬럼의 메뉴를 통해 이슈 타입 스키마를 수정, 삭제, 할당, 복사할 수 있다.
 
@@ -97,21 +125,34 @@ Jira settings 내의 Issues 메뉴를 클릭해보면 이슈에 관련된 수많
 워크 플로우는 지라 프로젝트 내 이슈들의 작업 흐름을 의미한다. `To Do`, `In Progress`, `Done` 등이 여기에 해당한다.
 ***
 ##### Workflows
-{% asset_img 'jira4.png' 'Jira workflows' %}
+
+<center>
+  {% asset_img 'jira4.png' 'Jira workflows' %}
+  <br>
+</center>
 
 워크 플로우를 자세히 보려면 `Actions` 컬럼의 `View` 버튼을 클릭하면 된다. 워크 플로우는 `다이어그램`과 `텍스트` 2가지 방식으로 볼 수 있는데 텍스트 방식은 작업의 흐름을 읽기가 불편하니 다이어그램 방식으로 보는 것을 추천한다.
 
-{% asset_img 'jira5.png' 'Jira workflow diagram' %}
+<center>
+  {% asset_img 'jira5.png' 'Jira workflow diagram' %}
+  <br>
+</center>
 
 워크 플로우는 `Status`와 `Transition`으로 구분된다. `To Do`, `Done`과 같은 사각형이 `Status`를 의미하고 그 사각형들을 이어주는 화살표는 `Transition`이다. 워크 플로우를 수정하려면 우측 상단의 `Edit` 버튼을 누르면 된다. 그러면 다이어그램 UI를 사용하여 워크 플로우 수정 화면이 노출된다. 
 
 PowerPoint나 Google Draw.io와 유사한 UX를 제공해주기 때문에 처음이라도 무리없이 수정할 수 있다.
 
-{% asset_img 'jira6.png' 'Jira workflow diagram editing' %}
+<center>
+  {% asset_img 'jira6.png' 'Jira workflow diagram editing' %}
+  <br>
+</center>
 
 Status를 클릭하면 Status의 정보를 수정할 수 있는 창이 노출되는데, 이 창 내부에서 `Allow all statuses to transition to this one`에 체크를 하면 이슈가 어떤 Status를 가지고 있는지와 관계없이 자유롭게 현재 Status로 변경할 수 있도록 설정된다.
 
-{% asset_img 'jira7.png' 'Allow all statuses to transition to this one' %}
+<center>
+  {% asset_img 'jira7.png' 'Allow all statuses to transition to this one' %}
+  <br>
+</center>
 
 `Transition`을 클릭하면 Transition 설정 창이 노출된다. 이 창에서는 Transition의 `이름`, `속성`, `트리거`, `조건`, `유효성 검사` 등을 설정할 수 있다. 특히 트리거와 조건은 굉장히 유용하게 사용할 수 있다.
 
@@ -120,12 +161,19 @@ Status를 클릭하면 Status의 정보를 수정할 수 있는 창이 노출되
 
 이후 모든 수정을 마쳤다면 상단의 `Publish Draft`를 클릭하여 설정을 배포하면 된다. 이때 이전 워크플로우를 백업할 것이냐고 물어보는 창이 노출되는데 백업을 할지말지는 그냥 본인 판단하에 알아서 하면된다.
 
-{% asset_img 'save.jpg' %}
-<center><sub>편집한 이슈는 내 마음 속에 저장!</sub><center>
+<center>
+  {% asset_img 'save.jpg' 400 %}
+  <sub>편집한 이슈는 내 마음 속에 저장!</sub>
+  <br>
+</center>
 
 그리고 한번 `Edit` 버튼을 눌러 워크플로우 수정 화면으로 들어가면 아무 것도 수정하지 않았더라도 Jira는 `현재 상태를 자동 저장`한다. 그러니까 아무것도 수정하지 않았더라도 상단의 `Discard Draft` 버튼을 클릭하여 수정 상태를 종료해주도록 하자.
 
-{% asset_img 'jira8.png' 'Jira discard draft' %}
+<center>
+  {% asset_img 'jira8.png' 'Jira discard draft' %}
+  <br>
+</center>
+
 
 ##### Workflow schemes
 Jira는 프로젝트의 이슈 타입마다 다른 워크 플로우를 사용할 수 있게끔 해준다. 워크 플로우 스키마는 이슈 타입마다 워크 플로우를 할당하는 그룹이다.
@@ -142,12 +190,18 @@ Jira는 프로젝트의 이슈 타입마다 다른 워크 플로우를 사용할
 ##### Screens
 스크린 메뉴에서는 해당 스크린에 들어갈 탭과 필드들을 설정할 수 있다.
 
-{% asset_img 'jira9.png' 'Jira Screen Fields' %}
+<center>
+  {% asset_img 'jira9.png' 'Jira Screen Fields' %}
+  <br>
+</center>
 
 ##### Screen Schemes
 이슈를 `생성할 때`, `수정할 때`, `열람할 때` 각각 다른 스크린을 할당할 수 있다. 기본적으로 `Default`로 설정되어있다.
 
-{% asset_img 'jira10.png' 'Jira Screen schemes' %}
+<center>
+  {% asset_img 'jira10.png' 'Jira Screen schemes' %}
+  <br>
+</center>
 
 이슈 생성은 보통 실무자들이 플래닝할 때 생성하는 경우가 많으므로 빠르게 생성하기 위해 최소한의 필드만 입력하도록 하고 이후 `PO`들이 다시 이슈의 내용을 검토하며 자세히 작성하는 경우에 사용하면 좋다.
 
@@ -156,12 +210,18 @@ Jira는 프로젝트의 이슈 타입마다 다른 워크 플로우를 사용할
 
 > 참고로 스크린이 아니라 **스크린 스키마**를 할당하는 것이다.
 
-{% asset_img 'jira11.png' 'Jira Issue Type Screen Schemes' %}
+<center>
+  {% asset_img 'jira11.png' 'Jira Issue Type Screen Schemes' %}
+  <br>
+</center>
 
 #### Fields
 스크린에 들어가는 항목들을 수정할 수 있는 항목이다. `Custom Fields` 메뉴에서 항목을 추가하고 위에서 설명한 `Screens`에서 불러와서 사용하면 된다.
 
-{% asset_img 'custom-fields.png' 'Jira Custom fields' %}
+<center>
+  {% asset_img 'custom-fields.png' 'Jira Custom fields' %}
+  <br>
+</center>
 
 상단의 `Add custom field`를 누르면 다양한 폼을 선택할 수 있다. 폼 종류는 `Standard`와 `Advanced`가 있는 데, 필자는 `Standard` 밖에 사용을 안해봤다. 사실 `Standard` 폼만 사용하더라도 왠만한 정보는 전부 표현할 수 있다.
 ***
@@ -186,13 +246,22 @@ Jira는 프로젝트의 이슈 타입마다 다른 워크 플로우를 사용할
 이런 경우 `A blocks B` 또는 `B is blocked by A`로 표현할 수 있다. 만약 `A` 이슈에 `B` 이슈로 통하는 `blocks` 링크를 건다면 `B` 이슈에 자동으로 `is blocked by`가 추가된다.
 
 ***
+
 ###### A blocks B
-{% asset_img 'blocks.png' %}
+<center>
+  {% asset_img 'blocks.png' 500 %}
+  <br>
+</center>
+
 ###### B is blocked by A
-{% asset_img 'is-blocked-by.png' %}
+<center>
+  {% asset_img 'is-blocked-by.png' 500 %}
+  <br>
+</center>
+
 ***
 
 `이슈 링킹` 기능은 해당 이슈 담당자로 하여금 이 이슈가 어디서 파생된 이슈인지 혹은 어떤 작업이 선행되어야 하는지 명시적으로 알려줄 수 있는 기능이므로 잘 사용하면 커뮤니케이션 비용을 상당히 아낄 수 있다.
 
-이상으로  JIRA 프로젝트 이슈 커스터마이징하기 포스팅을 마친다.
+이상으로 JIRA 프로젝트 이슈 커스터마이징하기 포스팅을 마친다.
 
