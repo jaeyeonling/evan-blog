@@ -8,7 +8,7 @@ tags:
   - Computer Science
 categories:
   - Algorithm
-thumbnail: /2019/06/25/hashtable-with-js/thumbnail.svg
+thumbnail: /2019/06/25/hashtable-with-js/thumbnail.png
 toc: true
 widgets:
   - 
