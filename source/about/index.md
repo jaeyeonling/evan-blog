@@ -66,7 +66,7 @@ share:
 [Live Demo](https://solar-system-ts.herokuapp.com/)
 
 `TypeScript`, `Vue.js`, `Three.js(WebGL)`을 사용해 제작한 실시간 태양계 시뮬레이터!
-중력을 사용하여 구현하려고 했으나 천체의 질량 데이터가 미묘하게 맞지 않는건지 뭔지 궤도 제 멋대로 돌아서 일단 보류.
+중력을 사용하여 구현하려고 했으나 천체의 질량 데이터가 미묘하게 맞지 않는건지 뭔지 궤도가 제 멋대로 돌아서 일단 보류.
 대신 `케플러 궤도 6요소`와 `케플러 방정식 + 레가르 다항식`을 사용하여 현재 날짜에 해당 행성이 어디에 있는지 위치를 추적하는 방향으로 변경함.
 
 ##### 해야 하는 것
@@ -86,7 +86,7 @@ share:
 [Github Repository](https://github.com/evan-moon/simple-ann)
 [Live Demo](https://simple-ann.herokuapp.com/)
 
-`TypeScript`와 `React`, `D3`, `ChartJS`를 사용해 제작한 간단한 인공 신경망. 원래는 회사 세미나 발표 용도로 간단하게 만들어서 생각보다 재밌어서 계속 건드는 중.
+`TypeScript`와 `React`, `D3`, `ChartJS`를 사용해 제작한 간단한 인공 신경망. 원래는 회사 세미나 발표 용도로 간단하게 만들었는데 생각보다 재밌어서 계속 건드는 중.
 미리 설정해놓은 개수에 맞는 노드와 레이어를 생성하여 학습 과정에서 $y$값의 변화와 `Loss`의 변화를 시각화하는 기능을 가지고 있다.
 
 ##### 해야 하는 것
