@@ -1,5 +1,5 @@
 ---
-title: Deep Learning이란 무엇인가? - Backpropagation
+title: "[Deep Learning이란 무엇인가?] Backpropagation, 역전파 알아보기"
 date: 2018-07-19 00:27:18
 tags:
   - 머신러닝
@@ -22,7 +22,6 @@ sidebar:
 ---
 
 이번 포스팅에서는 {% post_link deep-learning-intro 저번 포스팅 %}에 이어 `Backpropagation`에 대해서 알아보려고 한다.
-
 <!-- more -->
 
 전 포스팅에서도 설명했듯, 이 알고리즘으로 인해 `Multi Layer Network`에서의 학습이 가능하다는 것이 알려져, 암흑기에 있던 `Neural Network` 학계가 다시 관심을 받게 되었다.

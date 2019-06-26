@@ -1,5 +1,5 @@
 ---
-title: JavaScript로 중력 구현하기 - 2. 중력이란?
+title: "[JavaScript로 중력 구현하기] 2. 코딩하기"
 date: 2017-05-06 14:22:01
 tags:
   - 물리학

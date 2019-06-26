@@ -1,5 +1,5 @@
 ---
-title: 케플러 6요소를 사용한 궤도 계산
+title: "[JavaScript로 천체 구현하기] 행성의 움직임을 구현해보자"
 date: 2017.05.03 21:49:04
 tags:
   - 물리학
@@ -122,13 +122,14 @@ computed.w = computed.lp - computed.o;
 저 두 궤도의 공전 주기는 같기 때문에 같은 지역을 같은 시간 동안 지나간다. 근데 그림을 보면 원 궤도는 각 호들의 넓이가 일정하지만 타원 궤도인 회색 궤도는 일정하지 않다.
 타원 궤도를 도는 물체는 초점과의 거리에 따라 `각속도`가 변하기 때문이다. 그래서 좀 더 구하기 쉬운 `평균근점이각`을 먼저 구한 후 타원 궤도에 이를 적용하게 된다.
 
-<sub>참조링크: [평균근점이각 위키](https://ko.wikipedia.org/wiki/%ED%8F%89%EA%B7%A0_%EA%B7%BC%EC%A0%90_%EC%9D%B4%EA%B0%81)</sub>
-<sub>참조링크: [케플러 행성운동법칙 위키 - 제 2법칙: 면적속도 일정의 법칙](https://ko.wikipedia.org/wiki/%EC%BC%80%ED%94%8C%EB%9F%AC%EC%9D%98_%ED%96%89%EC%84%B1%EC%9A%B4%EB%8F%99%EB%B2%95%EC%B9%99)</sub>
+<small>참조링크: [평균근점이각 위키](https://ko.wikipedia.org/wiki/%ED%8F%89%EA%B7%A0_%EA%B7%BC%EC%A0%90_%EC%9D%B4%EA%B0%81)</small>
+<small>참조링크: [케플러 행성운동법칙 위키 - 제 2법칙: 면적속도 일정의 법칙](https://ko.wikipedia.org/wiki/%EC%BC%80%ED%94%8C%EB%9F%AC%EC%9D%98_%ED%96%89%EC%84%B1%EC%9A%B4%EB%8F%99%EB%B2%95%EC%B9%99)</small>
 
 `평균근점이각`을 구하는 공식은 여러 개가 있으나 필자는 `근일점 경도`와 `평균 경도`값을 가지고 있기 때문에 여러 개의 공식 중 가장 쉬워보이는 녀석을 골라서 사용할 수 있다.
 
-이때 평균근점이각{% math %}M{% endmath %}은 평균 경도{% math %}l{% endmath %}과 근일점 경도{% math %}\omega{% endmath %}의 차로 나타내어 질 수 있다.
-<center>{% math %}M = l-\omega{% endmath %}</center>
+이때 평균근점이각 $M$은 평균 경도 $l$과 근일점 경도 $\omega$의 차로 나타내어 질 수 있다.
+
+$$M = l-\omega$$
 
 ```js
 computed.M = computed.l - computed.lp
@@ -148,7 +149,9 @@ computed.M *= DEG_TO_RAD; // 108.8812424710587
 ```
 
 이제 `평균근점이각`을 구했으니 `편심이각(Eccentric anomaly)`를 구해야 한다. 편심이각은 그림으로 보는 게 더 직관적으로 이해하기가 쉽다.
+
 <center>{% asset_img 'eccentric-anomaly.png' 'eccentric-anomaly' %}</center>
+
 이 그림에서 물체의 위치를 `P`로 그에 따른 편심이각은 `E`로 나타내어지고 있다.
 타원의 중심은 `C`이고 타원의 초점은 `F`이다.
 이때 편심이각 `E`는 타원의 중심에 꼭지점 하나를 찍고 궤도 장반경과 같은 길이의 빗변 `a`를 그은 후, 장반경 `e`와 수직하면서도 `P`에 닿도록
@@ -156,13 +159,11 @@ computed.M *= DEG_TO_RAD; // 108.8812424710587
 
 `평균근점이각`과 마찬가지로 `편심이각`도 여러 개의 정의로 나타내어질 수 있는데, 필자는 이미 `평균근점이각`을 구했기 때문에 `평균근점이각`으로부터 유도되는 공식을 사용한다.
 
-<center>{% math %}
-E = \frac{M+e{sinM}}{1-e{cosM}}
-{% endmath %}</center>
+$$E = \frac{M+e{sinM}}{1-e{cosM}}$$
 
 여기서 `e`는 이심률, `M`은 평균근점이각을 의미한다. 그러나 한가지 슬픈 사실은 여기서 나오는 E값이 근사값이라는 것이다.
-
 그렇기 때문에 보통 이 공식은 [Newton-Raphson method](https://en.wikipedia.org/wiki/Newton%27s_method)를 사용하여 진행된다.
+
 `Newton-Raphson method`메소드는 계속적인 급수 형태로 계산되어지며, 계산을 반복할 수록 더 정확한 근사치를 뱉어준다고 보면 된다.
 
 값의 오차는 이심률이 높을 수록 더 커지게 되는데, 데이터 상 지구의 이심률은 `0.0167703`정도니까 오차율이 그렇게 크진 않을 것이라고 예상된다.
