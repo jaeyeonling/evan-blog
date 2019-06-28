@@ -45,7 +45,7 @@ To be compatible with the rest of the platform and reduce interoperability risks
 그럼 이제 `V8` 엔진이 자바스크립트를 어떤 식으로 파싱하고 실행시키는 지 간략하게 한번 알아보자.
 
 ### Parsing, 파싱하기
-`파싱`이란 소스코드를 불러온 후 `AST(Abstract Syntax Tree), 추상 구문 트리`로 변환하는 과정이다.
+`파싱(Parsing)`이란, 소스코드를 불러온 후 `AST(Abstract Syntax Tree), 추상 구문 트리`로 변환하는 과정이다.
 `AST`는 컴파일러에서 널리 사용되는 자료 구조인데, 우리가 일반적으로 작성한 소스 코드를 컴퓨터가 알아먹기 쉽게 `구조화`한다고 생각하면 된다.
 
 예를 들어, 자바스크립트로 자바스크립트를 파싱한다고 하면 이런 식이다.
@@ -90,7 +90,10 @@ bool Parser::ShortcutNumericLiteralBinaryExpression(Expression** x, Expression* 
 ```
 
 이 코드는 `V8` 엔진의 `parser.cc`에 선언된 `Parser` 클래스의 `ShortcutNumericLiteralBinaryExpression`<small>(이름이 더럽게 길다...)</small> 스태틱 메소드이다.
-이 메소드는 위에서 설명했듯이 `1 + 2`와 같은 소스 코드를 만났을 경우 실행되며, 인자로 받은 표현을 `Token::ADD`나 `Token::SUB`와 같은 조건으로 검사하여 조건에 맞게 파싱하고 있는 모습을 볼 수 있다.
+
+인자를 한번 살펴보면 `Expression` 클래스의 객체인 `x`와 `y`는 `표현식`을 의미한다. `op`는 실제 구문 내용과 그 타입을 의미하고 `pos`는 전체 소스 코드 중 현재 파싱하는 소스 코드의 위치를 의미한다.
+
+이 메소드는 위에서 설명했듯이 `1 + 2`와 같은 소스 코드를 만났을 경우 호출되며, 인자로 받은 표현을 `Token::ADD`나 `Token::SUB`와 같은 조건으로 검사하여 조건에 맞게 파싱하고 있는 모습을 볼 수 있다.
 
 ```cpp
 Literal* AstNodeFactory::NewNumberLiteral(double number, int pos) {
@@ -103,3 +106,14 @@ Literal* AstNodeFactory::NewNumberLiteral(double number, int pos) {
 ```
 
 이후 알맞게 계산되어 나온 값을 `AstNodeFactory` 클래스의 `NewNumberLiteral` 스태틱 메소드를 사용하여 `추상 구문 트리`의 객체로 만드는 모습을 볼 수 있다.
+
+`V8`은 이 과정에서 이 구문이 `변수`, `함수`, `조건문`과 같은 코드의 의미를 파악하며, 변수 선언 시 `스코프` 또한 이 과정에서 설정된다.
+이 중 변수 선언에 관한 자세한 내용은 {% post_link javascript-let-const JavaScript의 let과 const, 그리고 TDZ %}을 참고하자.
+
+## 바이트 코드(Byte Code) 생성하기
+`바이트 코드(Byte Code)`는 고오급 언어로 작성된 소스 코드를 가상머신 한결 편하게 이해할 수 있도록 중간 코드로 한번 컴파일 한 것을 의미한다. 대표적인 가상머신은 `JVM(Java Virtual Machine)`이 있다.
+
+위에서 설명한 파싱이 끝나고 `AST`가 완성되면 `V8` 엔진은 `BytecodeGenerator`에 이 AST를 넘겨준다. 
+<!-- d8 컴파일 해놓기 -->
+
+
