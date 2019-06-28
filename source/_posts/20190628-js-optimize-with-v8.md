@@ -37,10 +37,69 @@ To be compatible with the rest of the platform and reduce interoperability risks
 
 ## V8 엔진의 작동원리를 간단히 살펴보자.
 일단 `V8` 엔진은 오픈 소스이기 때문에 [V8 엔진 깃허브 레파지토리](https://github.com/v8/v8)에서 클론받을 수 있다.
-물론 일반적으로 우리가 자바스크립트를 사용할 때 엔진의 작동원리같은 로우 레벨(Low Level)의 내용까지 신경쓸 필요는 없다. 사실 개발자들이 그런 것까지 일일히 신경쓰지 말라고 엔진을 사용하는 것이기 때문이다.
+물론 일반적으로 우리가 자바스크립트를 사용할 때 엔진의 작동 원리와 같은 로우 레벨(Low Level)의 내용까지 깊게 신경쓸 필요는 없다. 사실 개발자들이 그런 것까지 일일히 신경쓰지 말라고 엔진을 사용하는 것이기 때문이다.
+그러나 정말 자바스크립트로 뽑아낼 수 있는 최적의 성능을 사용하고 싶다면 내 코드가 어떤 식으로 실행되는 지에 대한 이해는 어느 정도 있어야한다.
 
-그러나 자바스크립트를 사랑하는 한명의 개발자로써 내가 사용하는 언어의 작동원리가 궁금한 것은 자연스러운 현상인 것 같다.
+그리고 자바스크립트를 사랑하는 한명의 개발자로써 내가 사용하는 언어의 작동원리가 궁금한 것은 자연스러운 현상인 것 같다.
+
 그럼 이제 `V8` 엔진이 자바스크립트를 어떤 식으로 파싱하고 실행시키는 지 간략하게 한번 알아보자.
 
+### Parsing, 파싱하기
+`파싱`이란 소스코드를 불러온 후 `AST(Abstract Syntax Tree), 추상 구문 트리`로 변환하는 과정이다.
+`AST`는 컴파일러에서 널리 사용되는 자료 구조인데, 우리가 일반적으로 작성한 소스 코드를 컴퓨터가 알아먹기 쉽게 `구조화`한다고 생각하면 된다.
 
+예를 들어, 자바스크립트로 자바스크립트를 파싱한다고 하면 이런 식이다.
 
+```js
+const a = 'Hello, World!';
+
+// 위 코드는 대략 이렇게 구조화 할 수 있다.
+
+{
+  type: 'String',
+  caller: 'a',
+  value: 'Hello, World!'
+}
+```
+
+이렇게 놓고 보니 생각보다 심플하다. 다만 이것은 예시 중 하나일 뿐 컴파일러는 `for`, `if`, `a = 1 + 2`, `function () {}`과 같은 문법도 모두 해석하여 파싱해야 하다보니 `파서(Parser)`의 내부는 생각보다 거대하다. 당장 `V8`의 `parser.cc` 파일도 3000줄이 넘는다.
+
+어쨌든 파싱이라는 개념 자체는 컴퓨터가 분석하기 쉬운 형태인 `추상 구문 트리`로 변경하는 작업이라는 것만 기억하자. `V8` 엔진은 `const a = 'Hello, World!'`라는 소스코드를 `C++` 객체로 파싱할 뿐이다.
+
+그럼 `V8` 엔진의 파싱 코드 중 `1 + 2`와 같이 `리터럴로 선언된 수식`을 담당하는 메소드를 한번 살펴보자.
+
+```cpp v8/src/parsing/parser.cc
+bool Parser::ShortcutNumericLiteralBinaryExpression(Expression** x, Expression* y, Token::Value op, int pos) {
+  if ((*x)->IsNumberLiteral() && y->IsNumberLiteral()) {
+    double x_val = (*x)->AsLiteral()->AsNumber();
+    double y_val = y->AsLiteral()->AsNumber();
+    switch (op) {
+      case Token::ADD:
+        *x = factory()->NewNumberLiteral(x_val + y_val, pos);
+        return true;
+      case Token::SUB:
+        *x = factory()->NewNumberLiteral(x_val - y_val, pos);
+        return true;
+      // ...
+      default:
+        break;
+    }
+  }
+  return false;
+}
+```
+
+이 코드는 `V8` 엔진의 `parser.cc`에 선언된 `Parser` 클래스의 `ShortcutNumericLiteralBinaryExpression`<small>(이름이 더럽게 길다...)</small> 스태틱 메소드이다.
+이 메소드는 위에서 설명했듯이 `1 + 2`와 같은 소스 코드를 만났을 경우 실행되며, 인자로 받은 표현을 `Token::ADD`나 `Token::SUB`와 같은 조건으로 검사하여 조건에 맞게 파싱하고 있는 모습을 볼 수 있다.
+
+```cpp
+Literal* AstNodeFactory::NewNumberLiteral(double number, int pos) {
+  int int_value;
+  if (DoubleToSmiInteger(number, &int_value)) {
+    return NewSmiLiteral(int_value, pos);
+  }
+  return new (zone_) Literal(number, pos);
+}
+```
+
+이후 알맞게 계산되어 나온 값을 `AstNodeFactory` 클래스의 `NewNumberLiteral` 스태틱 메소드를 사용하여 `추상 구문 트리`의 객체로 만드는 모습을 볼 수 있다.
