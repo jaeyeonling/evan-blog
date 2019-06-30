@@ -8,7 +8,7 @@ tags:
   - 협업
   - Atlassian
 categories:
-  - Atlassian
+  - Methodology
 thumbnail: /2019/06/16/jira-customizing-issue/jira-logo.png
 toc: true
 widgets:
