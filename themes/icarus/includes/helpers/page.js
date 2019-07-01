@@ -114,6 +114,8 @@ module.exports = function (hexo) {
             og_image = post.og_image
         else if (hasThumbnail)
             og_image = getThumbnail(post);
+        else if (hasConfig('open_graph.image'))
+            og_image = getConfig('open_graph.image');
         else
             og_image = getConfig('article.og_image', '/images/og_image.png');
 

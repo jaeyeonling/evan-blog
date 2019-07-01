@@ -10,6 +10,7 @@ logo: /images/logo.png
 # Open Graph metadata
 # https://hexo.io/docs/helpers.html#open-graph
 open_graph:
+    image: /img/me.jpg
     # Facebook App ID
     fb_app_id: 
     # Facebook Admin ID
