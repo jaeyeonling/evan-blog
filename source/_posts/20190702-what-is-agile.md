@@ -118,11 +118,13 @@ thumbnail: /2019/07/02/what-is-agile/thumbnail.jpg
 이 12개의 원칙은 어떻게 하면 더 `애자일하게`, 즉 기민하게 프로덕트를 생산하고 고객에게 전달할 수 있는지에 대한 일종의 가이드라인 역할을 하는 셈이다.
 
 ## 애자일의 기본적인 요소들
+
 <center>
   {% asset_img agile_process.jpg %}
   <small>[출처] [Differences Between Lean, Agile and Scrum](https://brainhub.eu/blog/differences-lean-agile-scrum/)</small>
   <br>
 </center>
+
 애자일은 12개의 원칙에 기초하는 여러 개의 요소를 가지고 있다. 이 포스팅에서는 구성 요소들 중 필자가 중요하다고 생각하는 `User Story`, `Backlog`, `Estimation`, `Retrospective`를 짚고 넘어가겠다. 한번 간단하게 하나하나 살펴보자.
 
 ### User Story
