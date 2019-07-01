@@ -1,6 +1,7 @@
 ---
 title: {{ title }}
 tags:
+categories:
 thumbnail: 
 toc: true
 widgets:

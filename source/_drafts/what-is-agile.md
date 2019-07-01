@@ -1,24 +1,21 @@
 ---
 title: 애자일이 도대체 뭐길래?
-date: 2019-06-30 15:16:23
+toc: true
+widgets:
+  - type: toc
+    position: right
+  - type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
 tags:
   - 애자일프로세스
   - Agile
   - 소프트웨어 개발 방법론
 categories:
   - Methodology
-thumbnail: /2019/06/30/agile-review/thumbnail.jpg
-toc: true
-widgets:
-  - 
-    type: toc
-    position: right
-  - 
-    type: category
-    position: right
-sidebar:
-  right:
-    sticky: true
+thumbnail:
 ---
 
 이번 포스팅에서는 소프트웨어 개발 방법론 중 하나인 `애자일 프로세스(Agile Process)`, 줄여서 애자일이라고 부르는 그것에 대해서 포스팅하려고 한다. 최근 많은 조직들이 애자일 프로세스를 사용하고 있고, 필자가 다니고 있는 현 직장도 마찬가지로 애자일 프로세스를 도입해서 사용하고 있다.
