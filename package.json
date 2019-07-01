@@ -6,7 +6,7 @@
     "version": "3.8.0"
   },
   "scripts": {
-    "start": "hexo server",
+    "start": "hexo server --draft",
     "serve-strict": "hexo server -s",
     "deploy": "hexo generate -d",
     "build": "hexo generate",
