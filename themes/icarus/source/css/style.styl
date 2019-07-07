@@ -140,15 +140,18 @@ img.thumbnail
     .level-item, .card
         margin-bottom: 0
         margin-top: 0
+    .to-home
+        i
+            margin-right: .5rem
     .card
         padding: 21px
         @media screen and (max-width: 768px)
             width: 100%
-            margin-bottom: 1rem
+            margin: 0 0 1rem 0
     i.fa-chevron-left
-        margin-right: 1rem
+        margin-right: .5rem
     i.fa-chevron-right
-        margin-left: 1rem
+        margin-left: .5rem
 
 .timeline
     margin-left: 1rem
@@ -463,14 +466,6 @@ figure.highlight
  *        Post Tags
  * --------------------------------- */
 .post-tags
-    div[data-name="tags"] a
-        display: inline-block
-        background-color: #eee
-        padding: 3px 6px
-        margin-right: 5px
-        margin-bottom: 5px
-        border-radius: 4px
-
-/* ---------------------------------
-*        Page Navigation
-* --------------------------------- */
+    div.tags span.tag-icon
+        margin-right: .5rem
+        margin-bottom: .5rem
