@@ -37,8 +37,8 @@ sidebar:
 블랙홀 같이 중력이 어마어마한 곳에서는 이 현상이 눈에 띄게 관찰되는데, 이를 중력렌즈효과라고 부른다.
 
 <center>
-    {% asset_img 'gravity-lens.gif' 'gravity-lens' %}
-    <sub>블랙홀 뒤를 지나는 빛의 휘어짐</sub>
+  {% asset_img 'gravity-lens.gif' 'gravity-lens' %}
+  <sub>블랙홀 뒤를 지나는 빛의 휘어짐</sub>
 </center>
 
 중력은 1915년 아인슈타인의 일반상대성이론에서 `에너지에 의한 시공간의 휨`으로 정의되게 된다.
@@ -48,8 +48,8 @@ sidebar:
 그러다가 8분 후 마지막에 태양에서 나온 빛이 지구에 도달하는 순간 지구는 궤도를 이탈할 것이다.
 
 <center>
-    {% asset_img 'gravity.jpeg' 'gravity' %}
-    <sub>큰 질량을 가진 물체일수록 시공간을 더 많이 휘게 만든다</sub>
+  {% asset_img 'gravity.jpeg' 'gravity' %}
+  <sub>큰 질량을 가진 물체일수록 시공간을 더 많이 휘게 만든다</sub>
 </center>
 
 그렇다고 만유인력의 법칙이 틀렸다는 것이 아니라, 상대성이론은 만유인력의 법칙이 놓친 점을 보완해준 것에 더 가깝다.
