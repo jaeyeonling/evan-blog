@@ -16,7 +16,7 @@ sidebar:
   right:
     sticky: true
 date: 2019-07-14 23:21:59
-thumbnail:
+thumbnail: /2019/07/14/thumbnail.jpg
 ---
 
 
