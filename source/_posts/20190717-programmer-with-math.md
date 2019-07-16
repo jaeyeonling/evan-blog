@@ -220,7 +220,7 @@ else {
 
 <center>
   {% asset_img ah.jpg 400 %}
-  <small>네, 어이가 없죠? 지금 내가 그래.</small>
+  <small>아니...귀납법이라며...?</small>
   <br>
 </center>
 
