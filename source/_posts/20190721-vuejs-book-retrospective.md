@@ -8,7 +8,7 @@ tags:
   - 공동집필
 categories:
   - Life
-thumbnail: /2019/07/20/vuejs-book-retrospective/thumbnail.jpg
+thumbnail: /2019/07/21/vuejs-book-retrospective/thumbnail.jpg
 toc: true
 widgets:
   - type: toc
@@ -18,7 +18,7 @@ widgets:
 sidebar:
   right:
     sticky: true
-date: 2019-07-20 21:37:04
+date: 2019-07-21 08:37:04
 ---
 
 
