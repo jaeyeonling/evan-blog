@@ -97,9 +97,9 @@
 </div>
 <% } %>
 
-<% if (!index && has_config('comment_ad') || get_config('comment_ad') === true) { %>
+<% if !index && (has_config('comment_ad') && get_config('comment_ad') === true) { %>
 <!-- 댓글 위 광고 -->
-<ins class="adsbygoogle"
+<ins class="adsbygoogle card"
     style="display:block"
     data-ad-client="<%= get_config('google_adsense_id') %>"
     data-ad-slot="7343917257"
@@ -109,8 +109,6 @@
     (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 <% } %>
-
-
 
 <% if (!index && (post.prev || post.next)) { %>
 <div class="card card-transparent">
