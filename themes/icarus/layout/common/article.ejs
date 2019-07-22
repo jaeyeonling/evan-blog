@@ -97,6 +97,22 @@
 </div>
 <% } %>
 
+<% if (!index && has_config('comment_ad') || get_config('comment_ad') === true) { %>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 댓글 위 광고 -->
+<ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="<%= get_config('google_adsense_id') %>"
+    data-ad-slot="7343917257"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
+<script class="card">
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<% } %>
+
+
+
 <% if (!index && (post.prev || post.next)) { %>
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
