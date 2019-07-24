@@ -6,6 +6,7 @@ tags:
   - 개발서적
   - 프로그래밍서적
   - 공동집필
+  - 커피 한잔 마시며 끝내는 VueJS
 categories:
   - Life
 thumbnail: /2019/07/21/vuejs-book-retrospective/thumbnail.jpg
