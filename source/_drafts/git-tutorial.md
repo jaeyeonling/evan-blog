@@ -21,6 +21,23 @@ categories:
 thumbnail:
 ---
 
+{% raw %}
+<script src="https://cdn.jsdelivr.net/npm/@gitgraph/js"></script>
+<script>
+  function getGitGraph (domId = '') {
+    const el = document.getElementById(domId);
+    return GitgraphJS.createGitgraph(el, {
+
+    });
+  }
+</script>
+<style>
+.git-graph text {
+  font-size: 12px;
+}
+</style>
+{% endraw %}
+
 이번 포스팅에서는 너도 쓰고 나도 쓰고 우리 모두 쓰고 있는 `Git`의 기초에 대해서 포스팅 하려고한다. 필자는 Git을 대학교 때 처음 접했는데 처음에는 `왠 이상한 클라우드에 소스코드를 올려놓는다` 정도로만 이해하고 사용했던 기억이 난다. 하지만 Git의 기능은 단순히 코드 공유에서 끝나지 않는 `버전 관리 도구`이므로 Git을 잘 쓰면 실무에서 펼쳐지는 다이나믹한 상황에 유연하게 대처할수도 있다.
 <!-- more -->
 
@@ -114,5 +131,55 @@ $ git clone https://github.com/evan-moon/test-repo.git
 ### add
 Git을 사용하여 변경한 파일을 서버에 업로드하는 과정을 편의점 택배라고 생각해보자. 보통 집에 있는 모든 물건을 택배로 보내진 않기 때문에 보낼 물건을 정해야하는데, 이때 `add` 명령어가 `어떤 물건들을 포장할 것인지 고르는 과정`을 담당한다.
 
+<center>
+{% asset_img add.jpg 500 %}
+<small>원하는 변경사항만 골라 담기!</small>
+<br>
+</center>
 
+```bash
+$ git add . # 현재 디렉토리의 모든 변경사항을 스테이지에 올린다
+$ git add ./src/components # components 디렉토리의 모든 변경사항을 스테이지에 올린다
+$ git add ./src/components/Test.vue # 특정 파일의 변경사항만 스테이지에 올린다
+```
+
+이때 선택된 변경 사항들은 `스테이지(Stage)`라고 불리는 공간으로 이동하게 된다.
+
+### commit
+`add`를 사용하여 원하는 변경사항을 스테이지에 올렸다면 이제 스테이지에 있는 변경 사항들을 포장할 차례이다. 이때 이 포장하는 행위를 `commit`이라고 한다.
+
+<center>
+{% asset_img commit.jpg 500 %}
+<br>
+</center>
+
+커밋은 Git에서 상당히 중요한 부분을 차지하는 행위인데, 바로 Git에서 커밋 단위로 버전을 표현하기 때문이다.
+
+{% raw %}
+<div id="commit-git-graph" class=git-graph></div>
+<script>
+(function () {
+  const git = getGitGraph('commit-git-graph');
+  const master = git.branch('master');
+  master.commit({
+    subject: '첫번째 커밋 입니다',
+    author: 'Evan <bboydart91@gmail.com>',
+  });
+  master.commit({
+    subject: '두번째 커밋 입니다',
+    author: 'Evan <bboydart91@gmail.com>',
+  });
+  master.commit({
+    subject: '세번째 커밋 입니다',
+    author: 'Evan <bboydart91@gmail.com>',
+  });
+})();
+</script>
+{% endraw %}
+
+### push
+<center>
+{% asset_img push.jpg 500 %}
+<br>
+</center>
 
