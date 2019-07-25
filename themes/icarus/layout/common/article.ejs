@@ -1,3 +1,16 @@
+<% if (!index && has_config('article_top_ad')) { %>
+<!-- 아티클 위 광고 -->
+<ins class="adsbygoogle card"
+     style="display:block"
+     data-ad-client="<%= get_config('google_adsense_id') %>"
+     data-ad-slot="<%= get_config('article_top_ad') %>"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script class="card">
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<% } %>
+
 <div class="card">
     <% if (has_thumbnail(post)) { %>
     <div class="card-image">
@@ -97,12 +110,12 @@
 </div>
 <% } %>
 
-<% if (!index && (has_config('comment_ad') && get_config('comment_ad') === true)) { %>
+<% if (!index && has_config('comment_ad')) { %>
 <!-- 댓글 위 광고 -->
 <ins class="adsbygoogle card"
     style="display:block"
     data-ad-client="<%= get_config('google_adsense_id') %>"
-    data-ad-slot="7343917257"
+    data-ad-slot="<%= get_config('comment_ad') %>"
     data-ad-format="auto"
     data-full-width-responsive="true"></ins>
 <script class="card">
