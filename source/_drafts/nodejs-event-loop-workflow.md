@@ -1,5 +1,5 @@
 ---
-title: Node.js event loop workflow & lifecycle in low level [번역]
+title: 로우 레벨에서 Node.js 이벤트 루프의 워크 플로우와 라이프 사이클 [번역]
 toc: true
 widgets:
   - type: toc
@@ -21,97 +21,99 @@ thumbnail:
 
 > 이 포스팅은 2018년 2월 19일에 Paul Shan이 작성한 [Node.js event loop workflow & lifecycle in low level](http://voidcanvas.com/nodejs-event-loop/)를 번역한 글입니다.
 
-A year back while describing the differences between [setImmediate & process.nextTick](http://voidcanvas.com/setimmediate-vs-nexttick-vs-settimeout/), I wrote a bit on the low level architecture of node’s event-loop. 
+1년 전, 필자는 [setImmediate & process.nextTick](http://voidcanvas.com/setimmediate-vs-nexttick-vs-settimeout/)의 차이점에 대해 설명하면서 Node.js의 이벤트 루프 구조에 대해 살짝 언급한 적이 있었다. 놀랍게도 독자 분들은 원래 설명하려고 했던 부분보다 이벤트 루프 부분에 대해서 더 많이 관심을 주었고, 필자는 그 부분에 대해서 많은 질문을 받았었다. 그래서 이번에는 Node.js의 이벤트 루프를 구성하는 Low Level의 큰 그림을 한번 설명해보려고한다.
 
-<!-- more -->
+> 포스팅의 중간 중간에 몇가지 꿀팁들이 있기 때문에 부분만 읽는 것이 아니라 전체를 한번 쫙 읽어보는 것을 추천한다!
 
-Surprisingly, the readers of that post became more interested about the event-loop part, than the rest of the parts and I have received a lot of responses and queries on the same. 
-That’s why I’ve decided to come up with a big picture of the low level work flow of node.js event loop.
+## 왜 이 포스팅을 작성하게 되었나?
+만약에 여러분이 구글에서 `node.js event loop`를 검색하면 나오는 대부분의 아티클들은 큰 그림을 말해주지 않는다. (그들은 매우 High Level의 추상화로만 이 과정을 묘사하려고 한다.)
 
-> I recommend you to read the entire article and not just bullet points as there are some great infos inside the paragraphs!
-
-## Why am I writing this?
-Well, if I google about `node.js event loop`, majority of the articles out there does not describe the big picture (they try to describe with a very high level abstraction).
+> **역주**: 여기서 저자가 말하는 큰 그림은 이벤트 루프와 연관된 모든 것을 한번에 같이 봐야한다는 것이다. 대부분의 포스팅은 이벤트 루프에서 중요한 일부분만을 설명하고 넘어가는데, 이러면 이벤트 루프가 진짜 어떻게 동작하는지는 알기 힘들고 잘못된 오해를 할 수도 있다는 것을 강조하고 있다.
 
 <center>
   {% asset_img node-js-wrong-event-loop_wdvpem.png 500 %}
   <br>
 </center>
 
-This is a screenshot of google image search with `nodejs event loop`. And majority of the image results here are either wrong or having a very high level view on the actual event loop. 
-Due to these kind of descriptions, developers often found with some misconceptions and wrong understandings. Below are some of the very common misconceptions.
+위 그림은 구글에서 `nodejs event loop`를 검색했을 때 나오는 이미지들을 캡쳐한 것이다. 그리고 대다수의 이미지 결과들은 잘못 되었거나 실제 이벤트 루프가 High Level에서 어떻게 작동하는 지만 설명하고 있다. 이런 방식의 설명들 때문에 개발자들은 종종 이벤트 루프에 대한 잘못된 이해를 하게 된다. 아래 설명할 몇가지 개념은 개발자들이 잘못 알고 있는 몇가지 개념들이다.
 
-## Few common misconceptions
-### Event loop is inside JS Engine
-One of the very common misconceptions is that, the event loop is a part of JavaScript engine (v8, spiderMonkey etc). In reality event-loop is the master which uses the JavaScript engines to execute JavaScript code.
+## 대표적인 잘못된 개념들
+### 이벤트 루프는 JS 엔진 내부에 있다
+대표적인 잘못된 개념들 중 하나는 바로 이벤트 루프가 자바스크립트 엔진<small>(V8, Spider Monkey 등)</small>의 일부라는 것이다. 하지만 이벤트 루프는 단지 자바스크립트 코드를 실행하기위해 자바스크립트 엔진을 이용하기만 할 뿐이다.<small>(역주: 실제로 V8 엔진에는 이벤트 루프를 관리하는 코드가 없다. Node.js나 브라우저가 이벤트 루프를 담당하는 것)</small>
 
-### There is a single stack or queue
-First of all there is no stack. Secondly, the process is complicated and have multiple queues (some queue like data-structure) involved. But majority of the developers know that all callbacks are pushed in a single queue, which is completely wrong.
+### 이벤트 루프는 하나의 스택 또는 하나의 큐로만 작동한다
+일단 첫 번째로, 이벤트 루프에서 스택은 존재하지 않는다. 두 번째, 프로세스는 여러 개의 큐<small>(자료구조에서의 그 큐 맞다.)</small>를 사용하는 복잡한 존재이다. 그러나 대부분의 개발자들은 자바스크립트의 모든 콜백이 단 하나의 큐에서만 대기한다고 알고 있는데, 이것은 완전히 잘못된 생각이다.
 
-### Event loop runs in a separate thread
-Due to the wrong diagram of the event-loop of node.js, some of us (I was one of them in my early JavaScript days) feel that there are two threads; one executing JavaScript and another which runs the event loop. In reality everything is in a single thread.
+### 이벤트 루프는 여러 개의 스레드에서 실행된다
+Node.js 이벤트 루프의 잘못된 다이어그램으로 인해 우리는 한 개의 스레드가 자바스크립트의 실행을 담당하고 다른 한 개는 이벤트 루프를 담당하는, 총 두 개의 스레드가 있다고 생각하게 되었다.<small>(필자도 자바스크립트 뉴비 시절에 그렇게 생각했다.)</small>
 
-### Some async OS api involved in setTimeout
-Another great misconception is that the callback of setTimeout is pushed in a queue by someone else (may be OS or kernel) when the delay given is completed. Well, there is no someone else; we will discuss the mechanism soon.
+그러나 실제로는 단 한 개의 스레드로 이 모든 것을 처리한다.
 
-### setImmediate places the callback at 0th position
-As the common event-loop description has only one queue; thus some developers think `setImmediate()` places the callback at the front of the job queue. This is completely false and every job-queue in JavaScript is FIFO (first in first out).
+### setTimeout은 일부 비동기 OS API와 관련있다.
+또 다른 큰 오해는 `setTimeout`의 딜레이가 끝났을 경우 콜백이 외부의 요인으로 인해<small>(OS나 커널 같은)</small> 의해 큐에 들어가게 된다는 것이다. 음, 사실 외부의 요인 같은 건 없다. 우리는 밑에서 이 메커니즘에 대해서 좀 더 자세히 알아볼 것이다.
 
-## Architecture of the event loop
-Before we start describing the workflow of event loop, it’s important to know the architecture of the same. 
-As I have already told, that little picture with a queue and a spinning wheel doesn’t describe it properly. Below is a phase wise image of the event loop.
+### setImmediate의 콜백은 콜백 대기열의 첫번째에 위치한다
+보통 일반적인 이벤트 루프에 대한 설명들은 하나의 큐만 가지고 설명을 진행하기 때문에, 몇몇 개발자들은 `setImmediate()`가 콜백을 작업 큐의 가장 앞쪽에 배치한다고 생각하게 된다. 하지만 이것은 완전히 틀린 내용이며, 모든 작업 큐들은 `FIFO(First In First Out)`로만 작동한다.<small>(역주: 큐에 들어있는 작업의 포지션을 변경하지 않는다는 것이다)</small>
+
+## 이벤트 루프의 구조
+일단 이벤트 루프의 구조를 이해하기 위해서는 이벤트 루프의 워크 플로우에 대해서 알고 있어야 한다. 이미 한번 언급했듯이, 작은 그림인 하나의 큐만 보는 것은 이것을 이해하는 데 별로 도움이 되지 않는다. 밑의 그림은 이벤트 루프를 제대로 설명한 그림이다.
 
 <center>
   {% asset_img nodejs-event-loop-phase.png 500 %}
   <br>
 </center>
 
-Each boxes in the image above indicates a phase which is dedicated to perform some specific work. Each phase has a queue (I said queue so that you can understand better; the actual data structure may not be a queue) attached to it and JavaScript execution can be done in any of those phases (except idle & prepare). 
-You can also see a `nextTickQueue` and another `microTaskQueue` in the picture, which are not really part of the loop and the callbacks inside them can be executed in any phase. They get highest priorities to get executed.
+이 그림에 표기된 각각의 상자는 특정 작업을 수행하기 위한 페이즈들을 의미한다. 각각의 페이즈는 큐를 가지고 있으며, 자바스크립트의 실행은 이 페이즈들 중 `Idle, prepare` 페이즈를 제외한 어느 단계에서나 할 수 있다.<small>(이해를 돕기 위해 큐라고 설명했지만 사실 실제 자료구조는 큐가 아닐 수도 있다.)</small>
 
-As you now know that the event loop is actually a combination of different phases with different queues; here is a description of each phase.
+그리고 위 그림에서 `nextTickQueue`과 `microTaskQueue`를 볼 수 있는데, 이 친구들은 이벤트 루프의 일부가 아니며 이 친구들의 콜백 또한 어떤 페이즈에서든 실행될 수 있다. 또한 이 친구들의 콜백은 가장 높은 우선 순위를 가지고 실행된다.
+
+이제 우리는 이벤트 루프가 각자 다른 여러 개의 페이즈와 그들의 큐의 조합으로 이루어진다는 것을 알게 되었다. 이제 각각의 페이즈의 대한 설명을 진행하겠다.
 
 ### Timer phase
-This is the starting phase in event loop. This queue, attached in this phase holds the timer (like setTimeout, setInterval) callbacks. 
-Though in real it doesn’t actually pushes the callback in the queue, but maintains the timer in a min-heap and executes the callbacks whose timer is elapsed.
+`Timer phase`는 이벤트 루프의 시작을 알리는 페이즈이다. 이 페이즈가 가지고 있는 큐에는 `setTimeout`이나 `setInterval` 같은 타이머들의 콜백을 저장하게 된다. 이때 실제로 콜백을 큐에 밀어 넣지는 않지만, 타이머들을 `min-heap`으로 유지하고 실행할 때가 된 타이머들을 실행한다.
 
 ### Pending i/o callback phase
-This phase executes callbacks which are there in the `pending_queue` of event loop. These kind of callbacks are pushed from previous operations. For an example when you try to write something in a TCP handler and the work is done, then the callback is pushed in this queue. Error callbacks can also be found here.
+이 페이즈에서는 이벤트 루프의 `pending_queue`에 들어있는 콜백들을 실행한다. 이 콜백들은 이전 명령에서 큐에 들어와있던 것들이다. 예를 들면 여러분이 TCP 핸들러에서 파일에 뭔가를 쓰려고 하고 그 작업이 끝났을 때, 그 핸들러의 콜백이 이 큐에 들어오는 것이다.<small>(파일 쓰기는 보통 비동기로 이루어진다.)</small> 또한 그 핸들러의 에러 콜백도 이 큐에서 찾아볼 수 있다.
 
 ### Idle, Prepare phase
-Though the name is idle, but this phase runs on each tick. Prepare also runs before each time the polling is started. Anyway, these are two phases for internal operations of node; so we are not discussing here. 
-We won’t discuss them today.
+이름은 `Idle phase`이지만 이 페이즈는 매 Tick마다 실행된다. `Prepare phase` 또한 매 폴링(Polling)때마다 실행된다. 어쨌든 이 두개의 페이즈는 이벤트 루프와 직접적인 관련이 있다기보다는 Node.js의 내부적인 관리를 위한 것이기 때문에 이 포스팅에서는 설명하지 않겠다.
 
 ### Poll phase
-Probably the most important phase of the entire event loop is poll phase. This phase accepts new incoming connections (new socket establishment etc) and data (file read etc). We can divide the work of poll in few different parts.
+필자가 생각하기에 전체 이벤트 루프 중 가장 중요한 페이즈는 바로 이 `Poll phase`라고 생각한다. 이 페이즈에서는 새로운 수신 커넥션<small>(새로운 소켓 설정 등)</small>과 데이터<small>(파일 읽기 등)</small>를 허용한다. 우리는 여기서 일어나는 일을 크게 두 가지로 나눠볼 수 있다.
 
-- If there is something in the `watch_queue`, (the queue attached to the poll phase), they will be executed synchronously one after another, till the time the queue is empty or the system specific max limit is reached.
-- Once the queue is empty, node will try to wait for new connections etc. The time to wait or sleep is calculated depending on various factors, which we will discuss.
+- 만약 `watch_queue`<small>(Poll phase가 가지고 있는 큐)</small>에 무언가가 들어있다면, 큐가 비거나 시스템의 최대 한도에 다다를 때까지 동기적으로 실행된다.
+- 일단 큐가 비어있다면, Node.js는 새로운 연결 같은 것들을 기다리고 있을 것이다. Node.js가 기다리는 시간은 여러 가지 요인에 따라 계산되는데, 이 부분은 밑에서 따로 설명하도록 하겠다.
 
 ### Check phase
-The next phase to poll is `check phase`, which is a phase dedicated for the `setImmediate()` callbacks. The general question arise with this is, why a separate queue for setImmediate callbacks. Well, that’s also something because of the behavior of the poll phase, which we will discuss in the workflow section. Till then just remember check phase is dedicated for the callbacks of setImmediate() api.
+`Poll phase`의 다음 페이즈는 바로 `setImmediate`의 콜백 만을 위한 페이즈인 `Check phase`이다. 이렇게 얘기하면 보통 하시는 질문은, `왜 setImmediate의 콜백만을 위한 큐인가요?`이다. 음, 그건 밑에서 필자가 워크 플로우 섹션에서 다시 얘기할 `Poll phase`에서 수행하는 행동들 때문이기도 하다. 일단 지금은 `Check phase`가 `setImmediate`의 콜백 전용 단계라는 사실만 기억하고 있자.
 
 ### Close callbacks
-Close type of callbacks (socket.on(‘close’, ()=>{})) are handled here. More like a cleanup phase it is.
+`socket.on('close', () => {})`과 같은 `close` 이벤트 타입의 핸들러들은 여기서 처리된다.
 
 ### nextTickQueue & microTaskQueue
-Tasks in nextTickQueue holds the callbacks invoked by using the api `process.nextTick()` and microTaskQueue holds those by resolved promises. 
+`nextTickQueue`는 `process.nextTick()` API를 사용하여 호출된 콜백을 가지고 있으며, `microTaskQueue`는 Resolve된 프로미스의 콜백을 가지고 있다.
+
 These two are not really part of the event loop, i.e. not developed inside libUV library, but in node.js. They are called as soon as possible, whenever the boundary between C/C++ and JavaScript is crossed. So they are supposed to be called right after the currently running operation (not necessarily the currently executing JS function callback).
 
-## Event loop workflow
-When you run `node my-script.js` in your console, node sets up the event-loop and then runs your main module (my-script.js) outside the event loop. Once the main module is executed, node will check if the loop is alive; i.e. if there is something to do in event loop. If no, then it will simply try to exit after executing the exit callbacks. i.e. `process.on('exit', foo)` callbacks. 
-But if the loop is alive, node will enter the loop from the timer phase.
+이 둘은 실제로는 이벤트 루프의 일부가 아니다. 즉, `libUV` 라이브러리에 포함된 것이 아니라 `Node.js`에 포함된 친구들이라는 것이다.<small>(역주: libUV는 Node.js에서 사용하는 비동기 I/O 라이브러리이다. C로 작성됨.)</small> 이 친구들이 가지고 있는 작업들은 현재 실행되고 있는 작업이 끝나자마자 호출되어야한다.
+
+## 이벤트 루프의 작업 흐름
+우리가 `node my-script.js`를 콘솔에서 실행시켰을 때, Node.js는 이벤트 루프를 설정한다음 이 이벤트 루프 밖에서 메인 모듈인 `my-script.js`를 실행한다. 한번 메인 모듈이 실행되고나면 Node.js는 이벤트 루프가 활성 상태인지, 즉 이벤트 루프 안에서 해야할 작업이 있는 지 확인한다. 만약 그렇지 않다면 Node.js는 `process.on('exit, () => {})`를 실행하고 이벤트 루프를 종료하려고 할 것이다.
+
+그러나 만약 이벤트 루프가 활성화되어있다면 Node.js는 이벤트 루프의 `Timer phase`를 실행한다.
 
 <center>
   {% asset_img nodejs-event-loop-workflow.png 600 %}
   <br>
 </center>
 
-### Timer phase workflow
-So event loop enters the timer phase and checks if anything is there in the timer queue to be executed. Well, the statement may sound very simple, but event-loop actually has to perform few steps to find the appropriate callbacks. 
-Actually the timer scripts are stored in a heap memory in ascending order. So it will first take the timer and calculate if `now - registeredTime == delta`. If yes, it will execute the callback of that timer and will check for the next timer. Whenever a timer is not found whose time is not elapsed, it will stop checking others (as timers are sorted in ascending order) and move to the next phase.
+### Timer phase
+이벤트 루프가 `Timer phase`에 들어가게 되면 실행할 타이머 큐에 뭐가 있는 지 확인부터 시작한다. 그냥 확인이라고 하면 간단해보이지만 사실 이벤트 루프는 적절한 콜백들을 찾기 위해 몇 가지 단계를 수행하게된다.
+실제로 타이머 스크립트는 오름차순으로 힙에 저장된다. 그래서 제일 먼저 저장된 타이머들을 하니씩 까서 `now - registeredTime == delta`를 검사하게 된다.<small>(역주: `delta`는 `setTimeout(() => {}, 10)`에서의 `10`)</small> 
 
-Suppose you have called setTimeout 4 times which has created 4 timers (A, B, C and D) with time threshold of `100`, `200`, `300` and `400` milliseconds at (nearly) time `t`.
+만약 조건에 해당된다면 이 타이머의 콜백을 실행하고 다음 타이머를 확인한다. 만약 조건에 해당하지 않는 타이머를 만난다면, 탐색을 바로 종료하고 다음 페이즈로 이동한다. 타이머는 힙 내부에 오름차순으로 정렬되어있기 때문에 그 이후로는 탐색을 해도 의미가 없기 때문이다.
+
+예를 들어 딜레이 값이 `100`, `200`, `300`, `400`인 4개의 타이머(A, B, C, D)를 어떤 특정 시간 `t`에 한번에 불러왔다고 생각해보자.
 
 <center>
   {% asset_img Screen-Shot-2018-02-18-at-12.50.48-PM.png 500 %}
