@@ -7,7 +7,6 @@ tags:
   - 페이팔
 categories:
   - JavaScript
-  - Paypal API
 thumbnail: /2017/05/14/paypal-express-checkout/thumbnail.jpg
 toc: true
 widgets:
