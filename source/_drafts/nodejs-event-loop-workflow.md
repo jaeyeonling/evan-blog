@@ -120,39 +120,40 @@ These two are not really part of the event loop, i.e. not developed inside libUV
   <br>
 </center>
 
-Suppose event loop entered the timer phase at time `t+250`. It will first find timer A and will see its time of expiration was `t+100`. But now the time is already `t+250`. Thus it will execute the callback attached to timer A. Then it will check B timer and find it was also elapsed at `t+200`, so will do the same with this as well. Now it will go and check C and will find that the time to elapse is `t+300`, and thus will leave it as is. Event loop will not check D because the timer were sorted in ascending order; so D’s threshold is bound to be bigger than C. 
-However the phase also has a system dependent hard limit, so even if there are elapsed un-executed timers, but that system dependent max limit is touched, it will move to the next phase.
+자, 이제 이벤트 루프가 `t+250`에 Timer phase에 진입했다고 가정해보자. 가장 먼저 타이머 A를 찾아낸 후 만료 기간이 `t+100`이라는 것을 알게 될 것이다. 그러나 지금은 이미 `t+250`이다. 그러므로 타이머 A의 콜백은 실행될 것이다. 그리고 타이머 B를 찾아내어 만료 기간이 `t+200`임을 체크하게되고, 타이머 B 역시 실행된다. 이제 타이머 C를 체크하게 되는데 이 타이머의 딜레이는 `t+300`이기 때문에 페이즈가 종료된다. 이벤트 루프는 타이머 D는 체크하지 않는데, 위에서 설명했듯이 타이머들은 만료 기간 순으로 오름차순 정렬되어있기 때문에 타이머 C의 뒤쪽에는 어차피 타이머 C보다 만료 기간이 긴 타이머들만 있기 때문이다.
 
-### Pending i/o phase workflow
-After timer phase, event loop will enter the pending i/o phase to check if some callbacks from previous tasks are pending or not in the `pending_queue`. If pending then it will execute one after another till the time the queue is empty or system specific max limit is hit. 
-After this, event loop will move to idle handler phase, followed by prepare phase to do some internal operations and then eventually move to probably the most important phase which is `poll phase`.
+참고로 페이즈는 시스템의 실행 한도에도 영향을 받고 있으므로, 실행 되어야하는 타이머가 아직 남아 있다고 하더라도 시스템 실행 한도에 도달한다면 바로 다음 페이즈로 넘어가게된다.
 
-### Poll phase workflow
-As the name suggest, it’s a phase to watch. To watch if new incoming requests or connections are made. 
-When event loop enters the poll phase, it execute the scripts in the `watcher_queue`, which includes file read response, new socket or http connection requests till the time either the entire queue is exhausted or like other phases, a system dependent max limit. 
-In case there are no more callbacks to execute, poll will try to wait a bit, but with certain conditions. 
-If there is any task pending in check queue, pending queue or closing callbacks queue (idle handlers queue as well), it will wait for zero milliseconds. However it will then execute the first timer (if available) from timer heap to decide the waiting time. If first timer threshold is elapsed, then obviously it won’t wait at all.
+### Pending i/o phase
+타임 페이즈가 종료된 후 이벤트 루프는 Pending i/o 페이즈에 진입하여 이전 작업에서 발생한 일부 콜백이 보류 중인지 체크하게 된다. 만약 펜딩 중이라면 `pending_queue`가 비거나 시스템의 실행 한도 초과에 도달할 때까지 계속 해서 콜백들을 실행한다.
+이 과정이 종료되면 이벤트 루프는 `Idle Handler Phase`로 이동하게 된 후 내부 처리를 위한 `Prepare phase`를 거쳐 최종적으로 가장 중요한 단계인 `Poll Phase`에 도달하게 된다.
 
-### Check phase workflow
-After poll phase event loop will immediately come down to check phase where in the queue there could be callbacks invoked by the api `setImmediate()`. It will start executing one after another synchronously just like the other phases, till the time either the queue is exhausted or the max limit which is system dependent is hit.
+### Poll phase
+이름에서 알 수 있듯이 이 페이즈는 Watching하는 단계이다. 새로운 수신 요청이나 연결이 생성되는 지의 여부를 감시하고 있다는 것이다.
+이벤트 루프가 `Poll phase`에 들어왔을 때, 이벤트 루프는 파일 읽기나 새로운 소켓 연결 요청, 새로운 HTTP 연결 요청과 같은 `watcher_queue` 내부의 스크립트들을 실행하게 된다. 이 과정 또한 `watcher_queue`가 비거나 시스템의 실행 한도 초과에 다다를 때까지 계속 된다. 
 
-### Close callback workflow
-After completing the tasks in check phase, event loop’s next destination is `close callback` which handles close or destroy type of callbacks. 
-After event loop is done with close callback executions, it will check again if the loop is alive. If not, then it will simply exit. But if there are things, then it will go for the next iteration; thus, in the timer phase. 
-If you consider our previous example of timer (A & B) expiration, then now in the timer phase it will check if timer C is elapsed or not.
+만약 더 이상 콜백들을 실행할 수 없는 상태가 된다면 이 폴링 작업은 특정한 조건에 의해 조금 더 대기할 수 있다.
+만약 `check_queue`, `pending_queue`, `closing_callbacks_queue`에 펜딩 중인 작업이 있다면 이 작업은 0ms 만큼 대기한다. 이때 타이머 힙에서 첫번째 타이머를 꺼냈을 때 만약 해당 타이머가 실행 가능한 상태라면 그 타이머를 사용하여 대기 시간을 결정한다. 만약 첫번째 타이머가 만료 기간이 지나서 사용할 수 없는 상태라면, 전혀 기다리지 않고 바로 다음 페이즈로 넘어가게 된다.
+
+### Check phase
+`Poll phase`가 지나면 이벤트 루프는 바로 `setImmediate()` API의 콜백과 관련이 있는 `Check phase`에 들어서게 된다. 이 페이즈에서는 다른 페이즈와 마찬가지로 큐가 비거나 시스템 실행 한도 초과에 도달할 때까지 계속 해서 `setImmediate`의 콜백들을 실행한다.
+
+### Close callback
+`Check Phase`가 종료된 후에, 이벤트 루프의 다음 목적지는 `close`나 `destory` 콜백 타입들을 관리하는 `Close callback`이다.
+이벤트 루프가 `Close callback`들과 함께 종료되고나면 이벤트 루프는 다음에 돌아야할 루프가 있는지 다시 체크 하게 된다. 만약 아니라면 그대로 이벤트 루프는 종료된다. 하지만 만약 더 수행해야할 작업들이 남아 있다면 이벤트 루프는 다음 이터레이션을 향해 나아가기 시작하고 다시 `Timer Phase`부터 시작하게 된다.
+만약 여러분이 `Timer Phase`에서의 예시를 기억하고 있다면 이제 다음 루프의 `Timer Phase`에서는 타이머 C의 만료 시간이 경과했는지부터 확인을 시작할 것이다.
 
 ### nextTickQueue & microTaskQueue
-So, when do the callbacks of these two queues run? They run as soon as possible and definitely before going to the next phase from the current one. Unlike other phases these two don’t have any system dependent max limit and node executes them till the time they are completely empty. However, nextTickQueue gets more priority over microTaskQueue.
+그래서 결국 이 두 큐에 들어있는 콜백들은 언제 실행되는 걸까? 이 두 큐의 콜백들은 현재 페이즈에서 다음 페이즈로 넘어가기 전에 자신이 가지고 있는 콜백들을 최대한 빨리 실행해야하는 역할을 맡고 있다. 다른 페이즈들과는 다르게 이 두 큐는 시스템 실행 한도 초과에 영향을 받지 않기 때문에 Node.js는 이 큐가 완전히 비워질 때까지 콜백들을 실행한다. 또한 `nextTickQueue`는 `microTaskQueue`보다는 높은 우선 순위를 가지고 있다.
 
 ### Thread-pool
-A very common word i hear from JavaScript developers is `ThreadPool`. And a very common misconception is, node.js has a thread-pool which is used to handle all async operations. 
-But the fact is thread-pool is something in libUV library (used by node for third party asynchronous handling). 
-I haven’t displayed this in the event loop diagram, because it’s not a part of the event loop mechanism. We may describe it in a separate post about libUV. 
-For the time being, I would just like to tell you that every async tasks is not handled by the thread-pool. LibUV is smart enough to use operating system’s async apis to keep the environment event driven. However, where it can not do so, like, file reading, dns lookup etc., are handled by the thread-pool, which uses only 4 threads by default. You can increase the thread size by setting `uv_threadpool_size` environment variable till 128.
+필자가 자바스크립트 개발자에게 가장 많이 들은 단어는 바로 `스레드풀(ThreadPoll)`이다. 그리고 이와 관련된 가장 큰 오해는 바로 Node.js가 모든 비동기 명령을 처리하는 데 사용하는 스레드풀을 가지고 있다는 것이다.
+그러나 팩트는 다음과 같다. 스레드 풀은 libUV<small>(Node.js 내에서 사용되는 비동기 처리를 위한 서드파티 라이브러리)</small>에 포함된 무언가라는 것이다.
+필자가 이벤트 루프의 다이어그램에 스레드풀을 별도로 표시하지 않은 이유는 스레드풀 자체가 이벤트 루프 매커니즘의 일부가 아니기 떄문이다. `libUV`는 운영체제의 비동기 API만을 사용하여 이벤트 드리븐을 유도할 수 있을 만큼 충분히 훌륭하다. 그러나 파일 읽기, DNS Lookup 등 libUV 자체적으로 처리할 수 없는 경우에는 스레드풀을 사용하게 되는데, 이때 기본 값으로 4개의 스레드를 사용하도록 설정되어있다. `uv_threadpool` 환경 변수를 사용하면 최대 128개까지 스레드 개수를 늘릴 수도 있다.
 
 ## Workflow with examples
-Hope you got an idea of how things are working. How a synchronous semi infinite while loop in `C language` is helping JavaScript to become asynchronous in nature. At a time, it is executing just one thing but still anything is hardly blocking. 
-Anyway, no matter how good we describe the theories, I believe we best understand things with examples. So let us understand the scenarios with some code snippets.
+이제 자바스크립트를 비동기식으로 작동하게 하기 위해 만들어진 이 동기적인 루프 안에서 C언어가 얼마나 큰 역할을 하고 있는 지 이해되기 바란다. 이 구조는 한번에 단 한개의 작업만 실행하고 있지만 그 어떤 것도 블로킹하지 않는다.
+어쨌든 백문이불여일견이니, 코드 스니펫으로 이것들을 이해해보는 시간을 가져보도록 하자.
 
 ### Snippet 1 – basic understanding
 
@@ -165,9 +166,11 @@ setImmediate(() => {
 });
 ```
 
-Can you guess the output of the above? Well, you may think `setTimeout` will be printed first, but it’s not something guaranteed. Why? That’s because after executing the main module when it will enter the timer phase, it may or may not find your timer exhausted. Again, why? Because, a timer script is registered with a system time and the delta time you provide. Now the moment setTimeout is called and the moment the timer script is written in the memory, may be a slight delay depending on your machine’s performance and the other operations (not node) running in it. Another point is, node sets a variable `now` just before entering the timer phase (on each iteration) and considers `now` as current time. Thus the exact calculation is a little bit buggy you can say. And that’s the reason of this uncertainty. Similar thing is expected if you try to execute the same code within a callback of a timer api (eg: setTimeout).
+Thus the exact calculation is a little bit buggy you can say. And that’s the reason of this uncertainty. Similar thing is expected if you try to execute the same code within a callback of a timer api (eg: setTimeout).
 
-However, if you move this code in i/o cycle, it will give you a guarantee of setImmediate callback running ahead of setTimeout.
+위 결과를 예측할 수 있겠는가? 음, 아마도 여러분은 `setTimeout`이 먼저 출력된다고 생각하겠지만, 사실 장담할 수 없다. 왜냐? 메인 모듈이 실행되고 `Timer phase`에 진입할 때 여러분의 타이머를 찾을 수도 있고 못찾을 수도 있기 때문이다. 왜냐면 타이머 스크립트는 시스템의 시간과 사용자가 제공한 시간을 사용하여 등록되기 때문이다. 이제 `setTimeout`이 호출된 순간 타이머는 메모리에 타이머 스크립트를 저장하게되는데, 그 순간 컴퓨터의 성능이나 Node.js가 아닌 외부 작업 때문에 약간의 딜레이가 발생할 수 있기 때문이다. 또 다른 포인트는 Node.js가 `Timer phase`에 진입하기 전에 변수 `now`를 선언하고 그 변수 `now`를 현재 시간으로 간주한다는 점이다. 그러므로 정확한 계산이라고 하기에는 약간의 노이즈가 껴있다는 것이고, 이게 바로 `setTimeout`이 반드시 먼저 실행될 것이라고 확신할 수 없는 불확실성의 이유가 된다.
+
+그러나 만약 여러분이 이 코드를 I/O 사이클의 내부로 옮긴다면, 반드시 `setTimeout`보다 `setImmediate`가 먼저 실행되는 것을 보증할 수 있게된다.
 
 ```js
 fs.readFile('my-file-path.txt', () => {
