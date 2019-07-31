@@ -1,5 +1,12 @@
 ---
 title: 로우 레벨로 살펴보는 Node.js 이벤트 루프
+tags:
+  - 번역
+  - JavaScript
+  - NodeJS
+  - Event Loop
+categories:
+  - JavaScript
 toc: true
 widgets:
   - type: toc
@@ -9,21 +16,14 @@ widgets:
 sidebar:
   right:
     sticky: true
-tags:
-  - 번역
-  - JavaScript
-  - NodeJS
-  - Event Loop
-categories:
-  - JavaScript
-thumbnail:
+date: 2019-08-01 08:46:24
+thumbnail: /2019/08/01/nodejs-event-loop-workflow/thumbnail.jpg
 ---
 
-> 이 포스팅은 2018년 2월 19일에 Paul Shan이 작성한 [Node.js event loop workflow & lifecycle in low level](http://voidcanvas.com/nodejs-event-loop/)를 번역한 글입니다. 의역이 있을 수 있습니다.
-
 1년 전, 필자는 [setImmediate & process.nextTick](http://voidcanvas.com/setimmediate-vs-nexttick-vs-settimeout/)의 차이점에 대해 설명하면서 Node.js의 이벤트 루프 구조에 대해 살짝 언급한 적이 있었다. 놀랍게도 독자 분들은 원래 설명하려고 했던 부분보다 이벤트 루프 부분에 대해서 더 많이 관심을 주었고, 필자는 그 부분에 대해서 많은 질문을 받았었다. 그래서 이번에는 Node.js의 이벤트 루프를 구성하는 로우 레벨의 동작을 자세하게 설명해보려고 한다.
+<!-- more -->
 
-> 포스팅의 중간 중간에 몇가지 꿀팁들이 있기 때문에 부분만 읽는 것이 아니라 전체를 한번 쫙 읽어보는 것을 추천한다!
+> 이 포스팅은 2018년 2월 19일에 Paul Shan이 작성한 [Node.js event loop workflow & lifecycle in low level](http://voidcanvas.com/nodejs-event-loop/)를 번역한 글입니다. 의역이 있을 수 있습니다.
 
 ## 왜 이 포스팅을 작성하게 되었나?
 만약에 여러분이 구글에서 `node.js event loop`를 검색하면 나오는 대부분의 아티클들은 자세한 내용을 설명해주지 않는다. <small>(그들은 매우 거시적으로만 이 과정을 묘사하려고 한다.)</small>
