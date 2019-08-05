@@ -15,7 +15,7 @@ sidebar:
   right:
     sticky: true
 date: 2019-08-06 08:30:21
-thumbnail:
+thumbnail: /2019/08/06/developer-with-organizational-culture/thumbnail.jpg
 ---
 
 
