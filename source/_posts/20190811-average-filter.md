@@ -1,14 +1,5 @@
 ---
 title: 실시간 데이터의 평균을 효율적으로 구하기
-toc: true
-widgets:
-  - type: toc
-    position: right
-  - type: category
-    position: right
-sidebar:
-  right:
-    sticky: true
 tags:
   - 수학
   - 평균구하기
@@ -18,8 +9,19 @@ tags:
   - 누적평균
 categories:
   - Algorithm
-thumbnail:
+toc: true
+widgets:
+  - type: toc
+    position: right
+  - type: category
+    position: right
+sidebar:
+  right:
+    sticky: true
+date: 2019-08-11 18:50:43
+thumbnail: /2019/08/11/average-filter/thumbnail.jpeg
 ---
+
 
 이번 포스팅에서는 `실시간`으로 빠르게 쌓이는 데이터들의 평균을 효율적으로 구할 수 있는 방법에 대해서 간단하게 설명하려고 한다. 이런 실시간 데이터의 평균을 구해야하는 경우는 생각보다 꽤 많은데, 서버 엔진의 액세스 로그에 쌓이는 응답들의 평균 응답 시간을 구한다던가, 센서에서 들어오는 값들의 평균을 구한다던가 하는 경우이다. 이때 이런 데이터들은 빠르게는 `1ms` 정도의 간격으로 수집되는 경우도 비일비재하기 때문에, 데이터를 입력받자마자 빠르게 처리해야하는 성능이 굉장히 중요하다.
 <!-- more -->
