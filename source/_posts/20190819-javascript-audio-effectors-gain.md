@@ -1,5 +1,5 @@
 ---
-title: JavaScript로 오디오 이펙터를 만들어보자 - 소리는 흐르는 것이다
+title: JavaScript로 오디오 이펙터를 만들어보자 - 소리의 흐름을 파악하자
 tags:
   - JavaScript
   - Audio
@@ -17,7 +17,7 @@ sidebar:
   right:
     sticky: true
 date: 2019-08-19 13:12:07
-thumbnail:
+thumbnail: /2019/08/19/javascript-audio-effectors-gain/thumbnail.jpg
 ---
 
 
@@ -189,4 +189,4 @@ AudioParam {value: 1, automationRate: "a-rate", defaultValue: 1, minValue: -3.40
 
 다음 포스팅에서는 이번에 알아본 개념을 바탕으로 소리를 압축하거나 공간감을 부여하고, 특정 주파수를 잘라내어 소리에 특별한 느낌을 줄 수 있는 다른 이펙터들을 만들어보도록 하겠다. 또한 기회가 된다면 이미 존재하는 오디오 소스를 변형하는 이펙터가 아니라 진짜로 오디오 신호 자체를 만들어 낼 수 있는 `오실레이터(Oscillator)`를 사용하여 나만의 악기를 만들어볼 수 있는 포스팅도 진행할 예정이다.
 
-이상으로 JavaScript로 오디오 이펙터를 만들어보자 - 소리는 흐르는 것이다 포스팅을 마친다.
+이상으로 JavaScript로 오디오 이펙터를 만들어보자 - 소리의 흐름을 파악하자 포스팅을 마친다.
