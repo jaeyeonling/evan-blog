@@ -105,7 +105,7 @@ Attack이 소리를 누르는 빠르기였다면 `Release`는 압축한 소리�
 이번에는 사용자가 업로드한 오디오 파일에서 오디오 버퍼를 추출하여 소스 노드를 생성하는 것이 아니라 `<audio>` 태그에서 추출하여 소스 노드를 생성하는 방식으로 진행하도록 하겠다.<small>(이렇게 하면 코드가 훨씬 간단해진다)</small>
 
 ```js
-const audioContext = new (Audiocontext || webkitAudioContext)();
+const audioContext =  || webkitAudioContext)();
 const audioDOM = document.getElementById('my-audio');
 const sourceNode = audioContext.createMediaElementSource(audioDOM);
 
@@ -166,7 +166,7 @@ outputGainNode.connect(audioContext.destination);
   <br>
 </center>
 
-이때 이 잔향 신호를 `Impulse Response(IR)`이라고 부르기 때문에 컨볼루션 리버브는 `IR 리버브`라는 이름으로도 불린다. 이렇게 녹음한 잔향 소스는 원본 소스에 `컨볼루션(Convolution)`, 또는 합성곱이라고 불리우는 연산을 통해 합쳐지게 된다.
+이때 이 잔향 신호를 `Impulse Response(IR)`이라고 부르기 때문에 컨볼루션 리버브는 `IR 리버브`라는 이름으로도 불린다. 이렇게 녹음한 IR은 원본 소스에 `컨볼루션(Convolution)`, 또는 합성곱이라고 불리우는 연산을 통해 합쳐지게 된다.
 
 이 컨볼루션이라는 개념을 수학적으로 접근하면 직관적으로 이해하기 힘들테니 간단하게 정의해보자면, 그냥 서로 다른 정보들을 섞는 것이라고 표현할 수 있다. 이 포스팅을 읽는 분들은 아마 개발자 분들이 많을 테니 우리에게 좀 더 친숙한 머신러닝을 사용하여 컨볼루션을 설명하자면 학습 알고리즘 중 하나인 `CNN(Convolution Neural Network)`을 예로 들어볼 수 있겠다.
 
@@ -178,7 +178,9 @@ CNN에서도 첫번째 레이어의 이미지를 두번째 레이어로 보낼 �
   <br>
 </center>
 
-오디오에서의 컨볼루션 리버브도 이와 마찬가지다. 이 경우에는 섞어야하는 정보가 원본 소스와 잔향 소스가 된 것 뿐이다.
+오디오에서의 컨볼루션 리버브도 이와 마찬가지다. 이 경우에는 섞어야하는 정보가 원본 소스와 IR이 된 것 뿐이다.
+
+컨볼루션은 원본 소스와 IR이라는 두 오디오 소스의 주파수 스펙트럼을 곱하는 과정이기 때문에 이를 통해 두 소스 간에 겹치는 주파수는 강조되고 겹치지 않는 주파수는 감쇠된다. 이렇게 원본 소스와 IR의 겹치는 주파수가 강조되면 원본 소스는 IR의 음질의 특성을 띄게 되는데, 이게 바로 컨볼루션 리버브의 원리이다.
 
 <center>
   {% asset_img signal-convolution.png 500 %}
@@ -199,22 +201,22 @@ CNN에서도 첫번째 레이어의 이미지를 두번째 레이어로 보낼 �
 
 ```js
 const mix = 0.5;
-const earlyReflectionTime = 0.01;
+const time = 0.01;
 const decay = 0.01;
 
-const audioContext = new (Audiocontext || webkitAudioContext)();
+const audioContext =  || webkitAudioContext)();
 const audioDOM = document.getElementById('my-audio');
 const sourceNode = audioContext.createMediaElementSource(audioDOM);
 ```
 
-자, 소스 노드까지 뚝딱 만들었다. 소스 노드를 생성하기 위한 코드 위에 선언한 3개의 변수를 설명하자면 `mix`는 wet/dry의 비율을 의미하고, `earlyReflectionTime`은 위에서 설명했던 초기 반사음, `decay`는 나머지 잔향들이 감소하는 빠르기를 의미한다.
+자, 소스 노드까지 뚝딱 만들었다. 소스 노드를 생성하기 위한 코드 위에 선언한 3개의 변수를 설명하자면 `mix`는 wet/dry의 비율을 의미하고, `time`은 잔향의 길이, `decay`는 잔향이 감소하는 빠르기를 의미한다.
 
 그럼 이제 이 값들을 사용하여 직접 `IR`을 생성해보자.
 
 ```js
 function generateImpulseResponse () {
   const sampleRate = audioContext.sampleRate;
-  const length = sampleRate * earlyReflectionTime;
+  const length = sampleRate * time;
   const impulse = audioContext.createBuffer(2, length, sampleRate);
 
   const leftImpulse = impulse.getChannelData(0);
@@ -229,10 +231,64 @@ function generateImpulseResponse () {
 }
 ```
 
+뭔가 복잡해보이지만 뜯어보면 별 거 없다. `sampleRate`는 우리가 생성하고자 하는 `IR`의 샘플레이트, 즉 음질을 의미하고 `length`는 `sampleRate * time`, 즉 `time`초 만큼의 잔향을 표현하기 위한 버퍼의 길이를 의미한다.
 
+그리고 그냥 버퍼 노드를 하나 생성한 다음 `-1 ~ 1`의 무작위 값을 생성한 후 `1 - i / length`에 `decay`를 제곱한 후 방금 생성한 난수에 곱해준다. 이러면 `i`값이 커질수록 값이 작아질 것이고, `deacy` 값이 커질수록 더 빠르게 작아질 것이다. 이는 잔향의 감쇠를 표현 해준 것이다.
 
+이렇게 생성된 `IR` 버퍼를 파형으로 표현해보면 대략 다음과 같은 모양을 가질 것이다.
 
+<center>
+  {% asset_img decay.jpg 300 %}
+  <br>
+</center>
+
+쨘, 이렇게 간단하게 `IR`를 생성해보았다. 이제 `Convolver Node`를 사용하여 원본 소스와 이 IR을 합성해주는 것만 남았다. 리버브 이펙터의 오디오 흐름을 만들기 위해서 필요한 노드들을 먼저 생성해보자.
+
+```js
+const inputNode = audioContext.createGain();
+const wetGainNode = audioContext.createGain();
+const dryGainNode = audioContext.createGain();
+const reverbNode = audioContext.createConvolver();
+const outputNode = audioContext.createGain();
+```
+
+위에서도 설명했듯이 일반적인 리버브 이펙터는 `wet/dry`라는 수치를 사용하여 원본 소스와 리버브가 적용된 소스를 섞어서 출력하는 기능을 제공한다. 이때 dry한 소스는 리버브 이펙터를 거치지 않고 바로 `outputNode`로 연결되서 출력되어야 하며, wet한 소스는 우리가 만든 `reverbNode`를 한번 거치고 `outputNode`로 출력되어야 한다.
+
+```js
+// Dry 소스 노드 연결
+inputNode.connect(dryGainNode);
+dryGainNode.connect(outputNode);
+
+// IR을 생성하여 Convolver의 오디오 버퍼에 입력해준다.
+reverbNode.buffer = generateImpulseResponse();
+
+// Wet 소스 노드 연결
+inputNode.connect(reverbNode);
+reverbNode.connect(wetGainNode);
+webGainNode.connect(outputNode);
+```
+
+이렇게 컨볼루션 리버브를 간단하게 구현해보았다. 사실 컨볼루션 리버브의 퀄리티에 가장 큰 영향을 끼치는 것은 IR의 퀄리티인데, 우리는 대충 만든 샘플 오디오로 IR을 만들었으므로 이 리버브의 퀄리티는 좋을 수가 없다. 그러나 소스 노드를 재생해서 들어보면 신기하게도 소리에 공간감이 부여된 것을 들어볼 수 있다.
+
+만약 기회가 된다면 다음에는 알고리즘 리버브의 구현체도 한번 포스팅 해보도록 하겠다. 알고리즘 리버브는 실제 공간의 잔향을 녹음하여 사용하는 컨볼루션 리버브와는 다르게 100% 알고리즘으로만 구현된 리버브이다. 그렇기 때문에 약간 인위적인 느낌이 나기는 하지만 컨볼루션 리버브와는 또 색다른 느낌을 부여할 수 있으므로 사운드 엔지니어들은 이 두가지 리버브의 특성을 파악하고 적재적소에 사용한다.
+
+그렇기 때문에 개발자들에게는 오히려 컨볼루션 리버브보다 알고리즘 리버브 쪽이 더 이해가 잘될 수 있으나, `Convolver Node` 하나와 대충 만든 `IR`만 있으면 나머지는 알아서 다 연산해주는 컨볼루션 리버브와는 다르게 알고리즘 리버브는 진짜 밑바닥부터 만들어야한다. 그래서 아쉽지만 알고리즘 리버브는 다음에 포스팅 하도록 하겠다.
+
+만약 알고리즘 리버브의 구현체가 궁금하신 분은 [필자의 깃허브 레파지토리](https://github.com/evan-moon/simple-waveform-visualizer/blob/master/src/effects/AlgorithmReverb.js)에서 확인해볼 수 있다.
 
 ## Delay
+<center>
+  {% asset_img delay.jpg 500 %}
+  <br>
+</center>
+
+`딜레이(Delay)`는 리버브와 같은 공간계 이펙터이고 소리를 반복해서 들려준다는 점이 같기 때문에 비슷하다고 생각할 수 있지만 그 원리와 용도는 많이 다르다.
+
+먼저, 딜레이는 단순히 소리를 반복하는 효과이지만 리버브는 공간 내에서의 복잡한 반사음을 흉내내는 것이므로 딜레이만 사용하면 리버브와 같은 자연스러운 공간감을 표현하기가 힘들다.
+
+방금 만들어봤던 리버브 이펙터는 사실적인 공간 표현이 목적이기 때문에 컨볼루션이나 복잡한 알고리즘을 사용하지만 딜레이는 그냥 원본 소스를 잠깐 묶어두었다가 `n`초 후에 다시 틀어주면서 조금씩 소리를 작게 해주면 끝이다.
+
 ## Filter
+
+
 ## EQ
