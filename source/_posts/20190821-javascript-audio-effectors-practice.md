@@ -1,5 +1,12 @@
 ---
 title: JavaScript로 오디오 이펙터를 만들어보자 - 나만의 소리 만들기
+tags:
+  - JavaScript
+  - Audio
+  - 오디오 이펙터
+  - JavaScript Audio API
+categories:
+  - JavaScript
 toc: true
 widgets:
   - type: toc
@@ -9,15 +16,10 @@ widgets:
 sidebar:
   right:
     sticky: true
-tags:
-  - JavaScript
-  - Audio
-  - 오디오 이펙터
-  - JavaScript Audio API
-categories:
-  - JavaScript
-thumbnail:
+date: 2019-08-21 19:59:46
+thumbnail: /2019/08/21/javascript-audio-effectors-practice/thumbnail.jpg
 ---
+
 
 이번 포스팅에서는 {% post_link javascript-audio-effectors-gain 저번 포스팅 %}에 이어 HTML5 Audio API를 사용하여 실제로 오디오 이펙터를 만드는 과정에 대해서 포스팅 하려고 한다. 저번 포스팅에서 이미 이야기 했듯이 Audio API는 여러 개의 노드를 연결하여 오디오의 흐름을 만들어 내는 것을 기본 개념으로 가지고 있고, 이펙터를 만들기 위해 필요한 몇 개의 추상화된 노드들을 기본적으로 제공해주기 때문에 그렇게 어려울 건 없다.
 <!-- more -->
