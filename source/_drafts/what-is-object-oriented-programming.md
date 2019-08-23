@@ -293,4 +293,239 @@ Seoul
 접근제한자는 Java 뿐만 아니라 TypeScript, Ruby, C++ 등과 같이 OOP를 지원하는 많은 프로그래밍 언어들도 가지고 있는 기능이므로 이 개념을 잘 알아두면 클래스를 설계할 때 원하는 정보만 노출시키고 원하지 않는 정보는 감추는 방법을 사용하여 보안도 지킬 수 있고 클래스를 가져다 쓰는 사용자로 하여금 쓸데없는 고민을 안하게 해줄 수도 있다.
 
 ### 다형성
-`다형성(Polymorphism)`은 어떤 하나의 변수명이나 함수명이 상황에 따라서 다르게 해석될 수 있는 것을 의미한다. 
+`다형성(Polymorphism)`은 어떤 하나의 변수명이나 함수명이 상황에 따라서 다르게 해석될 수 있는 것을 의미한다. 다형성은 어떤 한가지 기능을 의미하는 것이 아니라 개념이기 때문에 여러가지 방법으로 표현할 수 있다. 먼저, 가장 기본적인 예시를 먼저 보도록 하자. 사실 다형성이라는 단어를 모르고 있던 분들이라도 자신도 모르게 이런 설계 패턴을 사용하고 있었을 수도 있을 정도로 기본적인 예시이다.
+
+Java에서 다형성을 위한 대표적인 기능은 바로 `추상 클래스(Abstract Class)`와 `인터페이스(Interface)`, 그리고 `Overloading`이 있다. 추상 클래스와 인터페이스는 사실 그 용도가 조금 다르지만 필자가 예로 들 간단한 예시에서는 그 차이를 크게 느끼기 힘들기도 하고 무엇보다 이 포스팅은 Java 포스팅이 아니라 단순히 `다형성`을 설명하기 위함이므로 필자는 이 중 `추상 클래스`만을 사용할 것이다.
+
+그럼 이 기능들이 어떤 역할을 하는 지 살펴보면서 다형성이 무엇인가를 좀 더 자세히 알아보도록 하자.
+
+#### 추상 클래스를 사용한 다형성 구현
+추상 클래스는 Java에서 다형성을 만족시키기 위해 자주 사용되는 대표적인 기능들이다. 말로만 설명하면 재미가 없으니 한번 코드를 직접 눈으로 보는 것이 좋은데, 필자는 오버워치를 좋아하기 때문에 추상 클래스에 대한 예시도 오버워치를 가져와서 설명하겠다.
+
+<center>
+  {% asset_img overwatch.jpg 500 %}
+  <br>
+</center>
+
+자, 필자는 이제 오버워치의 여러 영웅들을 클래스로 만드려고 한다. 오버워치의 영웅들은 공통적으로 `궁극기 게이지가 찼을 때 Q 버튼을 누르면 궁극기가 발동된다`라는 기능을 가지고 있다. 하지만 오버워치의 영웅들은 각자 특색에 맞게 다른 궁극기를 가지고 있는데, 라인하르트는 망치를 내리치며 다른 영웅들을 기절시키고 맥크리는 시야에 보이는 여러 영웅에게 동시에 헤드샷을 날릴 수 있으며 메이는 로봇을 던져서 일정 범위 안의 영웅들을 얼린다.
+
+이런 경우 다형성을 가지지 않은 오버워치 영웅 클래스는 다음과 같은 모습을 보일 것이다.
+
+```java
+class Hero {
+    public String name;
+    Hero (String name) {
+        this.name = name;
+    }
+}
+
+class Reinhardt extends Hero {
+    Reinhardt () {
+        super("reinhardt");
+    }
+
+    public void attackHammer () {
+        System.out.println("망치 나가신다!");
+    }
+}
+
+class McCree extends Hero {
+    McCree () {
+        super("mccree");
+    }
+    public void attackGun () {
+        System.out.println("석양이 진다. 빵야빵야");
+    }
+}
+
+class Mei extends Hero {
+    Mei () {
+        super("mei");
+    }
+    public void throwRobot () {
+        System.out.println("꼼짝 마! 움직이지 마세요!");
+    }
+}
+```
+
+이때 만약 우리가 `Hero` 클래스를 상속받은 영웅 클래스들의 궁극기를 발동시키고 싶다면 어떻게 해야할까? 안봐도 뻔하겠지만 눈물나는 `if`문 또는 `switch`문의 향연이 펼쳐질 것이다.
+
+모든 영웅들의 궁극기 발동 메소드의 이름이 다르기 때문에 달리 방도가 없다. 그리고 추가적으로 `Hero` 클래스에는 궁극기 발동 메소드가 없기 때문에 객체를 해당 영웅의 클래스로 형변환 해줘야하는 불편한 작업도 해야한다.
+
+```java
+class Main {
+    public static void main (String[] args) {
+        Mei myMei = new Mei();
+        Reinhardt myReinhardt = new Reinhardt();
+        McCree myMcCree = new McCree();
+
+        Main.doUltimate(myMei);
+        Main.doUltimate(myReinhardt);
+        Main.doUltimate(myMcCree);
+    }
+
+    public static void doUltimate (Hero hero) {
+        if (hero instanceof Reinhardt) {
+            Reinhardt myHero = (Reinhardt)hero;
+            myHero.attackHammer();
+        }
+        else if (hero instanceof McCree) {
+            McCree myHero = (McCree)hero;
+            myHero.attackGun();
+        }
+        else if (hero instanceof Mei) {
+            Mei myHero = (Mei)hero;
+            myHero.throwRobot();
+        }
+    }
+}
+```
+```text
+꼼짝 마! 움직이지 마세요!
+망치 나가신다!
+석양이 진다. 빵야빵야
+```
+
+여기에 영웅이 더 추가된다면 영웅의 종류 만큼 분기의 개수도 늘어날 것이고, 무엇보다 `Mei myHero = (Mei)hero`처럼 굳이 새로운 변수를 선언하면서 사용하고 있는 걸 보자니 마음이 한켠이 먹먹해져온다. 다형성은 바로 이럴 때 우리를 행복하게 만들어 줄 수 있는 단비와 같은 개념이다.
+
+자, 아까 위에서 필자는 다형성의 개념을 `어떤 하나의 변수명이나 함수명이 상황에 따라서 다르게 해석될 수 있는 것`이라고 했다. 그렇다면 이 경우 우리는 영웅들의 궁극기 호출 메소드명을 `ultimate`로 통일하되, 이 메소드를 호출했을 때 실행되는 코드는 달라지도록 만들면 객체의 다형성을 만족시킬 수 있는 것이다.
+
+이런 경우 그냥 `Hero` 클래스를 상속받은 영웅 클래스들에게 직접 `ultimate`라는 메소드를 선언할 수도 있지만, 그렇게 되면 개발자가 실수할 확률이 존재한다.<small>(특히 오타로 인한 실수가 가장 많을 것이다)</small> 그래서 Java는 해당 메소드를 강제로 구현하도록 만들어주는 기능을 제공한다.
+
+그 기능이 바로 `추상 클래스(Abstract Class)`와 `인터페이스(Interface)`인 것이다. 필자는 위에서 한번 이야기 했듯이 이 중 `추상 클래스`만을 사용하여 예제를 진행할 것이다.
+
+그래도 혹시 이 두 기능이 뭐가 다른지 궁금하신 분이 있을 것 같으니 최대한 간단히만 설명하고 넘어가자면, `추상 클래스`는 어떤 클래스의 기능을 그대로 사용하면서 그 기능을 확장하고 싶을 때 사용하는 것이고 `인터페이스`는 아무런 구현체가 없는 그냥 껍데기만 구현하는 것이다. 그렇기 때문에 인터페이스에는 자세한 메소드의 구현체가 들어갈 수 없지만 추상 클래스는 자체적인 메소드의 구현체를 가질 수도 있다.<small>(Java 8부터는 default 키워드를 사용하여 인터페이스에도 메소드 구현체를 넣을 수 있게 변경되긴했다. 덕분에 구분이 더 애매해짐.)</small>
+
+이 예제의 `Hero` 클래스는 `name` 멤버 변수를 생성자로부터 받아서 자신의 멤버 변수로 추가하는 기능을 가지고 있기 때문에 추상 클래스를 사용하는 것이 더 적절하다. 그럼 이제 추상 클래스를 사용하여 `ultimate` 메소드의 구현을 강제해보도록 하자.
+
+```java
+abstract class Hero {
+    public String name;
+    Hero (String name) {
+        this.name = name;
+    }
+
+    // 내부 구현체가 없는 추상 메소드를 선언한다.
+    public abstract void ultimate ();
+}
+
+class Reinhardt extends Hero {
+    Reinhardt () {
+        super("reinhardt");
+    }
+
+    public void ultimate () {
+        System.out.println("망치 나가신다!");
+    }
+}
+
+class McCree extends Hero {
+    McCree () {
+        super("mccree");
+    }
+    public void ultimate () {
+        System.out.println("석양이 진다. 빵야빵야");
+    }
+}
+
+class Mei extends Hero {
+    Mei () {
+        super("mei");
+    }
+    public void ultimate () {
+        System.out.println("꼼짝 마! 움직이지 마세요!");
+    }
+}
+```
+
+이렇게 추상 클래스인 `Hero`를 상속받은 영웅 클래스들은 무조건 `ultimate` 메소드를 구현해야한다. 이렇게 메소드명이 통일되면 영웅 클래스를 가져다 쓰는 입장에서는 궁극기를 발동시키고 싶을 때 어떤 메소드를 호출해야할지 이제 더 이상 고민할 필요가 없다.
+
+```java
+class Main {
+    public static void main (String[] args) {
+        Mei myMei = new Mei();
+        Reinhardt myReinhardt = new Reinhardt();
+        McCree myMcCree = new McCree();
+
+        Main.doUltimate(myMei);
+        Main.doUltimate(myReinhardt);
+        Main.doUltimate(myMcCree);
+    }
+
+    public static void doUltimate (Hero hero) {
+        hero.ultimate();
+    }
+}
+```
+
+어떤가? 코드가 훨씬 심플해지지 않았는가? 추상 메소드를 사용하여 클래스 내부의 `ultimate`라는 메소드의 구현을 강제했기 때문에 `Hero` 클래스를 상속받은 영웅 클래스에 해당 메소드가 없을 확률은 `0%`이다. 그렇기 때문에 사용하는 입장에서는 깊은 고민없이 안심하고 `ultimate` 메소드를 호출할 수 있다.
+
+또한 `ultimate` 메소드는 모든 영웅 클래스들이 가지고 있는 메소드이지만 내부 구현은 전부 다르기 때문에 발동하는 스킬 또한 영웅 별로 다르게 나올 것이다. 이런 것을 바로 `다형성`이라고 하는 것이다.
+
+#### 오버로딩을 사용한 다형성 구현
+이번에는 `오버로딩(Overloading)`을 사용한 다형성의 예시를 한번 살펴보도록 하자. 위의 `상속` 챕터에서 잠깐 언급하고 넘어간 `오버라이딩(Overriding)`과 헷갈리지 말자.
+
+오버라이딩은 부모 클래스의 멤버 변수나 메소드를 덮어 씌우는 것이고 오버로딩은 같은 이름의 메소드를 상황에 따라 다르게 사용할 수 있게 해주는, 다형성을 위한 기능이다.<small>(필자는 학교에서 시험볼 때 자주 헷갈렸다)</small>
+
+오버로딩은 생각보다 단순한 개념이지만, 만약 오버로딩을 지원하지 않는 언어인 JavaScipt나 Python을 주로 사용하는 개발자들에게는 나름 충공깽일 수 있다. 그 이유는 바로 오버로딩이 `메소드의 인자로 어떤 것을 넘기냐에 따라서 이름만 같은 다른 메소드가 호출되는 기능`이기 때문이다.
+
+<center>
+  {% asset_img dog_voice.gif 500 %}
+  <small>이게 뭔 개소리야?</small>
+  <br>
+</center>
+
+어떤 클래스가 `sum`이라는 메소드를 가지고 있다고 생각해보자. 이때 `sum`은 두 개의 인자를 받은 후 이 두 값을 합쳐서 리턴하는 내부 구조를 가지고 있다. 근데 만약 3개를 합치고 싶다면 어떻게 해야할까? 이런 경우에 JavaScript와 같이 오버로딩을 지원하지 않는 언어에서는 편법을 사용할 수 밖에 없다.
+
+```js
+class Calculator {
+  sum (...args) {
+    return args.reduce((prev, current) => prev + current);
+  }
+}
+const c = new Calculator();
+c.sum(1, 2, 3, 4, 5);
+```
+```js
+15
+```
+
+뭐 어쨌든 되긴 되니까 상관없다고 생각할 수 있지만, 이건 객체의 다형성이라기보다 그냥 JavaScript라는 언어적인 특성을 사용하여 우회한 것에 불과하다. 이렇게 작성하면 `두 개의 인자를 더해서 반환`하는 메소드에서 `n개의 인자를 더해서 반환`하는 메소드로는 만들 수 있지만 객체의 다형성을 만족할 수는 없다. 이 메소드의 `더한다`라는 기능 자체도 변경할 수 있어야 그제서야 다형성을 만족한다고 할 수 있는 것이다.
+
+반면, Java나 C++과 같은 언어에서는 제대로 다형성을 만족시킬 수 있는 오버로딩을 지원한다.
+
+```java
+class Overloading {
+    public int sum (int a, int b) {
+        return a + b;
+    }
+    public int sum (int a, int b, int c) {
+        return a + b + c;
+    }
+    public String sum (String a, String b) {
+        return a + b + "입니다.";
+    }
+}
+```
+
+쨘, 간단한 클래스를 하나 선언하고 `sum`이라는 메소드를 여러 개 선언했다. 만약 JavaScript에서 이렇게 선언했다가는 위에 선언된 두개의 `sum`은 무시되고 맨 아래의 `sum` 메소드로 덮어씌워지기 때문에 오버로딩을 할 수가 없다. 그럼 이제 한번 이 메소드들이 잘 작동하나 호출해보도록 하자.
+
+```java
+class Main {
+    public static void main (String[] args) {
+        Overloading o = new Overloading();
+        System.out.println(o.sum(1, 2));
+        System.out.println(o.sum(1, 2, 3));
+        System.out.println(o.sum("자", "바"));
+    }
+}
+```
+```text
+3
+6
+자바입니다.
+```
+
+
+
+
