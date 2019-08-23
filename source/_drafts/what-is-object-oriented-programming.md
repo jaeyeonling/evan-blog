@@ -100,50 +100,51 @@ iPhone7: 애플에서 만든 iOS 기반의 스마트폰이며, 햅틱 엔진이 
 iPhone SE: 애플에서 만든 iOS 기반의 스마트폰이며, 사이즈가 작아서 한 손에 잡을 수 있는 아이폰.
 {% endblockquote %}
 
-이 예시에서 볼 수 있듯이 하위 개념들은 상위 개념이 가지고 있는 모든 속성을 그대로 물려받는데, 그래서 이 과정을 `상속(Inheritance)`이라고 한다.
+이 예시에서 볼 수 있듯이 하위 개념들은 상위 개념이 가지고 있는 모든 속성을 그대로 물려받는데, 그래서 이 과정을 `상속(Inheritance)`이라고 한다. 이 상속에 관해서는 밑에서 다시 자세하게 살펴보도록 하겠다.
 
-### 상속을 코드로 살펴보자
-OOP를 제공하는 많은 프로그래밍 언어에서 상속은 `extends`라는 예약어로 표현하는데, 상위 개념 입장에서 보면 자신의 속성들이 하위 개념으로 넘어가면서 확장되는 것이므로 이 말도 맞다. 그럼 이제 상속이 어떻게 이루어지는지 코드로 살펴보도록 하자.
+## 객체 지향 프로그래밍의 요소들
+방금까지 설명한 클래스, 객체, 추상화는 OOP를 이루는 근본적인 개념들이다. 필자는 여기서 좀 더 나아가서 OOP를 지원하는 언어들이 기본적으로 갖추고 있는 몇가지 개념을 더 설명하려고 한다. OOP는 그 특성 상 클래스와 객체를 기반으로 `조립`하는 형태로 프로그램을 설계하게 되는데 이때 이 조립을 더 원활하게 하기 위해서 나온 유용한 몇가지 개념들이 있다.
 
-```js
+하지만 이 개념들은 JavaScript에는 구현되지 않은 개념도 있으므로 이번에는 `Java`를 사용해서 예제를 진행하도록 하겠다. 단편적인 문법만 보면 그렇게 이질감 느껴질 정도로 차이가 크지 않기 때문에 JavaScript만 하셨던 분들도 아마 금방 이해할 수 있을 것이다.
+
+그럼 이제 객체 지향의 3대장이라고 불리는 `상속`과 `캡슐화`, 그리고 `다형성`에 대해서 간단하게 알아보도록 하자.
+
+### 상속
+`상속(Inheritance)`은 방금 전 추상화에 대한 설명을 진행하면서 한번 짚고 넘어갔더 개념이다. OOP를 제공하는 많은 프로그래밍 언어에서 상속은 `extends`라는 예약어로 표현하는데, 상위 개념 입장에서 보면 자신의 속성들이 하위 개념으로 넘어가면서 확장되는 것이므로 이 말도 맞다. 그럼 이제 상속이 어떻게 이루어지는지 코드로 살펴보도록 하자.
+
+```java
 class IPhone {
-  constructor () {
-    this.manufacturer = 'apple';
-    this.os = 'iOS';
-  }
+    String manufacturer = "apple";
+    String os = "iOS";
 }
-
+  
 class IPhone7 extends IPhone {
-  constructor () {
-    super();
-    this.version = 7;
-  }
+    int version = 7;
 }
+  
+class Main {
+    public static void main (String[] args) {
+        IPhone7 myIPhone7 = new IPhone7();
 
-const myIPhone7 = new IPhone7();
-
-console.log('제조사 -> ', myIPhone7.manufacturer);
-console.log('OS -> ', myIPhone7.os);
-console.log('iPhone 버전 -> ', myIPhone7.version);
+        System.out.println(myIPhone7.manufacturer);
+        System.out.println(myIPhone7.os);
+        System.out.println(Integer.toString(myIPhone7.version));
+    }
+}
 ```
 ```text
-제조사 -> apple
-OS -> iOS
-iPhone 버전 -> 7
+apple
+iOS
+7
 ```
 
 `IPhone7` 클래스를 생성할 때 `extends` 예약어를 사용하여 `IPhone` 클래스를 상속받았다. `IPhone7` 클래스에는 `manufacturer`와 `os` 속성이 없지만 부모 클래스인 `IPhone` 클래스의 속성을 그대로 물려받은 것을 볼 수 있다.
 
-그리고 `super()`는 부모 클래스의 `생성자(constructor)`를 호출하는 메소드인데, 부모 클래스를 `Super Class`, 자식 클래스를 `Sub Class`라고도 부르기 때문에 부모에 접근해서 생성자를 호출할 때도 `super`라는 키워드를 사용하는 것이다.
-
 마찬가지로 이 상황에서 `IPhoneX` 클래스를 새로 만들어야 할때도 `IPhone` 클래스를 그대로 다시 사용할 수 있다.
 
-```js
+```java
 class IPhoneX extends IPhone {
-  constructor () {
-    super();
-    this.version = 10;
-  }
+    int version = 10;
 }
 ```
 
@@ -151,42 +152,145 @@ class IPhoneX extends IPhone {
 
 하지만 여기서 만약 요구사항이 변경되어서 Galaxy 시리즈를 만들어야한다면 어떻게 될까? 상황에 따라서 `IPhone` 클래스를 그대로 냅두고 그냥 `Galaxy` 클래스를 새로 만들 수도 있지만 여기서 `SmartPhone`이라는 한단계 더 상위 개념을 만드는 방향으로 가닥을 잡을 수도 있다.
 
-```js
+```java
 class SmartPhone {
-  constructor (manufacturer, os) {
-    this.manufacturer = manufacturer;
-    this.os = os;
-  }
+    SmartPhone (String manufacturer, String os) {
+        this.manufacturer = manufacturer;
+        this.os = os;
+    }
 }
 
 class IPhone extends SmartPhone {
-  constructor () {
-    super('apple', 'iOS');
-  }
+    IPhone () {
+        super("apple", "iOS");
+    }
 }
 class Galaxy extends SmartPhone {
-  constructor () {
-    super('samsung', 'android');
-  }
+    Galaxy () {
+        super("samsung", "android");
+    }
 }
-
+  
 class IPhone7 extends IPhone {
-  constructor () {
-    super();
-    this.version = 7;
-  }
+    int version = 7;
 }
 class GalaxyS10 extends Galaxy {
-  constructor () {
-    super();
-    this.version = 's10';
-  }
+    String version = "s10";
 }
 ```
 
+위의 코드에서 `super` 메소드는 부모 클래스의 생성자를 호출하는 메소드이다. 부모 클래스를 `Super Class`, 자식 클래스를 `Sub Class`라고 부르기도 하기 때문에 부모와 관련된 키워드 역시 `super`를 사용하는 것이다.
+
+그리고 이때 자식 클래스인 `IPhone7`이나 `GalaxyS10` 클래스가 부모 클래스의 `manufacturer`나 `os` 속성을 덮어쓰게 할 수도 있는데, 이러한 작업을 `오버라이딩(Overriding)`이라고 한다. 안드로이드 개발을 하다보면 밥먹듯이 쓰는 `@Override` 데코레이터도 부모 클래스의 메소드를 덮어쓰는 방식으로 세부 구현을 진행하는 것이다.
+
 이러한 OOP의 클래스 의존관계는 클래스의 재사용성을 높혀주는 방법이기도 하지만, 너무 클래스의 상속 관계가 복잡해지게 되면 개발자가 전체 구조를 파악하기가 힘들다는 단점도 가지고 있으므로 개발자가 확실한 의도를 가지고 적당한 선에서 상속 관계를 설계하는 것이 중요하다.<small>(근데 이 기준이 사람마다 다 다르다)</small>
 
-## 객체 지향 프로그래밍의 요소들
-방금까지 설명한 클래스, 객체, 추상화, 상속 등은 OOP를 이루는 근본적인 개념들이다. 
+### 캡슐화
+`캡슐화(Encapsulation)`는 어떠한 클래스를 사용할 때 내부 동작이 어떻게 되는 지 모르더라도 사용법만 알면 쓸 수 있도록 클래스 내부를 감추는 기법이다. 클래스를 캡슐화 함으로써 클래스를 사용하는 쪽에서는 머리 아프게 해당 클래스의 내부 로직을 파악할 필요도 없다. 또한 클래스 내에서 사용되는 변수나 메소드를 감출 수 있기 때문에 필요 이상의 변수나 메소드가 클래스 외부로 노출되는 것을 방어햐여 보안도 챙길 수 있다.
 
+이렇게 클래스 내부의 데이터를 감추는 것을 `정보 은닉(Information Hiding)`이라고 하며, 보통 `public`, `private`, `protected` 같은 접근제한자를 사용하여 원하는 정보를 감추거나 노출시킬 수 있다.
 
+```java Capsulation.java
+class Person {
+    public String name;
+    private int age;
+    protected String address;
+
+    public Person (String name, int age, String address) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
+    }
+}
+```
+
+자 이렇게 간단한 클래스를 하나 만들어보았다. `Person` 클래스는 생성자의 인자로 들어온 값들을 자신의 멤버 변수에 할당하는데, 이 멤버 변수들은 각각 `public`, `private`, `protected`의 접근제한자를 가지고 있는 친구들이다. 그럼 한번 객체를 생성해보고 이 친구들의 멤버 변수에 접근이 가능한지를 알아보자.
+
+```java Capsulation.java
+class CapsulationTest {
+    public static void main (String[] args) {
+        Person evan = new Person("Evan", 29, "Seoul");
+        System.out.println(evan.name);
+        System.out.println(evan.age);
+        System.out.println(evan.address);
+    }
+}
+```
+
+자, 여기까지 직접 작성해보면 알겠지만 Java는 컴파일 언어이기 때문에 굳이 실행시켜보지 않더라도 IDE에서 이미 알아서 다 분석을 끝내고 빨간줄을 쫙쫙 그어주었을 것이다.
+
+<center>
+  {% asset_img private_error.png 500 %}
+  <br>
+</center>
+
+에러가 난 부분은 `private` 접근제한자를 사용한 멤버변수인 `age`이다. 이처럼 `private` 접근제한자를 사용하여 선언된 멤버 변수나 메소드는 클래스 내부에서만 사용될 수 있고 외부로는 아예 노출 자체가 되지 않는다. `public`과 `protected`를 사용하여 선언한 멤버 변수인 `name`과 `address`는 정상적으로 접근이 가능한 상태이다.
+
+`public` 같은 경우는 이름에서 바로 알 수 있듯이 클래스 외부에서 마음대로 접근할 수 있도록 열어주는 접근제한자인데, `protected`는 왜 외부에서 접근이 가능한 것일까? 이름만 보면 왠지 이 친구도 `private`처럼 접근이 막혀야할 것 같은데 지금은 접근이 가능한 상태다.
+
+`protected` 접근제한자는 해당 클래스를 상속받은 클래스와 같은 패키지 안에 있는 클래스가 아니면 모두 접근을 막는 접근제한자인데, 위의 예시의 경우 필자는 `Person` 클래스와 `CapsulationTest` 클래스를 같은 파일에 선언했으므로 같은 패키지로 인식되어 접근이 가능했던 것이다.
+
+그럼 `Person` 클래스를 다른 패키지로 분리해내면 어떻게 될까? 테스트 해보기 위해 먼저 `MyPacks`라는 디렉토리를 생성하고 그 안에 `Person.java` 파일을 따로 분리하여 별도의 패키지로 선언해주겠다.
+
+```java MyPacks/Person.java
+package MyPacks;
+
+public class Person {
+    public String name;
+    private int age;
+    protected String address;
+
+    public Person (String name, int age, String address) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
+    }
+}
+```
+```java Capsulation.java
+import MyPacks.Person;
+
+class CapsulationTest {
+    public static void main (String[] args) {
+        Person evan = new Person("Evan", 29, "Seoul");
+        System.out.println(evan.name);
+        System.out.println(evan.address);
+    }
+}
+```
+
+이렇게 `Person` 클래스를 별도의 패키지로 분리하면 이제 `evan.address`에도 빨간 줄이 쫙 그어진다.
+
+<center>
+  {% asset_img protected_error.png 500 %}
+  <br>
+</center>
+
+이렇게 외부 패키지로 불러온 클래스 내부 내의 `protected` 멤버 변수나 메소드에는 바로 접근할 수 없다. 단, 해당 클래스를 상속한다면 그 자식 클래스 내에서는 그대로 접근이 가능하다.
+
+```java Capsulation.java
+import MyPacks.Person;
+
+class CapsulationTest {
+    public static void main (String[] args) {
+        Evan evan = new Evan();
+    }
+}
+
+class Evan extends Person {
+    Evan () {
+        super("Evan", 29, "Seoul");
+        System.out.println(this.address);
+        System.out.println(super.address);
+    }
+}
+```
+```text
+Seoul
+Seoul
+```
+
+접근제한자는 Java 뿐만 아니라 TypeScript, Ruby, C++ 등과 같이 OOP를 지원하는 많은 프로그래밍 언어들도 가지고 있는 기능이므로 이 개념을 잘 알아두면 클래스를 설계할 때 원하는 정보만 노출시키고 원하지 않는 정보는 감추는 방법을 사용하여 보안도 지킬 수 있고 클래스를 가져다 쓰는 사용자로 하여금 쓸데없는 고민을 안하게 해줄 수도 있다.
+
+### 다형성
+`다형성(Polymorphism)`은 어떤 하나의 변수명이나 함수명이 상황에 따라서 다르게 해석될 수 있는 것을 의미한다. 
