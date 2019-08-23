@@ -8,7 +8,7 @@ tags:
   - Web
   - Network
 categories:
-  - AWS
+  - Network
 thumbnail: /2019/06/13/http2-with-aws/aws.png
 toc: true
 widgets:
