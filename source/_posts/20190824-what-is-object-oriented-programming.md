@@ -1,5 +1,11 @@
 ---
-title: 알고 보면 재밌는 객체 지향 프로그래밍, OOP 흝어보기
+title: '알고 보면 재밌는 객체 지향 프로그래밍, OOP 흝어보기'
+tags:
+  - OOP
+  - 객체지향프로그래밍
+  - Object Oriendted Programming
+categories:
+  - Methodology
 toc: true
 widgets:
   - type: toc
@@ -9,14 +15,10 @@ widgets:
 sidebar:
   right:
     sticky: true
-tags:
-  - OOP
-  - 객체지향프로그래밍
-  - Object Oriendted Programming
-categories:
-  - Methodology
-thumbnail:
+date: 2019-08-24 12:35:13
+thumbnail: 2019/08/24/what-is-object-oriented-programming/thumbnail.jpg
 ---
+
 
 이번 포스팅에서는 `객체 지향 프로그래밍(Object-Oriented Programming)`, 줄여서 흔히들 OOP라고 부르는 설계 방법론에 대해서 이야기해보려고 한다. OOP는 프로그래밍의 설계 패러다임 중 하나로, 현실 세계를 프로그램 설계에 반영한다는 개념을 기반으로 접근하는 방법이다. OOP는 90년대 초반부터 유명해지기 시작했지만 아직까지도 전 세계의 많은 프로그래머들이 사용하고 있는 설계 패턴 중 하나이기 때문에 알아둬서 나쁠 건 없다.
 <!-- more -->
