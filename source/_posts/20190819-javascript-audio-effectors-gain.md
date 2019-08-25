@@ -1,5 +1,5 @@
 ---
-title: JavaScript로 오디오 이펙터를 만들어보자 - 소리의 흐름을 파악하자
+title: "[JavaScript로 오디오 이펙터를 만들어보자] 소리의 흐름을 파악하자"
 tags:
   - JavaScript
   - Audio

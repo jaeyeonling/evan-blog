@@ -1,5 +1,5 @@
 ---
-title: JavaScript로 오디오 이펙터를 만들어보자 - 나만의 소리 만들기
+title: "[JavaScript로 오디오 이펙터를 만들어보자] 나만의 소리 만들기"
 tags:
   - JavaScript
   - Audio
