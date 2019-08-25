@@ -3,7 +3,7 @@ function buildToc(toc) {
     let result = '';
     if (toc.hasOwnProperty('id') && toc.hasOwnProperty('index') && toc.hasOwnProperty('text')) {
         result += `<li>
-        <a class="is-flex" href="#${toc.id}">
+        <a class="is-flex" href="#${toc.id}" data-link-name="toc">
         <span class="has-mr-6">${toc.index}</span>
         <span>${toc.text}</span>
         </a>`;

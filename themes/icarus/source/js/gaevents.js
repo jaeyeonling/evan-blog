@@ -47,4 +47,9 @@ $(document).ready(function () {
     globalMenuLogo.on('click', function (e) {
         linkEvent(this.href, '메인 헤더 로고 클릭');
     });
+
+    const tocLinks = $('a[data-link-name="toc"]');
+    tocLinks.on('click', function (e) {
+        linkEvent(this.href, 'TOC 클릭');
+    });
 });
