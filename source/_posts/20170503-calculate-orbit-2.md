@@ -2,13 +2,13 @@
 title: "[JavaScript로 천체 구현하기] 행성의 움직임을 구현해보자"
 date: 2017.05.03 21:49:04
 tags:
-  - 물리학
-  - 천체물리
-  - 궤도
-  - 케플러
+  - 궤도 구현하기
+  - 케플러 궤도 방정식
+  - 케플러 6요소
   - JavaScript
 categories:
-  - Physics
+  - Programming
+  - Graphics
 thumbnail: /2017/05/03/calculate-orbit-2/thumbnail.jpg
 toc: true
 widgets:

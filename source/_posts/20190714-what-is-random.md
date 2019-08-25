@@ -1,10 +1,13 @@
 ---
 title: 컴퓨터가 만드는 랜덤은 정말로 랜덤할까?
 tags:
+  - 컴퓨터 공학
   - Algorithm
   - 알고리즘
   - 난수생성알고리즘
+  - 메르센 트위스터
 categories:
+  - Programming
   - Algorithm
 toc: true
 widgets:

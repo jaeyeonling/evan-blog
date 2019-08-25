@@ -4,8 +4,12 @@ date: 2019-02-26 15:03:48
 tags:
   - Machine Learning
   - Deep Learning
+  - TypeScript
+  - 타입스크립트
+  - 타입스크립트 인공 신경망
   - 머신러닝
 categories:
+  - Programming
   - Machine Learning
 thumbnail: /2019/02/26/simple-ann/thumbnail.png
 toc: true

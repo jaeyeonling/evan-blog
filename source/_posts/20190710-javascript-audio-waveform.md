@@ -1,10 +1,14 @@
 ---
 title: 컴퓨터는 어떻게 소리를 들을까?
 tags:
+  - 컴퓨터 공학
   - Audio
   - Sound Engineering
+  - 사운드 엔지니어
+  - 나이퀴스트
 categories:
-  - JavaScript
+  - Programming
+  - Audio
 thumbnail: /2019/07/10/javascript-audio-waveform/thumbnail.jpg
 toc: true
 widgets:

@@ -3,9 +3,11 @@ title: "[Deep Learning이란 무엇인가?] 딥러닝이란?"
 date: 2018-07-17 23:33:01
 tags:
   - 머신러닝
+  - 딥러닝
   - Machine Learning
   - Deep Learning
 categories:
+  - Programming
   - Machine Learning
 thumbnail: /2018/07/17/deep-learning-intro/thumbnail.jpeg
 toc: true

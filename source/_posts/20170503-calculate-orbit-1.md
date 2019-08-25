@@ -2,12 +2,13 @@
 title: "[JavaScript로 천체 구현하기] 케플러 6요소 알아보기"
 date: 2017-05-03 15:29:22
 tags:
-  - 물리학
-  - 천체물리
-  - 궤도
-  - 이론
+  - 궤도 구현하기
+  - 케플러 궤도 방정식
+  - 케플러 6요소
+  - JavaScript
 categories:
-  - Physics
+  - Programming
+  - Graphics
 thumbnail: /2017/05/03/calculate-orbit-1/thumbnail.jpg
 toc: true
 widgets:

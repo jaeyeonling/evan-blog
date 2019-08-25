@@ -6,6 +6,7 @@ tags:
   - 알고리즘
   - 논리학
 categories:
+  - Programming
   - Algorithm
 toc: true
 widgets:

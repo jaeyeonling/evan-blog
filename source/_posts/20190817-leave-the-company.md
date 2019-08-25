@@ -4,7 +4,7 @@ tags:
   - 퇴사
   - 회고
 categories:
-  - Life
+  - Essay
 toc: true
 widgets:
   - type: toc

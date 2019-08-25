@@ -1,11 +1,12 @@
 ---
 title: 로우 레벨로 살펴보는 Node.js 이벤트 루프
 tags:
-  - 번역
   - JavaScript
   - NodeJS
   - Event Loop
+  - 이벤트 루프
 categories:
+  - Programming
   - JavaScript
 toc: true
 widgets:

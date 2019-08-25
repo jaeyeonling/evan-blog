@@ -2,11 +2,14 @@
 title: JavaScript와 함께 해시테이블을 파헤쳐보자
 date: 2019-06-25 00:22:36
 tags:
-  - HashTable
+  - 컴퓨터 공학
+  - 자료구조
+  - 해시테이블
+  - Hash Table
   - Data structure
   - JavaScript
-  - Computer Science
 categories:
+  - Programming
   - Algorithm
 thumbnail: /2019/06/25/hashtable-with-js/thumbnail.jpg
 toc: true

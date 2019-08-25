@@ -4,7 +4,8 @@ tags:
   - 조직문화
   - 철학
 categories:
-  - Methodology
+  - Soft Skills
+  - Organization
 toc: true
 widgets:
   - type: toc

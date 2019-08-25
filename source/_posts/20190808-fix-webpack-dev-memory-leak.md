@@ -10,7 +10,8 @@ tags:
   - MFS
   - Memory leak
 categories:
-  - JavaScript
+  - Programming
+  - Web
 toc: true
 widgets:
   - type: toc

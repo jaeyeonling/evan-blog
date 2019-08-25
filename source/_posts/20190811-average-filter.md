@@ -8,6 +8,7 @@ tags:
   - Algorithm
   - 누적평균
 categories:
+  - Programming
   - Algorithm
 toc: true
 widgets:

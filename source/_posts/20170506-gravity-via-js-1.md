@@ -2,11 +2,13 @@
 title: "[JavaScript로 중력 구현하기] 1. 중력이란 무엇일까?"
 date: 2017-05-06 12:32:50
 tags:
-  - 물리학
-  - 일반물리
-  - 이론
+  - 중력 구현하기
+  - 중력
+  - Gravity
+  - JavaScript
 categories:
-  - Physics
+  - Programming
+  - Graphics
 thumbnail: /2017/05/06/gravity-via-js-1/thumbnail.jpg
 toc: true
 widgets:

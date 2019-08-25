@@ -1,11 +1,13 @@
 ---
 title: 애자일이 도대체 뭐길래?
 tags:
-  - 애자일프로세스
+  - 애자일
+  - 애자일 프로세스
   - Agile
   - 소프트웨어 개발 방법론
 categories:
-  - Methodology
+  - Soft Skills
+  - Agile
 toc: true
 widgets:
   - type: toc

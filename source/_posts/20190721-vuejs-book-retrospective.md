@@ -8,7 +8,7 @@ tags:
   - 공동집필
   - 커피 한잔 마시며 끝내는 VueJS
 categories:
-  - Life
+  - Essay
 thumbnail: /2019/07/21/vuejs-book-retrospective/thumbnail.jpg
 toc: true
 widgets:

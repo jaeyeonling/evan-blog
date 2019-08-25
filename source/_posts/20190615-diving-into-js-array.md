@@ -2,10 +2,11 @@
 title: JavaScript 배열(Array)의 발전과 성능에 대해서 자세히 알아보기
 date: 2019-06-15 12:43:13
 tags:
-  - 번역
   - JavaScript
+  - 배열 성능 최적화
   - Array
 categories:
+  - Programming
   - JavaScript
 thumbnail: /2019/06/15/diving-into-js-array/actual-array-js.png
 toc: true

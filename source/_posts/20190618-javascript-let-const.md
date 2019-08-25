@@ -9,6 +9,7 @@ tags:
   - Hoisting
   - V8
 categories:
+  - Programming
   - JavaScript
 thumbnail: /2019/06/18/javascript-let-const/js.001.png
 toc: true

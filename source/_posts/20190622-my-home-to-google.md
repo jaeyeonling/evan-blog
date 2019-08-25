@@ -2,12 +2,13 @@
 title: 우리 집에서 구글까지 가는 길
 date: 2019-06-22 00:32:09
 tags:
+  - 컴퓨터 공학
   - 네트워크
   - Network
   - IP
-  - 이론
-  - Computer Science
+  - traceroute
 categories:
+  - Programming
   - Network
 thumbnail: /2019/06/22/my-home-to-google/network-structure.png
 toc: true

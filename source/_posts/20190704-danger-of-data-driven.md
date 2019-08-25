@@ -14,7 +14,8 @@ tags:
   - Data Driven
   - 데이터 기반 의사결정
 categories:
-  - Methodology
+  - Soft Skills
+  - Data
 thumbnail: /2019/07/04/danger-of-data-driven/thumbnail.jpg
 ---
 

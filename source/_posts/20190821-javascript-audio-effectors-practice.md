@@ -6,7 +6,8 @@ tags:
   - 오디오 이펙터
   - JavaScript Audio API
 categories:
-  - JavaScript
+  - Programming
+  - Audio
 toc: true
 widgets:
   - type: toc

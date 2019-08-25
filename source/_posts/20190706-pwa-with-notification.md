@@ -8,7 +8,8 @@ tags:
   - PWA
   - Progressive Web Application
 categories:
-  - JavaScript
+  - Programming
+  - Web
 toc: true
 widgets:
   - type: toc

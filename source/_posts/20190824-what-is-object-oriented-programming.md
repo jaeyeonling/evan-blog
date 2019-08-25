@@ -5,7 +5,8 @@ tags:
   - 객체지향프로그래밍
   - Object Oriendted Programming
 categories:
-  - Methodology
+  - Programming
+  - Design
 toc: true
 widgets:
   - type: toc

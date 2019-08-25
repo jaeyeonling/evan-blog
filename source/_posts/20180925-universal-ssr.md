@@ -9,6 +9,7 @@ tags:
   - Server Side Rendering
   - 서버사이드 렌더링
 categories:
+  - Programming
   - Web
 thumbnail: /2018/09/25/universal-ssr/thumbnail.png
 toc: true

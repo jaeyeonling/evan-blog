@@ -2,12 +2,13 @@
 title: 클라이언트 사이드 렌더링 최적화 
 date: 2019-06-03 17:22:26
 tags:
-    - SEO
-    - 렌더 최적화
-    - Render Optimizing
-    - JavaScript
+  - SEO
+  - 렌더 최적화
+  - Render Optimizing
+  - JavaScript
 categories:
-    - Web
+  - Programming
+  - Web
 thumbnail: /2019/06/03/client-render-optimizing/result_before.png
 toc: true
 widgets:

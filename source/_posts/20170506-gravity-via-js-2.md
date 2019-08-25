@@ -2,11 +2,13 @@
 title: "[JavaScript로 중력 구현하기] 2. 코딩하기"
 date: 2017-05-06 14:22:01
 tags:
-  - 물리학
-  - 일반물리
+  - 중력 구현하기
+  - 중력
+  - Gravity
   - JavaScript
 categories:
-  - Physics
+  - Programming
+  - Graphics
 thumbnail: /2017/05/06/gravity-via-js-2/thumbnail.jpg
 toc: true
 widgets:

@@ -8,7 +8,8 @@ tags:
   - 협업
   - 버전관리
 categories:
-  - Methodology
+  - Programming
+  - Git
 toc: true
 widgets:
   - type: toc

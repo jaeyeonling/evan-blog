@@ -2,10 +2,12 @@
 title: 정렬 알고리즘 정리 (Bubble, Selection, Insertion, Merge, Quick)
 date: 2018-10-13 21:25:54
 tags:
-  - Computer Science
+  - 정렬 알고리즘
+  - Sort Algorithms
   - Algorithm
   - 알고리즘
 categories:
+  - Programming
   - Algorithm
 thumbnail: /2018/10/13/sort-algorithm/thumbnail.jpg
 toc: true

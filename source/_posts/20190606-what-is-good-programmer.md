@@ -2,12 +2,12 @@
 title: 좋은 프로그래머란 무엇일까?
 date: 2019-06-06 20:18:03
 tags:
-    - 잡설
-    - essay
-    - programmer
-    - 프로그래머
+  - 에세이
+  - Essay
+  - Good Programmer
+  - 좋은 프로그래머
 categories:
-    - Life
+  - Essay
 thumbnail: /2019/06/06/what-is-good-programmer/3deditor.jpg
 toc: true
 widgets:

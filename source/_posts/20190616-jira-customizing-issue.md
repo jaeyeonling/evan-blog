@@ -8,7 +8,8 @@ tags:
   - 협업
   - Atlassian
 categories:
-  - Methodology
+  - Soft Skills
+  - Agile
 thumbnail: /2019/06/16/jira-customizing-issue/jira-logo.png
 toc: true
 widgets:
