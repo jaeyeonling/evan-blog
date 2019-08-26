@@ -1,5 +1,11 @@
 ---
 title: 개발자가 공부로 살아남는 방법
+tags:
+  - 공부
+  - 개발자
+  - Study
+categories:
+  - Essay
 toc: true
 widgets:
   - type: toc
@@ -9,14 +15,10 @@ widgets:
 sidebar:
   right:
     sticky: true
-tags:
-  - 공부
-  - 개발자
-  - Study
-categories:
-  - Essay
-thumbnail:
+date: 2019-08-26 18:53:03
+thumbnail: /2019/08/26/how-does-developer-study/thumbnail.jpg
 ---
+
 
 이번 포스팅에서는 개발자들에게 뗄레야 뗄 수 없는 키워드인 `공부`에 대해서 포스팅 해보려고 한다. 물론 다른 직종도 마찬가지겠지만 다른 업계보다 빠르게 변화하는 IT 업계의 특성 상 개발자는 시대의 흐름을 따라가기위해 은퇴 전까지 계속 해서 공부를 하는 수 밖에 없다.
 
