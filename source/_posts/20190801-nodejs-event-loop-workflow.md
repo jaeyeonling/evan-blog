@@ -214,7 +214,7 @@ fs.readFile('my-file-path.txt', () => {
 **역주**: 위 스니펫은 다음과 같은 순서로 실행된다.
 
 1. `fs.readFile`을 만나면 이벤트 루프는 libUV에게 해당 작업을 던짐.
-2. 파일 읽기는 OS 커널에서 비동기 API를 제공하지 않기 떄문에 libUV는 별도의 스레드에 해당 작업을 던짐
+2. 파일 읽기는 OS 커널에서 비동기 API를 제공하지 않기 때문에 libUV는 별도의 스레드에 해당 작업을 던짐
 3. 작업이 완료되면 이벤트 루프는 `Pending i/o callback phase`의 `pending_queue`에 작업의 콜백을 등록
 4. 이벤트 루프가 `Pending i/o callback phase`를 지날 때 해당 콜백을 실행
 5. `setTimeout`이 `Timer phase`의 큐에 등록됨. 해당 콜백은 다음 `Timer phase` 때 실행될 것이다.
