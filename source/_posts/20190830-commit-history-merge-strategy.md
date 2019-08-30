@@ -1,5 +1,14 @@
 ---
 title: 커밋 히스토리를 이쁘게 단장하자
+tags:
+  - Git
+  - Commit
+  - Merge
+  - Merge and squash
+  - Rebase
+categories:
+  - Programming
+  - Git
 toc: true
 widgets:
   - type: toc
@@ -9,16 +18,10 @@ widgets:
 sidebar:
   right:
     sticky: true
-tags:
-  - Git
-  - Commit
-  - Merge
-  - Merge and squash
-  - Rebase
-categories:
-  - Git
-thumbnail:
+date: 2019-08-30 14:31:29
+thumbnail: 2019/08/30/commit-history-merge-strategy/thumbnail.jpg
 ---
+
 
 이번 포스팅에서는 Git의 머지 전략 중 대표적인 3가지인 `Merge`, `Squash and merge`, `Rebase and merge`의 차이에 대해서 한번 이야기해보려고 한다. 이 3가지 머지 전략 모두 브랜치를 머지한다는 목적은 같지만, 어떤 방식을 선택하냐에 따라 `커밋 히스토리`가 기록되는 방식이 달라지게 된다.
 
@@ -178,7 +181,7 @@ Github과 Bitbucket의 머지 전략은 이름은 조금 다르지만 이것들�
 ### Rebase and merge
 
 <center>
-  {% asset_img rebase-icon.jpg 500 %}
+  {% asset_img rebase-icon.jpg 300 %}
   <br>
 </center>
 
