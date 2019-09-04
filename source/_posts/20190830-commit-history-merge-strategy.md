@@ -97,6 +97,7 @@ Github과 Bitbucket의 머지 전략은 이름은 조금 다르지만 이것들�
 <center>
   {% asset_img bad-commit-message.png 500 %}
   <small>이렇게 커밋해버리면 뭘 고친건지 알 수가 없다.</small>
+  <small>[출처] https://xkcd.com/</small>
   <br>
 </center>
 
