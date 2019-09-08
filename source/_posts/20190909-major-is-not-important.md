@@ -1,5 +1,7 @@
 ---
 title: 비전공 개발자는 전공한 사람보다 진짜 불리한걸까?
+categories:
+  - Essay
 toc: true
 widgets:
   - type: toc
@@ -9,11 +11,11 @@ widgets:
 sidebar:
   right:
     sticky: true
+date: 2019-09-09 08:20:39
 tags:
-categories:
-  - Essay
-thumbnail:
+thumbnail: /2019/09/09/major-is-not-important/thumbnail.jpg
 ---
+
 
 이번 포스팅에서는 많은 분들이 질문해주신 `컴퓨터 공학을 전공하지 않은 개발자가 과연 전공자에 비해 불리한가`에 대해서 한번 이야기해보려고 한다.
 
