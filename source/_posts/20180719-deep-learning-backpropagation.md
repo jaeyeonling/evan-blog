@@ -1,6 +1,6 @@
 ---
 title: "[Deep Learning이란 무엇인가?] Backpropagation, 역전파 알아보기"
-date: 2018-07-19 00:27:18
+date: 2018-07-19 08:27:18
 tags:
   - 머신러닝
   - 딥러닝
