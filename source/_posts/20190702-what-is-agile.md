@@ -17,7 +17,7 @@ widgets:
 sidebar:
   right:
     sticky: true
-date: 2019-07-02 03:16:10
+date: 2019-07-02 08:16:10
 thumbnail: /2019/07/02/what-is-agile/thumbnail.jpg
 ---
 
