@@ -9,10 +9,22 @@ widgets:
 sidebar:
   right:
     sticky: true
+date: 2019-09-19 08:54:09
 tags:
+  - Synchronous
+  - Asynchronous
+  - 동기
+  - 비동기
+  - Blocking
+  - Non Blocking
+  - 블록킹
+  - 논블록킹
 categories:
-thumbnail:
+  - Programming
+  - Algorithm
+thumbnail: /2019/09/19/sync-async-blocking-non-blocking/thumbnail.jpg
 ---
+
 
 이번 포스팅에서는 I/O와 네트워크 등 전반적으로 다양한 모델에서 사용하는 개념인 `동기(Synchronous)`가 정확히 무엇을 의미하는 것인지, 그리고 동기 방식과 비동기 방식의 차이에 대해서 한번 이야기 해보려고 한다. 그리고 이 두 가지 개념과 많이 혼동되는 개념인 `블록킹(Blocking)`과 `논블록킹(Non-Blocking)`에 대해서도 간단하게 짚고 넘어갈 예정이다.
 
