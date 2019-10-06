@@ -184,6 +184,8 @@ T(AccessedUninitializedVariable, "Cannot access '%' before initialization")
 
 [V8 엔진의 깃허브 레파지토리](https://github.com/v8/v8)을 클론받아서 살펴본 결과 내부적으로 `var` 키워드로 선언된 JS 객체와 `let`과 `const`로 선언된 JS 객체를 분기로 갈라놓은 코드가 굉장히 많았다. 코드를 계속 분석해보면서 `var`, `let`, `const` 중 어떤 키워드를 사용하여 값을 선언하든 호이스팅은 항상 이루어진다는 것을 알 수 있었다. V8 엔진 내부의 호이스팅 플래그인 `should_hoist` 값을 JavaScript 객체에 할당할 때 변수 선언 키워드에 대한 구분을 하지않고 무조건 `true`를 할당한다.
 
+그렇다면 `var` 키워드와 `let`, `const` 키워드의 차이는 어디서 오는 것일까? 변수를 선언할 때, 즉 V8이 변수 객체를 생성할 때는 전부 동일하게 처리하지만 변수를 위해 메모리에 공간을 확보하는 초기화 단계에서는 이 키워드들을 다르게 처리한다.
+
 ```cpp
 static InitializationFlag DefaultInitializationFlag(VariableMode mode) {
   DCHECK(IsDeclaredVariableMode(mode));
