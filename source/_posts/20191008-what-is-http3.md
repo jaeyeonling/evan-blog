@@ -1,5 +1,8 @@
 ---
 title: HTTP/3는 왜 UDP를 선택한 것일까?
+categories:
+  - Programming
+  - Network
 toc: true
 widgets:
   - type: toc
@@ -9,12 +12,15 @@ widgets:
 sidebar:
   right:
     sticky: true
+date: 2019-10-08 01:57:49
 tags:
-categories:
-  - Programming
-  - Network
-thumbnail:
+  - HTTP3
+  - TCP
+  - UDP
+  - 네트워크
+thumbnail: /2019/10/08/what-is-http3/thumbnail.jpg
 ---
+
 
 `HTTP/3`는 `HTTP(Hypertext Transfer Protocol)`의 세 번째 메이저 버전으로, 기존의 HTTP/1, HTTP/2와는 다르게 UDP 기반의 프로토콜인 `QUIC`을 사용하여 통신하는 프로토콜이다. HTTP/3와 기존 HTTP 들과 가장 큰 차이점이라면 TCP가 아닌 UDP 기반의 통신을 한다는 것이다.
 
