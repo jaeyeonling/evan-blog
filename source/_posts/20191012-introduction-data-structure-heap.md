@@ -9,10 +9,17 @@ widgets:
 sidebar:
   right:
     sticky: true
+date: 2019-10-12 18:51:14
 tags:
+  - Heap
+  - 힙
+  - 자료 구조
 categories:
-thumbnail:
+  - Programming
+  - Algorithm
+thumbnail: /2019/10/12/introduction-data-structure-heap/thumbnail.png
 ---
+
 
 이번 포스팅에서는 대표적인 자료 구조 중 하나인 `힙(Heap)`에 대한 설명과 구현을 한번 해보려고 한다.
 
