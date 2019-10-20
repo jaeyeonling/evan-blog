@@ -371,3 +371,4 @@ Uncaught TypeError: Cannot read property 'constructor' of null at <anonymous>:1:
 이렇게 프로토타입으로 이루어진 객체들의 관계를 우리는 `프로토타입 체인(Prototype Chain)`이라고 부른다.
 
 #### 프로토타입 체인을 사용한 상속
+ES5 시절 클래스 흉내 내면서 구현하던 거 설명
