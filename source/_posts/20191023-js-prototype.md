@@ -1,5 +1,13 @@
 ---
 title: 자바스크립트의 프로토타입 흝어보기
+tags:
+  - 프로토타입
+  - 자바스크립트
+  - JavaScript
+  - Prototype
+categories:
+  - Programming
+  - JavaScript
 toc: true
 widgets:
   - type: toc
@@ -9,16 +17,10 @@ widgets:
 sidebar:
   right:
     sticky: true
-tags:
-  - 프로토타입
-  - 자바스크립트
-  - JavaScript
-  - Prototype
-categories:
-   - Programming
-   - JavaScript
-thumbnail:
+date: 2019-10-23 21:29:01
+thumbnail: /2019/10/23/js-prototype/thumbnail.png
 ---
+
 
 이번 포스팅에서는 자바스크립트(JavaScript)하면 빠질 수 없는 `프로토타입(Prototype)`에 대해서 한번 이야기해보려고 한다.
 
