@@ -1,5 +1,8 @@
 ---
-title: "[JS 프로토타입] 프로토타입을 사용하여 상속하기"
+title: '[JS 프로토타입] 프로토타입을 사용하여 상속하기'
+categories:
+  - Programming
+  - JavaScript
 toc: true
 widgets:
   - type: toc
@@ -9,12 +12,15 @@ widgets:
 sidebar:
   right:
     sticky: true
+date: 2019-10-27 00:55:05
 tags:
-categories:
-  - Programming
+  - 프로토타입
+  - 자바스크립트
   - JavaScript
-thumbnail:
+  - Prototype
+thumbnail: /2019/10/27/inheritance-with-prototype/thumbnail.png
 ---
+
 
 이번 포스팅에서는 {% post_link js-prototype 이전 포스팅 %}에 이어, 프로토타입을 사용한 다양한 상속 패턴에 대한 이야기를 해볼까 한다.
 
