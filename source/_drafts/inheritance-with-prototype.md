@@ -119,9 +119,24 @@ console.log(evan.say === john.say);
 true
 ```
 
-음? 이번에는 아까와는 다르게 두 객체의 메소드가 같다고 한다.
+음? 이번에는 아까와는 다르게 두 객체의 메소드가 같다고 한다. `evan.say`와 `john.say`가 객체에 따로따로 정의된 메소드가 아닌, 원본 객체의 메소드를 공유하고 있는 것이기 때문이다.
 
-그 이유는 `evan.say`와 `john.say`가 객체에 직접 정의된 메소드가 아닌, 원본 객체의 메소드를 공유하고 있는 것이기 때문이다. 생성된 `evan` 객체를 한번 콘솔에 출력해보면 객체 내에는 `say` 메소드가 없는 것을 확인해볼 수 있다.
+즉, 함수의 메소드가 아닌 프로퍼티를 원본 객체의 프로퍼티에 정의하게 되면 객체들이 해당 프로퍼티를 공유하기 때문에 이런 상황도 발생할 수 있다.
+
+```js
+User.prototype.name = 'Evan';
+
+console.log(evan.name);
+console.log(john.name);
+```
+```js
+Evan
+Evan
+```
+
+그렇기 때문에 각 인스턴스마다 고유한 프로퍼티를 부여하고 싶다면 원본 객체에 정의하는 것이 아니라, 생성자 함수 내에서 정의해야한다. 다시 말하지만 원본 객체에 정의한 프로퍼티나 메소드는 `공유`된다.
+
+생성된 `evan` 객체를 한번 콘솔에 출력해보면, 원본 객체의 프로퍼티나 메소드를 공유하고 있다는 말이 무엇인지 알 수 있다.
 
 ```js
 console.log(evan);
@@ -130,7 +145,9 @@ console.log(evan);
 User {}
 ```
 
-`evan` 객체를 출력해본 결과, 이 객체 내부에는 아무 메소드나 프로퍼티도 선언되어 있지 않다. 하지만 우리는 분명히 `evan.say`를 통해 해당 메소드에 접근할 수 있었다. 어떻게 이런 일이 가능한 것일까?
+`evan` 객체를 출력해보니, 이 객체는 아무 메소드나 프로퍼티도 가지고 있지 않고 텅 비어있는 친구다. 하지만 우리는 분명히 `evan.say`를 통해 해당 메소드에 접근할 수 있었다.
+
+어떻게 이런 일이 가능한 것일까?
 
 ## 프로토타입 룩업
 그 질문에 대한 해답은 바로 자바스크립트가 객체 내에서 프로퍼티를 찾는 방법 중 하나인 `프로토타입 룩업(Prototype Lookup)`에서 알아볼 수 있다. 방금 전 자바스크립트가 `evan` 객체에서 `say` 메소드를 찾아냈던 과정은 다음과 같다.
@@ -166,11 +183,11 @@ User {}
 ## 프로토타입을 사용한 상속
 자바스크립트에서 프로토타입을 사용하여 상속을 구현하는 방법은 크게 `Object.create` 메소드를 사용하는 깔끔한 방법과 이 메소드를 사용하지않는 <small>(더러운)</small> 방법, 두 가지로 나누어질 수 있다.
 
-사실 `Object.create` 사용해도 상속은 구현이 가능하다. 하지만 굳이 두 가지를 나눠서 설명하는 이유는, `Object.create` 메소드가 `Internet Explorer 9`부터 지원이 되기 때문이다.
+사실 `Object.create`만 사용해도 프로토타입을 사용한 상속은 충분히 구현이 가능하다. 하지만 굳이 두 가지를 나눠서 이야기한 이유는, `Object.create` 메소드가 `Internet Explorer 9`부터 지원이 되기 때문이다.
 
-필자는 개인적으로 IE 8 이하 버전을 지원하는 것이 맞냐, 틀리냐를 떠나서 프론트엔드 개발자로 일하다보면 그보다 더한 상황을 맞이할 가능성도 있다고 생각하는 편이고, 레거시 코드의 경우에는 예전 브라우저 스펙에 맞춰서 작성된 경우도 있기 때문에 일단 알아는 두는 것을 추천한다.
+하지만 필자는 필자의 행복을 위해 쓰는 포스팅에서 `IE 8`이나 `Window XP` 환경에 대한 자세한 이야기는 별로 하고 싶지 않으므로 `Object.create`를 사용하지 않는 방법에 대한 코드를 간단하게 [필자의 Github Gist 링크](https://gist.github.com/evan-moon/a7e5a51e20d22016ea443a03480765b7)로만 첨부하겠다.
 
-### Object.create를 사용하는 방법
+### Object.create를 사용하자
 `Object.create` 메소드는 첫 번째 인자로 생성할 객체의 원본 객체가 될 객체, 두 번째 인자로 새로 생성할 객체에 추가할 프로퍼티를 객체 타입으로 받는다.
 
 ```js
@@ -213,7 +230,7 @@ function SubClass (name) {
 SubClass.prototype = Object.create(SuperClass.prototype);
 SubClass.prototype.constructor = SubClass;
 SubClass.prototype.run = function () {
-  console.log(`${this.name} is running!`);
+  console.log(`${this.name} is running`);
 }
 ```
 
@@ -233,3 +250,32 @@ SubClass.prototype.run = function () {
   {% asset_img extends.png 500 %}
   <br>
 </center>
+
+이제 한번 `SubClass` 생성자 함수를 사용하여 객체를 생성해보고, 제대로 부모 생성자 함수의 속성들을 물려받았는지 확인해보자.
+
+```js
+const evan = new SubClass('Evan');
+console.log(evan);
+console.log(evan.__proto__);
+console.log(evan.__proto__.__proto__)
+```
+```js
+SubClass { name: 'Evan' } // 에반 객체
+SubClass { constructor: [Function: SubClass], run: [Function] } // 에반 객체의 원본 객체
+SuperClass { say: [Function] } // 에반 객체의 원본 객체의 원본 객체
+```
+
+`evan` 객체는 `SubClass`의 프로토타입 객체를 복제해서 정상적으로 생성되었고, `evan` 객체의 원본 객체와 원본 객체의 원본 객체도 잘 체이닝되어있다.
+
+즉, `evan -> SubClass.prototype -> SuperClass.prototype`으로 이어지는 프로토타입 체인이 완성된 것이다. 이때 `evan` 객체의 `run`이나 `say` 메소드를 호출하면, 위에서 언급한 프로토타입 룩업을 통해 원본 객체의 메소드를 호출할 수 있다.
+
+## 마치며
+{% post_link js-prototype 이전 포스팅 %}에 이어 이번에는 자바스크립트에서 프로토타입을 활용한 상속 패턴에 대한 내용을 한번 다뤄보았다.
+
+솔직히 말해서, 필자가 실무에서 이러한 패턴을 사용해서 상속을 구현해본 경험은 거의 없다. 필자가 개발자로 일을 시작하고 얼마 되지 않아 ES6가 나오기도 했었고, 필자는 당시 자바가 더 익숙했기 때문에 새로 추가된 `class` 키워드에 흠뻑 빠져있었다.
+
+하지만 일을 시작하고 몇 년이 지나면서 레거시 코드에서 이 상속 패턴을 꽤 마주치기도 했고, 면접에서 이런 패턴에 대해서 물어보는 경우도 있었기 때문에 확실히 공부할 필요는 있는 것 같다.
+
+아무리 요즘 ES5를 거의 사용하지 않는다고 하지만, 사실 이런 상속 패턴이 자바스크립트를 사용한 프로그램 아키텍처의 근간이기도 하니 말이다.
+
+이상으로 [JS 프로토타입] 프로토타입을 사용하여 객체상속하기 포스팅을 마친다.
