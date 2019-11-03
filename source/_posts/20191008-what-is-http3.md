@@ -266,7 +266,7 @@ TCP는 여러 ARQ 방식 중에서 `Stop and Wait ARQ` 방식을 사용하고 �
 
 우선 2017년 구글에서 발표한 [QUIC Loss Detection and Congestion Control](https://datatracker.ietf.org/doc/draft-ietf-quic-recovery/?include_text=1)에 따르면, QUIC은 기본적으로 TCP와 유사한 방법으로 패킷 손실을 탐지하나, 몇 가지 개선 사항을 추가한 것으로 보인다.
 
-TCP에서 패킷 손실 감지에 대한 대표적인 문제는 송신 측이 패킷을 수신측으로 보내고 난 후 얼마나 기다려줄 것인가, 즉 타임 아웃을 언제 낼 것인가를 동적으로 계산해야한다는 것이다. 이때 이 시간을 `RTT(Retransmission Time Out)`이라고 하는데, 이때 필요한 데이터가 바로 `RTT(Round Trip Time)`들의 샘플들이다.
+TCP에서 패킷 손실 감지에 대한 대표적인 문제는 송신 측이 패킷을 수신측으로 보내고 난 후 얼마나 기다려줄 것인가, 즉 타임 아웃을 언제 낼 것인가를 동적으로 계산해야한다는 것이다. 이때 이 시간을 `RTO(Retransmission Time Out)`라고 하는데, 이때 필요한 데이터가 바로 `RTT(Round Trip Time)`들의 샘플들이다.
 
 한번 패킷을 보낸 후 잘 받았다는 응답을 받을 때 걸렸던 시간들을 측정해서 동적으로 타임 아웃을 정하는 것이다. 즉, RTT 샘플을 측정하기 위해서는 반드시 송신 측으로 부터 ACK를 받아야하는데, 정상적인 상황에서는 딱히 문제가 없으나 타임 아웃이 발생해서 패킷 손실이 발생하게 되면 RTT 계산이 애매해진다.
 
