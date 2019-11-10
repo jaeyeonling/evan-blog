@@ -129,7 +129,7 @@ TCP는 여러 개의 필드로 나누어진 `20 bytes`, 즉 `160 bits`의 헤더
 
 그럼 이 그림에 표기된 순서대로 각 필드가 어떤 정보를 담고 있는지 한번 살펴보도록 하자.
 
-**Source port (16 bits), Destination port (16 bits)**
+### Source port, Destination port
 
 <center>
   {% asset_img header-source-destination.png %}
@@ -140,7 +140,7 @@ TCP는 여러 개의 필드로 나누어진 `20 bytes`, 즉 `160 bits`의 헤더
 
 IP 주소는 당연히 한 계층 밑인 네트워크 계층에 있는 IP의 헤더에 담기기 때문에, TCP 헤더에는 IP 주소를 나타내는 필드가 없고 포트를 나타내는 필드만 존재한다.
 
-**Sequence Number (32 bits)**
+### Sequence Number
 
 <center>
   {% asset_img header-sequence.png %}
@@ -153,7 +153,7 @@ IP 주소는 당연히 한 계층 밑인 네트워크 계층에 있는 IP의 헤
 
 송신자가 최초로 데이터를 전송할 때는 이 번호를 랜덤한 수로 초기화 하며, 이후 자신이 보낼 데이터의 1 bytes당 시퀀스 번호를 1씩 증가시키며 데이터의 순서를 표현하다 `4,294,967,296`를 넘어갈 경우 다시 0부터 시작한다.
 
-**Acknowledgment Number (32 bits)**
+### Acknowledgment Number
 
 <center>
   {% asset_img header-ack.png %}
@@ -189,7 +189,7 @@ localhost.49680 > localhost.http-alt: Flags [.], ack 240, win 6374
 
 즉, 승인 번호는 `다음에 보내줘야하는 데이터의 시작점`을 의미한다는 것을 알 수 있다.
 
-**Data Offset (4 bits)**
+### Data Offset
 
 <center>
   {% asset_img header-data-offset.png %}
@@ -204,7 +204,7 @@ localhost.49680 > localhost.http-alt: Flags [.], ack 240, win 6374
 
 이 필드가 필요한 이유는, 밑에서 설명할 `옵션(Option)` 필드의 길이가 고정되어 있지 않기 때문이다.
 
-**Reserved (3 bits)**
+### Reserved (3 bits)
 
 <center>
   {% asset_img header-reserved.png %}
@@ -213,7 +213,7 @@ localhost.49680 > localhost.http-alt: Flags [.], ack 240, win 6374
 
 미래를 위해 예약된 필드로, 모두 `0`으로 채워져야 한다. 상단의 헤더 그림에도 그냥 `0 0 0`으로 찍혀있는 것을 확인해볼 수 있다.
 
-**Flags (NS ~ FIN, 9 bits)**
+### Flags (NS ~ FIN)
 
 <center>
   {% asset_img header-flags.png %}
@@ -247,7 +247,7 @@ ECN을 사용하지 않던 기존의 네트워크 혼잡 상황 인지 방법은
 
 ECN은 이 포스팅의 주제와는 또 다른 이야기이므로 궁금하신 분들은 MR.ZERO님의 [Explict Congestion Notification?](https://mr-zero.tistory.com/20) 블로그를 참고하길 바란다.
 
-**Window Size (16 bits)**
+### Window Size
 
 <center>
   {% asset_img header-window-size.png %}
@@ -256,9 +256,9 @@ ECN은 이 포스팅의 주제와는 또 다른 이야기이므로 궁금하신 
 
 윈도우 사이즈 필드에는 한번에 전송할 수 있는 데이터의 양을 의미하는 값을 담는다. $2^16 = 65535$ 만큼의 값을 표현할 수 있고 단위는 바이트이므로, 윈도우의 최대 크기는 `64KB`라는 말이 된다.
 
-하지만 이 최대 크기는 옛날 옛적에 생긴 기준이라 요즘같이 대용량 고속 통신 환경에는 맞지 않는 경우도 있다. 그래서 비트를 왼쪽으로 n번 시프트하는 방식으로 윈도우 사이즈의 최대 크기를 키울 수 있는 방식도 사용하고 있다.
+하지만 이 최대 크기는 옛날 옛적에 생긴 기준이라 요즘같이 대용량 고속 통신 환경에는 맞지 않는 경우도 있다. 그래서 비트를 왼쪽으로 시프트하는 방식으로 윈도우 사이즈의 최대 크기를 키울 수 있는 방식도 사용하고 있으며, 몇 번 시프트할 지는 옵션 필드의 `WSCALE` 필드를 사용하여 표기한다.
 
-**Checksum (16 bits)**
+### Checksum
 
 <center>
   {% asset_img header-checksum.png %}
@@ -307,7 +307,7 @@ TCP의 체크섬은 전송할 데이터를 16 Bits씩 나눠서 차례대로 더
 
 만약 이 값에 0이 하나라도 있으면 송신 측이 보낸 데이터에 뭔가 변조가 있었음을 알 수 있다.
 
-**Urgent Pointer (16 bits)**
+### Urgent Pointer
 
 <center>
   {% asset_img header-urgent.png %}
@@ -316,7 +316,7 @@ TCP의 체크섬은 전송할 데이터를 16 Bits씩 나눠서 차례대로 더
 
 말 그대로 긴급 포인터이다. URG 플래그가 1이라면 수신 측은 이 포인터가 가르키고 있는 데이터를 우선 처리한다.
 
-**Options (0 ~ 40 bytes)**
+### Options
 
 <center>
   {% asset_img header-options.png %}
@@ -325,7 +325,7 @@ TCP의 체크섬은 전송할 데이터를 16 Bits씩 나눠서 차례대로 더
 
 옵션 필드는 TCP의 기능을 확장할 때 사용하는 필드들이며, 이 필드는 크기가 고정된 것이 아니라 가변적이다. 그래서 수신 측이 어디까지가 헤더고 어디서부터 데이터인지 알기 위해 위에서 설명한 데이터 오프셋 필드를 사용하는 것이다.
 
-데이터 오프셋 필드는 `20 ~ 60 bytes`의 값을 표현할 수 있다고 했는데, 아무런 옵션도 사용하지 않은 헤더의 길이, 즉 Source Port 필드부터 Urgent Pointer 필드까지의 길이가 `20 bytes`이고, 옵션을 모두 사용했을 때 옵션 필드의 길이가 `40 bytes`이기 때문이다.
+데이터 오프셋 필드는 `20 ~ 60 bytes`의 값을 표현할 수 있다고 했는데, 아무런 옵션도 사용하지 않은 헤더의 길이, 즉 Source Port 필드부터 Urgent Pointer 필드까지의 길이가 `20 bytes`이고, 옵션을 모두 사용했을 때 옵션 필드의 최대 길이가 `40 bytes`이기 때문이다.
 
 만약 데이터 오프셋 필드의 값이 5, 즉 20 bytes보다 크지만 TCP의 옵션을 하나도 사용하고 있지 않다면, 초과한 bytes 만큼 이 필드를 0으로 채워줘야 수신 측이 헤더의 크기를 올바르게 측정할 수 있다.
 
