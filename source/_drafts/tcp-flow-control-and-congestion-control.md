@@ -27,4 +27,32 @@ thumbnail:
 
 그래서 송신 측은 수신 측의 데이터 처리 속도를 파악하고 자신이 얼마나 빠르게, 많은 데이터를 전송할 지 결정해야한다. 이것이 바로 TCP의 흐름 제어인 것이다.
 
+### Stop and Wait
+
+### Sliding Window
+
+## TCP의 오류 제어
+
+### ARQ
+
+#### Stop and Wait
+
+#### Go Back N
+
+#### Selective Repeat
+
 ## TCP의 혼잡 제어
+
+### AIMD
+
+### Slow Start
+
+### Congestion Avoidance
+
+### Fast Recovery
+
+### TCP Reno
+
+### TCP Tahoe
+
+
