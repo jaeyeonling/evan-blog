@@ -342,12 +342,4 @@ host10: 8.00000011920929
 
 ### Slow Start
 
-### Congestion Avoidance
-
 ### Fast Recovery
-
-### TCP Reno
-
-### TCP Tahoe
-
-
