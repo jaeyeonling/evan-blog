@@ -1,5 +1,7 @@
 ---
 title: 불안한 마음 정면으로 마주보기
+categories:
+  - Essay
 toc: true
 widgets:
   - type: toc
@@ -9,10 +11,12 @@ widgets:
 sidebar:
   right:
     sticky: true
+date: 2019-11-16 17:17:57
 tags:
-categories:
-  - Essay
-thumbnail:
+  - 불안감
+  - 불안요소 마주보기
+  - 면접
+thumbnail: /2019/11/16/the-way-to-control-anxiety/thumbnail.png
 ---
 
 지난 달, 다니고 싶었던 회사의 면접에서 기초 실력 부족으로 시원하게 박살났다. 다행히 면접이 끝난 직후 필자가 대답하지 못했던, 풀어내지 못했던 질문들과 문제를 깃허브에 정리해두었기 때문에 어떤 것을 공부해야하는지 바로 알 수 있었고, 한 달동안 컴퓨터 사이언스의 기초에 대한 내용을 집요하게 파헤쳤다.
