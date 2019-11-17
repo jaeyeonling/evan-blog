@@ -1,5 +1,5 @@
 ---
-title: TCP가 연결을 생성하고 종료하는 방법, 핸드쉐이크
+title: 'TCP가 연결을 생성하고 종료하는 방법, 핸드쉐이크'
 toc: true
 widgets:
   - type: toc
@@ -9,10 +9,19 @@ widgets:
 sidebar:
   right:
     sticky: true
+date: 2019-11-17 19:56:06
 tags:
+  - TCP
+  - SYN
+  - ACK
+  - FIN
+  - TCP Handshake
 categories:
-thumbnail:
+  - Programming
+  - Network
+thumbnail: /2019/11/17/tcp-handshake/thumbnail.png
 ---
+
 
 저번에 작성했던 {% post_link header-of-tcp TCP의 헤더에는 어떤 정보들이 담겨있는걸까? %} 포스팅에 이어 이번에는 TCP의 핸드쉐이크 과정과 그 속에서 변화하는 TCP 상태에 대해서 한번 알아보려고 한다.
 
